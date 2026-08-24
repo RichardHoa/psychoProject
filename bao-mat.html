@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MÈO - Phân biệt rõ về bảo mật</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/custom.css">
+    <script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "background": "#f6faf7",
+                        "primary": "#006954",
+                        "primary-container": "#22836b",
+                        "surface": "#f6faf7",
+                        "surface-variant": "#dfe3e0",
+                        "surface-off-white": "#FBFDFB",
+                        "surface-container-low": "#f1f5f1",
+                        "warm-cream": "#F2F7E9",
+                        "emergency-red": "#D9534F",
+                        "text-main": "#22332F",
+                        "on-surface": "#181d1b",
+                        "on-surface-variant": "#3e4945",
+                        "outline": "#6e7a75",
+                        "secondary-container": "#dbe5d9"
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1.5rem",
+                        "full": "9999px"
+                    },
+                    spacing: {
+                        "gutter": "24px",
+                        "section-gap": "80px",
+                        "container-max": "1200px"
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background text-text-main font-body min-h-screen flex flex-col">
+    <!-- Top Navigation Bar -->
+    <nav class="bg-surface/90 backdrop-blur-md shadow-sm sticky top-0 z-50 w-full border-b border-surface-variant">
+        <div class="flex justify-between items-center w-full px-gutter max-w-container-max mx-auto h-22 py-3">
+            <a href="trang-chu.html" class="flex items-center gap-2">
+                <img src="https://lh3.googleusercontent.com/aida-public/AB6AXuB0U642vdyozVbm4M-3nJpX3AxPlujyV00n4-v4o2GJoZm9klemx0agPcGlxqaT1Qt_XWhFc5emfN80Ci_j5gn9r5L9yyqR8IySOIR3Gmnw9R-V5gEYUFFSfd_7QyauIcTKvUAkXSOb5Z_xv18VIVPuQpBYBwPO37Z7tiFmDrH8Q7qagW8n1BEbkRP5d0LZr35KV_rt7_sH9OsxIsCF7so-kMsPyMw9zcfIH4S8aTDnBVgNNUKk-iyHUiijjsYp1eIJGMk" alt="MÈO Logo" class="h-11 sm:h-12 w-auto object-contain">
+                <span class="text-2xl sm:text-3xl font-extrabold text-primary tracking-tight">MÈO</span>
+            </a>
+
+            <div class="flex items-center gap-8 font-medium">
+                <a href="trang-chu.html" class="text-on-surface-variant hover:text-primary transition-colors">Trang chủ</a>
+                <a href="tai-nguyen.html" class="text-on-surface-variant hover:text-primary transition-colors">Tài nguyên</a>
+            </div>
+
+            <div class="relative w-56 sm:w-72 md:w-80">
+                <input id="nav-search-input" type="text" placeholder="Tìm kiếm..." class="w-full py-2.5 pl-11 pr-4 bg-surface-container-low border border-surface-variant rounded-full text-sm font-medium focus:ring-2 focus:ring-primary outline-none transition-all">
+                <span class="material-symbols-outlined absolute left-3.5 top-1/2 -translate-y-1/2 text-outline text-xl">search</span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="flex-grow w-full px-gutter max-w-container-max mx-auto py-10">
+        <!-- Breadcrumb -->
+        <div class="flex items-center gap-2 mb-6 text-xs text-on-surface-variant font-medium">
+            <a href="trang-chu.html" class="hover:text-primary flex items-center gap-1">
+                <span class="material-symbols-outlined text-base">arrow_back</span>
+                Trang chủ
+            </a>
+            <span class="text-outline">/</span>
+            <a href="tai-nguyen.html" class="hover:text-primary">Tài nguyên</a>
+            <span class="text-outline">/</span>
+            <span class="text-on-surface font-bold">Phân biệt rõ về bảo mật</span>
+        </div>
+
+        <div class="max-w-3xl mx-auto space-y-8">
+            <header class="space-y-3 border-b border-surface-variant pb-6">
+                <span class="bg-primary/10 text-primary px-3 py-1 rounded-full text-xs font-semibold uppercase tracking-wide">
+                    Quyền lợi và Bảo mật thông tin
+                </span>
+                <h1 class="text-3xl md:text-4xl font-extrabold text-primary">
+                    Phân biệt rõ về bảo mật
+                </h1>
+            </header>
+
+            <article class="prose prose-lg max-w-none text-on-surface space-y-6 leading-relaxed">
+                <div class="bg-warm-cream p-6 rounded-2xl border border-primary/20 space-y-2">
+                    <div class="flex items-center gap-2 text-primary font-bold text-lg">
+                        <span class="material-symbols-outlined">lock</span>
+                        Nguyên tắc nền tảng
+                    </div>
+                    <p class="text-base text-on-surface leading-relaxed">
+                        Bảo mật là nguyên tắc nền tảng, nhưng không phải lúc nào cũng tuyệt đối.
+                    </p>
+                </div>
+
+                <div class="space-y-4 mt-6">
+                    <h2 class="text-xl md:text-2xl font-bold text-emergency-red flex items-center gap-2">
+                        <span class="material-symbols-outlined text-emergency-red">warning</span>
+                        Nhà chuyên môn có thể phải chia sẻ thông tin khi:
+                    </h2>
+
+                    <ul class="space-y-3 text-sm md:text-base">
+                        <li class="bg-surface-off-white p-4 rounded-xl border border-surface-variant shadow-sm flex items-start gap-3">
+                            <span class="material-symbols-outlined text-emergency-red text-xl mt-0.5">person_alert</span>
+                            <span>Thân chủ có nguy cơ gây hại đối với bản thân.</span>
+                        </li>
+                        <li class="bg-surface-off-white p-4 rounded-xl border border-surface-variant shadow-sm flex items-start gap-3">
+                            <span class="material-symbols-outlined text-emergency-red text-xl mt-0.5">group_off</span>
+                            <span>Có nguy cơ gây hại đối với người khác.</span>
+                        </li>
+                        <li class="bg-surface-off-white p-4 rounded-xl border border-surface-variant shadow-sm flex items-start gap-3">
+                            <span class="material-symbols-outlined text-primary text-xl mt-0.5">gavel</span>
+                            <span>Có yêu cầu hợp pháp từ cơ quan có thẩm quyền.</span>
+                        </li>
+                        <li class="bg-surface-off-white p-4 rounded-xl border border-surface-variant shadow-sm flex items-start gap-3">
+                            <span class="material-symbols-outlined text-primary text-xl mt-0.5">supervisor_account</span>
+                            <span>Cần trao đổi trong giám sát chuyên môn, với thông tin được bảo vệ phù hợp.</span>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-secondary-container text-primary font-body w-full mt-auto border-t border-surface-variant">
+        <div class="w-full py-10 px-gutter max-w-container-max mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex flex-col items-center md:items-start gap-1">
+                <span class="text-lg font-bold text-on-surface">MÈO</span>
+                <p class="text-xs text-on-surface-variant">© 2026 MÈO - Không gian bình yên cho tâm hồn.</p>
+            </div>
+            <div class="flex gap-6 text-sm font-medium">
+                <a href="trang-chu.html" class="hover:underline text-primary">Trang chủ</a>
+                <a href="tai-nguyen.html" class="hover:underline text-primary">Tài nguyên</a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/app.js"></script>
+</body>
+</html>

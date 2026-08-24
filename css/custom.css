@@ -1,0 +1,115 @@
+/* Custom CSS for MÈO Mental Health Portal */
+
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap');
+
+:root {
+    --color-primary: #006954;
+    --color-primary-container: #22836b;
+    --color-surface: #f6faf7;
+    --color-surface-low: #f1f5f1;
+    --color-surface-variant: #dfe3e0;
+    --color-surface-off-white: #FBFDFB;
+    --color-warm-cream: #F2F7E9;
+    --color-emergency-red: #D9534F;
+    --color-text-main: #22332F;
+    --color-text-subtle: #576158;
+}
+
+body {
+    font-family: 'Be Vietnam Pro', sans-serif;
+    background-color: var(--color-surface);
+    color: var(--color-text-main);
+    overflow-x: hidden;
+}
+
+h1, h2, h3, h4, h5, h6, .font-headline {
+    font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Animations */
+.fade-in {
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.slide-up {
+    animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.pulse-glow {
+    animation: pulseGlow 2.5s infinite alternate ease-in-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 105, 84, 0.2); }
+    100% { transform: scale(1.03); box-shadow: 0 0 20px 10px rgba(0, 105, 84, 0); }
+}
+
+/* Delay Helpers */
+.delay-1 { animation-delay: 0.15s; }
+.delay-2 { animation-delay: 0.3s; }
+.delay-3 { animation-delay: 0.45s; }
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: #f1f5f1; 
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb {
+    background: #bdc9c3; 
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #006954; 
+}
+
+/* Interactive Map Nodes */
+.map-node {
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.map-node:hover {
+    transform: translateY(-8px) scale(1.05);
+    box-shadow: 0 15px 30px rgba(0, 105, 84, 0.15);
+}
+
+/* Modal Overlay */
+.modal-backdrop {
+    background-color: rgba(24, 29, 27, 0.55);
+    backdrop-filter: blur(6px);
+}
+
+/* Audio & Video Custom Controls */
+.progress-bar-fill {
+    transition: width 0.15s linear;
+}
+
+/* Voice Indicator Waves */
+.recording-wave {
+    display: inline-block;
+    width: 4px;
+    height: 16px;
+    border-radius: 2px;
+    background-color: var(--color-primary);
+    animation: wave 1s infinite ease-in-out;
+}
+.recording-wave:nth-child(2) { animation-delay: 0.2s; }
+.recording-wave:nth-child(3) { animation-delay: 0.4s; }
+
+@keyframes wave {
+    0%, 100% { height: 8px; }
+    50% { height: 24px; }
+}

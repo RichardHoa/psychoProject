@@ -1,0 +1,72 @@
+﻿
+Project Icon: 
+  
+
+Layout of website (website 100% vietnamese):
+First coming to the website, we are going to have MÈO introduce the website, we are a website to help people have a much better time going through the counselling process. We just want to ask if you have su.icidal thoughts, then give user a choice of yes or no, then we say we are going to redirect the user to the suitable resource, it’s the https://duongdaynongngaymai.vn/ website, redirect them, cuz they need help
+
+
+If the answer is no, then come to the landing page, we are going to have a big search bar, user can search by text or voice, then we have returned result, when click into the clinks user can read the content, listen to audio, see some visualization if appropriate, or they can watch a video with the mascot speaking (which is the icon listed above).
+
+
+after the search bar section, we will have a map section, this map will help user, with a quick glance, can fully understand the contents of our websites, these contents include:
+CÁC VAI TRÒ TRONG THAM VẤN VÀ TRỊ LIỆU
+3. Thân chủ – Client
+Thân chủ là người sử dụng dịch vụ tham vấn hoặc trị liệu tâm lý.
+Từ “thân chủ” được dùng để nhấn mạnh rằng họ là người chủ động tham gia vào quá trình thay đổi, không chỉ là một “bệnh nhân” thụ động.
+Thân chủ có thể tìm đến vì:
+* Khó khăn cảm xúc.
+* Mâu thuẫn gia đình.
+* Khủng hoảng cuộc sống.
+* Trầm cảm, lo âu hoặc sang chấn.
+* Khó ra quyết định.
+* Muốn hiểu rõ bản thân.
+* Muốn cải thiện quan hệ và chất lượng sống.
+ĐIỀU GÌ DIỄN RA TRONG PHÒNG THAM VẤN?
+6. Nhà tham vấn sẽ làm gì?
+Trong những buổi đầu, nhà tham vấn thường:
+1. Giải thích vai trò, chi phí, thời lượng và cách làm việc.
+2. Giải thích nguyên tắc bảo mật và giới hạn của bảo mật.
+3. Tìm hiểu lý do thân chủ đến tham vấn.
+4. Hỏi về cảm xúc, suy nghĩ, hành vi, sức khỏe, quan hệ và hoàn cảnh sống.
+5. Đánh giá mức độ an toàn, đặc biệt khi có tự hại hoặc tự sát.
+6. Cùng thân chủ thống nhất mục tiêu.
+7. Lựa chọn phương pháp phù hợp.
+8. Theo dõi tiến triển và điều chỉnh kế hoạch.
+9. Chuyển tuyến khi vấn đề vượt quá năng lực.
+Nhà tham vấn có thể sử dụng:
+* Lắng nghe và phản hồi.
+* Đặt câu hỏi.
+* Làm rõ cảm xúc và nhu cầu.
+* Nhận diện vòng lặp suy nghĩ – cảm xúc – hành vi.
+* Luyện kỹ năng giao tiếp và điều hòa cảm xúc.
+* Giao bài tập thực hành giữa các buổi.
+* Làm việc với gia đình hoặc người liên quan khi phù hợp.
+Nhà tham vấn không làm gì?
+* Quyết định thay thân chủ.
+* Ép thân chủ làm theo quan điểm cá nhân.
+* Hứa chắc chắn chữa khỏi.
+* Tự ý yêu cầu ngừng thuốc.
+* Chẩn đoán vội vàng qua vài tin nhắn.
+* Xúc phạm, đe dọa hoặc làm nhục thân chủ.
+* Có quan hệ tình cảm, tình dục hoặc tài chính với thân chủ.
+* Dùng câu chuyện của thân chủ để quảng cáo khi chưa được đồng ý hợp lệ.
+7. Quyền của thân chủ
+Thân chủ có quyền:
+* Được tôn trọng và không bị kỳ thị.
+* Được biết bằng cấp và kinh nghiệm của người hỗ trợ.
+* Được giải thích về phương pháp, chi phí và thời lượng.
+* Được biết thông tin được lưu trữ và bảo mật thế nào.
+* Được biết những trường hợp bảo mật có thể bị giới hạn.
+* Được đặt câu hỏi về trị liệu.
+* Được từ chối một kỹ thuật.
+* Được xin ý kiến chuyên gia khác.
+* Được đổi chuyên gia hoặc dừng trị liệu.
+* Được biết cách phản ánh hoặc khiếu nại.
+Phân biệt rõ về bảo mật
+Bảo mật là nguyên tắc nền tảng, nhưng không phải lúc nào cũng tuyệt đối.
+Nhà chuyên môn có thể phải chia sẻ thông tin khi:
+* Thân chủ có nguy cơ gây hại đối với bản thân.
+* Có nguy cơ gây hại đối với người khác.
+* Có yêu cầu hợp pháp từ cơ quan có thẩm quyền.
+* Cần trao đổi trong giám sát chuyên môn, với thông tin được bảo vệ phù hợp.
