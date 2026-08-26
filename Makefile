@@ -16,10 +16,9 @@ pull:
 	@echo "Pulling latest changes from origin..."
 	git pull origin main
 
-# 3. Stop the currently running python server (if any)
+# 3. Stop the currently running python server on port 6000
 stop:
 	@echo "Stopping running python server on port $(PORT)..."
-	@-pkill -f "[s]erver.py" 2>/dev/null || true
 	@-PID=$$(lsof -ti:$(PORT) 2>/dev/null); if [ -n "$$PID" ]; then kill -9 $$PID 2>/dev/null || true; fi
 
 # 4. Start the python server in background on port 6000, redirecting output to log.txt
