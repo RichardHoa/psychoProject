@@ -9,7 +9,7 @@ import socketserver
 import os
 import sys
 
-PORT = 8000
+PORT = int(sys.argv[1]) if len(sys.argv) > 1 else 6000
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 
 class CustomHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
@@ -23,8 +23,9 @@ def run_server(port=PORT):
     os.chdir(DIRECTORY)
     handler = CustomHTTPRequestHandler
     socketserver.TCPServer.allow_reuse_address = True
+    max_port = port + 20
     
-    while port < 8020:
+    while port < max_port:
         try:
             with socketserver.TCPServer(("0.0.0.0", port), handler) as httpd:
                 print("=" * 60, flush=True)
