@@ -19,8 +19,8 @@ pull:
 # 3. Stop the currently running python server (if any)
 stop:
 	@echo "Stopping running python server on port $(PORT)..."
-	@pkill -f "server.py" || true
-	@lsof -ti:$(PORT) | xargs kill -9 2>/dev/null || true
+	@-pkill -f "[s]erver.py" 2>/dev/null || true
+	@-PID=$$(lsof -ti:$(PORT) 2>/dev/null); if [ -n "$$PID" ]; then kill -9 $$PID 2>/dev/null || true; fi
 
 # 4. Start the python server in background on port 6000, redirecting output to log.txt
 run:
