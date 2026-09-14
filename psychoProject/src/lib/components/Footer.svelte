@@ -20,11 +20,8 @@
 			<a href="https://duongdaynongngaymai.vn/" target="_blank" rel="noopener noreferrer" class="hover:underline text-primary">
 				{m.footer_hotline_link()}
 			</a>
-			<a href="/tai-nguyen" class="hover:underline text-on-surface-variant">
+			<a href="/trang-chu" class="hover:underline text-on-surface-variant">
 				{m.footer_resources_link()}
-			</a>
-			<a href="/" class="hover:underline text-on-surface-variant">
-				{m.footer_safety_check_link()}
 			</a>
 		</div>
 	</div>

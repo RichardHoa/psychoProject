@@ -31,13 +31,5 @@ export const SEARCH_DATABASE = [
 		type: 'folder',
 		desc: 'Nguyên tắc bảo mật thông tin trong tham vấn tâm lý và 4 trường hợp ngoại lệ cần chia sẻ thông tin.',
 		link: '/trang-chu?folder=bao-mat'
-	},
-	{
-		id: 'bai-viet',
-		title: 'Nhận Diện và Vượt Qua Tình Trạng Kiệt Sức (Burnout)',
-		category: 'Sức khỏe tinh thần',
-		type: 'article',
-		desc: 'Dấu hiệu nhận biết, nguyên nhân gốc rễ và cẩm nang hồi phục tâm lý khi đối mặt với hội chứng kiệt sức.',
-		link: '/bai-viet'
 	}
 ];
