@@ -26,5 +26,21 @@
 	"home_search_placeholder": "Tìm kiếm nội dung, khái niệm tham vấn, bài viết...",
 	"home_map_title": "Bản đồ thông tin tham vấn",
 	"home_map_desc": "Khám phá hành trình tham vấn tâm lý qua các điểm chạm quan trọng.",
-	"read_article": "Đọc bài viết"
+	"read_article": "Đọc bài viết",
+	"slide_home": "Trang chủ",
+	"slide_folders": "Thư mục",
+	"slide_emergency": "Khẩn cấp",
+	"slide_articles": "Bài viết",
+	"swipe_hint": "Vuốt để chuyển trang",
+	"breadcrumb_root": "Thư mục gốc",
+	"folder_explore_title": "Thư mục Tri thức & Quyền lợi",
+	"folder_explore_desc": "Chạm vào từng thư mục để khám phá chi tiết các chủ đề quan trọng.",
+	"btn_back": "Quay lại",
+	"folder_items_count": "{count} nhóm chủ đề",
+	"subfolder_items_count": "{count} điều cần biết",
+	"emergency_card_title": "Hỗ trợ khẩn cấp 24/7",
+	"emergency_card_desc": "Nếu bạn hoặc người thân đang trong cơn khủng hoảng tâm lý nghiêm trọng, hãy liên hệ ngay với các đơn vị hỗ trợ chuyên nghiệp:",
+	"emergency_call_now": "Gọi ngay",
+	"grounding_title": "Kỹ thuật định tâm 5-4-3-2-1",
+	"grounding_desc": "Khi cảm thấy hoảng loạn hoặc quá tải, hãy dành 1 phút nhận diện xung quanh bạn:"
 }

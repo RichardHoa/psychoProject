@@ -76,7 +76,7 @@
 </svelte:head>
 
 <div class="bg-background text-text-main font-body min-h-screen flex flex-col">
-	<Navbar showHotlineBtn={true} />
+	<Navbar />
 
 	<!-- Main Content Body -->
 	<main class="flex-grow w-full px-gutter max-w-container-max mx-auto py-10">

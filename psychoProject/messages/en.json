@@ -26,5 +26,21 @@
 	"home_search_placeholder": "Search topics, counselling concepts, articles...",
 	"home_map_title": "Counselling Information Map",
 	"home_map_desc": "Explore the psychological counselling journey through essential touchpoints.",
-	"read_article": "Read article"
+	"read_article": "Read article",
+	"slide_home": "Home",
+	"slide_folders": "Folders",
+	"slide_emergency": "Emergency",
+	"slide_articles": "Articles",
+	"swipe_hint": "Swipe to switch screens",
+	"breadcrumb_root": "Root Folders",
+	"folder_explore_title": "Knowledge & Rights Folders",
+	"folder_explore_desc": "Tap into each folder to explore essential counselling topics.",
+	"btn_back": "Back",
+	"folder_items_count": "{count} topic groups",
+	"subfolder_items_count": "{count} key points",
+	"emergency_card_title": "24/7 Crisis Support",
+	"emergency_card_desc": "If you or a loved one is in severe psychological distress, please connect with crisis hotlines immediately:",
+	"emergency_call_now": "Call Now",
+	"grounding_title": "5-4-3-2-1 Grounding Technique",
+	"grounding_desc": "When feeling overwhelmed or anxious, take 1 minute to observe your surroundings:"
 }
