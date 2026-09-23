@@ -5,7 +5,11 @@ declare global {
 		// interface Error {}
 		// interface Locals {}
 		// interface PageData {}
-		// interface PageState {}
+		interface PageState {
+			slide?: number;
+			folder?: string | null;
+			sub?: string | null;
+		}
 		// interface Platform {}
 	}
 }

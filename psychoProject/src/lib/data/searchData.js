@@ -31,5 +31,13 @@ export const SEARCH_DATABASE = [
 		type: 'folder',
 		desc: 'Nguyên tắc bảo mật thông tin trong tham vấn tâm lý và 4 trường hợp ngoại lệ cần chia sẻ thông tin.',
 		link: '/trang-chu?folder=bao-mat'
+	},
+	{
+		id: 'ho-tro-chuyen-nghiep',
+		title: 'Nơi hỗ trợ đáng tin cậy',
+		category: 'Kết nối với chuyên gia bên ngoài MÈO',
+		type: 'folder',
+		desc: 'Danh bạ các trung tâm tham vấn tâm lý, bệnh viện, trung tâm hướng nghiệp và can thiệp trẻ độc lập, đáng tin cậy.',
+		link: '/trang-chu?folder=ho-tro-chuyen-nghiep'
 	}
 ];

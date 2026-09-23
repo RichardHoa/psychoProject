@@ -1,4 +1,5 @@
 <script>
+	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
 	/**
@@ -14,45 +15,45 @@
 	let { crumbs = [], onBack } = $props();
 </script>
 
-<div class="sticky top-0 z-30 w-full bg-surface-off-white/95 backdrop-blur-md border-b border-surface-variant px-3 py-2.5 flex items-center gap-2 shadow-xs transition-all">
+<div class="sticky top-0 z-30 w-full bg-surface-off-white border-b-1.5 border-sketch-border px-3.5 py-2 flex items-center gap-2 shadow-xs transition-all">
 	{#if onBack && crumbs.length > 1}
 		<button
 			type="button"
 			onclick={onBack}
-			class="shrink-0 flex items-center justify-center w-9 h-9 rounded-full bg-surface-container-low hover:bg-primary/10 active:scale-95 text-primary border border-surface-variant transition-all cursor-pointer"
+			class="sketch-button shrink-0 flex items-center justify-center w-8 h-8 rounded-xl bg-white text-primary active:scale-95 transition-all cursor-pointer"
 			aria-label={m.btn_back()}
 			title={m.btn_back()}
 		>
-			<span class="material-symbols-outlined text-xl">arrow_back</span>
+			<RoughIcon name="arrow_back" size={16} stroke="#1F523D" strokeWidth={1.8} />
 		</button>
 	{/if}
 
 	<!-- Horizontal scrollable breadcrumb trail -->
-	<nav class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs sm:text-sm font-medium text-on-surface-variant">
+	<nav class="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-0.5 text-xs sm:text-sm font-medium text-text-subtle flex-1 min-w-0">
 		{#each crumbs as crumb, index (crumb.id || index)}
 			{@const isLast = index === crumbs.length - 1}
-			<div class="flex items-center gap-1 shrink-0">
+			<div class="flex items-center gap-1.5 shrink-0">
 				{#if index > 0}
-					<span class="material-symbols-outlined text-outline text-sm select-none">chevron_right</span>
+					<span class="text-text-subtle/60 text-xs select-none">→</span>
 				{/if}
 
 				{#if isLast}
-					<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-lg bg-primary/10 text-primary font-bold shadow-xs">
+					<span class="sketch-pill inline-flex items-center gap-1 px-2.5 py-1 rounded-xl bg-warm-sage text-primary font-bold">
 						{#if crumb.icon}
-							<span class="material-symbols-outlined text-base">{crumb.icon}</span>
+							<RoughIcon name={crumb.icon} size={15} stroke="#1F523D" strokeWidth={1.8} />
 						{/if}
-						<span class="truncate max-w-[160px] sm:max-w-[200px]">{crumb.label}</span>
+						<span class="truncate max-w-[140px] xs:max-w-[180px] sm:max-w-[220px]">{crumb.label}</span>
 					</span>
 				{:else}
 					<button
 						type="button"
 						onclick={crumb.onClick}
-						class="inline-flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-surface-container-low active:bg-surface-container hover:text-primary transition-colors cursor-pointer"
+						class="inline-flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-surface-container-low text-text-main font-semibold hover:text-primary transition-colors cursor-pointer"
 					>
 						{#if crumb.icon}
-							<span class="material-symbols-outlined text-base text-outline">{crumb.icon}</span>
+							<RoughIcon name={crumb.icon} size={15} stroke="#5A6561" strokeWidth={1.8} />
 						{/if}
-						<span class="truncate max-w-[120px]">{crumb.label}</span>
+						<span class="truncate max-w-[110px] xs:max-w-[130px]">{crumb.label}</span>
 					</button>
 				{/if}
 			</div>

@@ -1,5 +1,41 @@
-// 4 Knowledge Folders Hub Data for Mobile-First Hierarchical Visual Infographics Navigation
+// Knowledge Folders Hub Data for Mobile-First Hierarchical Visual Infographics Navigation
 
+/**
+ * @typedef {Object} FolderItem
+ * @property {string} title
+ * @property {string} content
+ * @property {string} [tag]
+ * @property {string} [icon]
+ * @property {boolean} [isAlert]
+ * @property {string} [link]
+ */
+
+/**
+ * @typedef {Object} Subfolder
+ * @property {string} id
+ * @property {string} title
+ * @property {string} icon
+ * @property {string} desc
+ * @property {FolderItem[]} items
+ */
+
+/**
+ * @typedef {Object} Folder
+ * @property {string} id
+ * @property {string} title
+ * @property {string} shortTitle
+ * @property {string} category
+ * @property {string} icon
+ * @property {string} colorName
+ * @property {string} accentColor
+ * @property {string} badgeColor
+ * @property {string} summary
+ * @property {string[]} highlights
+ * @property {boolean} [wide]
+ * @property {Subfolder[]} subfolders
+ */
+
+/** @type {Folder[]} */
 export const FOLDERS_DATA = [
 	{
 		id: 'bao-mat',
@@ -7,9 +43,9 @@ export const FOLDERS_DATA = [
 		shortTitle: 'Bảo mật',
 		category: 'Quyền lợi và Bảo mật thông tin',
 		icon: 'lock',
-		colorName: 'emerald',
-		accentColor: 'text-emerald-700 bg-emerald-50 border-emerald-200 dark:bg-emerald-950/40 dark:border-emerald-800',
-		badgeColor: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300',
+		colorName: 'primary',
+		accentColor: 'text-primary bg-primary/10 border-primary/20',
+		badgeColor: 'bg-primary/10 text-primary',
 		summary: 'Nguyên tắc nền tảng & 4 giới hạn an toàn',
 		highlights: ['Riêng tư', '4 ngoại lệ', 'Mã hóa'],
 		subfolders: [
@@ -101,9 +137,9 @@ export const FOLDERS_DATA = [
 		shortTitle: 'Thân chủ',
 		category: 'Các vai trò trong tham vấn và trị liệu',
 		icon: 'person',
-		colorName: 'sky',
-		accentColor: 'text-sky-700 bg-sky-50 border-sky-200 dark:bg-sky-950/40 dark:border-sky-800',
-		badgeColor: 'bg-sky-100 text-sky-800 dark:bg-sky-900/60 dark:text-sky-300',
+		colorName: 'tertiary',
+		accentColor: 'text-tertiary bg-tertiary/10 border-tertiary/20',
+		badgeColor: 'bg-tertiary/10 text-tertiary',
 		summary: 'Trung tâm tiến trình & chuyên gia cuộc đời mình',
 		highlights: ['Bình đẳng', 'Chủ động', 'Ranh giới'],
 		subfolders: [
@@ -168,8 +204,8 @@ export const FOLDERS_DATA = [
 		category: 'Điều gì diễn ra trong phòng tham vấn?',
 		icon: 'psychology',
 		colorName: 'teal',
-		accentColor: 'text-primary bg-surface-off-white border-primary/20 dark:bg-slate-900/40 dark:border-primary/40',
-		badgeColor: 'bg-primary/10 text-primary dark:bg-primary/20 dark:text-primary',
+		accentColor: 'text-primary bg-surface-off-white border-primary/20',
+		badgeColor: 'bg-primary/10 text-primary',
 		summary: '9 bước đầu, phương pháp & 8 điều cấm kỵ',
 		highlights: ['9 bước đầu', 'Thấu cảm', '8 điều cấm'],
 		subfolders: [
@@ -340,9 +376,9 @@ export const FOLDERS_DATA = [
 		shortTitle: 'Quyền thân chủ',
 		category: 'Quyền lợi và Bảo mật thông tin',
 		icon: 'gavel',
-		colorName: 'amber',
-		accentColor: 'text-amber-800 bg-amber-50 border-amber-200 dark:bg-amber-950/40 dark:border-amber-800',
-		badgeColor: 'bg-amber-100 text-amber-900 dark:bg-amber-900/60 dark:text-amber-300',
+		colorName: 'tertiary',
+		accentColor: 'text-tertiary bg-tertiary/10 border-tertiary/20',
+		badgeColor: 'bg-tertiary/10 text-tertiary',
 		summary: '10 quyền lợi pháp lý & ứng phó vi phạm',
 		highlights: ['10 quyền lợi', 'Minh bạch', 'Ứng phó vi phạm'],
 		subfolders: [
@@ -438,6 +474,113 @@ export const FOLDERS_DATA = [
 						tag: 'Bước 3 • Khẩn cấp',
 						icon: 'exit_to_app',
 						isAlert: true
+					}
+				]
+			}
+		]
+	},
+	{
+		id: 'ho-tro-chuyen-nghiep',
+		title: 'Nơi hỗ trợ đáng tin cậy',
+		shortTitle: 'Trung tâm & BV tham vấn',
+		category: 'Kết nối với chuyên gia bên ngoài MÈO',
+		icon: 'connect_without_contact',
+		colorName: 'tertiary',
+		accentColor: 'text-tertiary bg-warm-cream border-tertiary/30',
+		badgeColor: 'bg-tertiary/10 text-tertiary',
+		summary: 'Danh sách trung tâm & bệnh viện tham vấn tâm lý độc lập, được tổng hợp làm điểm khởi đầu — không phải sự bảo chứng hay hợp tác chính thức từ MÈO.',
+		highlights: ['Độc lập', 'Đã kiểm chứng', 'Ngoài MÈO'],
+		wide: true,
+		subfolders: [
+			{
+				id: 'trung-tam-tham-van',
+				title: 'Trung tâm tham vấn tâm lý',
+				icon: 'diversity_3',
+				desc: 'Các trung tâm tham vấn tư nhân tại TPHCM.',
+				items: [
+					{
+						title: 'Tâm Lý Lumos',
+						content: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
+						link: 'https://tamlylumos.com/'
+					},
+					{
+						title: 'Touching Soul',
+						content: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
+						link: 'https://touchingsoul.art/'
+					},
+					{
+						title: 'Tâm Lý Hoa Sung',
+						content: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
+						link: 'https://tamlyhoasung.com/'
+					},
+					{
+						title: 'Vietnam Psychology',
+						content: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
+						link: 'https://www.vietnampsychology.com/'
+					},
+					{
+						title: 'Tâm Lý Việt An',
+						content: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
+						link: 'https://tamlyvietan.com/'
+					}
+				]
+			},
+			{
+				id: 'benh-vien-tham-van',
+				title: 'Bệnh viện có dịch vụ tham vấn',
+				icon: 'local_hospital',
+				desc: 'Các bệnh viện lớn có đơn vị tâm lý lâm sàng hoặc dịch vụ tham vấn.',
+				items: [
+					{
+						title: 'BV Đại học Y Dược TPHCM',
+						content: 'Đơn vị Tâm lý lâm sàng.',
+						link: 'https://www.facebook.com/benhviendaihocyduoc/posts/%C4%91%C6%A1n-v%E1%BB%8B-t%C3%A2m-l%C3%BD-l%C3%A2m-s%C3%A0ng-b%E1%BB%87nh-vi%E1%BB%87n-%C4%91%E1%BA%A1i-h%E1%BB%8Dc-y-d%C6%B0%E1%BB%A3c-tphcm-%C4%91%C6%A1n-v%E1%BB%8B-t%C3%A2m-l%C3%BD-l%C3%A2m-s%C3%A0ng-b%E1%BB%87n/1052576551593330/'
+					},
+					{
+						title: 'Bệnh viện FV',
+						content: 'Chương trình tư vấn, chăm sóc sức khỏe tinh thần.',
+						link: 'https://www.fvhospital.com/health-programme/tu-van-cham-soc-suc-khoe-tinh-than/'
+					},
+					{
+						title: 'CarePlus',
+						content: 'Tham vấn tâm lý cá nhân dành cho người lớn.',
+						link: 'https://www.careplusvn.com/vi/tham-van-tam-ly-ca-nhan-danh-cho-nguoi-lon'
+					},
+					{
+						title: 'Vinmec',
+						content: 'Vinmec Central Park — tham vấn tâm lý.',
+						link: 'https://www.facebook.com/Vinmec/posts/vinmec-central-park-tham-v%E1%BA%A5n-t%C3%A2m-l%C3%BD-c%C3%B3-ph%E1%BA%A3i-ch%E1%BB%89-d%C3%A0nh-cho-ng%C6%B0%E1%BB%9Di-m%E1%BA%AFc-v%E1%BA%A5n-%C4%91%E1%BB%81-v%E1%BB%81-s%E1%BB%A9c/1057520075835336/'
+					}
+				]
+			},
+			{
+				id: 'huong-nghiep',
+				title: 'Trung tâm tư vấn hướng nghiệp',
+				icon: 'work',
+				desc: 'Hỗ trợ định hướng nghề nghiệp.',
+				items: [
+					{
+						title: 'Hướng Nghiệp Sông An',
+						content: 'Trung tâm tư vấn hướng nghiệp.',
+						link: 'https://huongnghiepsongan.com/'
+					}
+				]
+			},
+			{
+				id: 'can-thiep-tre',
+				title: 'Trung tâm can thiệp trẻ',
+				icon: 'child_care',
+				desc: 'Can thiệp sớm và giáo dục đặc biệt cho trẻ.',
+				items: [
+					{
+						title: 'Learning Strategies',
+						content: 'Trung tâm can thiệp và giáo dục trẻ.',
+						link: 'https://learning-strategies.org/'
+					},
+					{
+						title: 'SEN Box',
+						content: 'Mạng lưới giáo dục đặc biệt (Special Education Network).',
+						link: 'https://www.senbox.org/'
 					}
 				]
 			}

@@ -5,74 +5,124 @@
 	--font-headline: 'Be Vietnam Pro', sans-serif;
 	--font-sans: 'Be Vietnam Pro', sans-serif;
 
-	--color-background: #f6faf7;
-	--color-primary: #006954;
-	--color-primary-container: #22836b;
-	--color-surface: #f6faf7;
-	--color-surface-variant: #dfe3e0;
-	--color-surface-off-white: #FBFDFB;
-	--color-surface-container-low: #f1f5f1;
-	--color-surface-container-high: #e5e9e6;
-	--color-surface-container-highest: #dfe3e0;
-	--color-warm-cream: #F2F7E9;
-	--color-emergency-red: #D9534F;
-	--color-text-main: #22332F;
-	--color-text-subtle: #576158;
-	--color-on-primary-container: #f5fff9;
-	--color-on-surface: #181d1b;
-	--color-on-surface-variant: #3e4945;
-	--color-on-error-container: #93000a;
-	--color-error-container: #ffdad6;
-	--color-tertiary: #91463b;
-	--color-tertiary-container: #af5e52;
-	--color-outline: #6e7a75;
-	--color-secondary-container: #dbe5d9;
+	/* Warm Hand-Drawn Paper Palette */
+	--color-background: #FAF8F5;
+	--color-background-soft: #F4EFEA;
+	--color-primary: #1F523D;
+	--color-primary-light: #2D6E54;
+	--color-primary-container: #E4EFE8;
+	--color-surface: #FFFFFF;
+	--color-surface-variant: #E6DFD5;
+	--color-surface-off-white: #FCFBF9;
+	--color-surface-container-low: #F7F4EF;
+	--color-surface-container-high: #EAE3D9;
+	--color-surface-container-highest: #DFD7CC;
+	--color-warm-cream: #FAF4E8;
+	--color-warm-sage: #E8F0EA;
+	--color-warm-terracotta: #FAECE9;
+	--color-warm-amber: #FEF6E4;
+	--color-emergency-red: #D24D48;
+	--color-text-main: #242B28;
+	--color-text-subtle: #5C6662;
+	--color-on-primary-container: #123627;
+	--color-on-surface: #242B28;
+	--color-on-surface-variant: #4F5A56;
+	--color-on-error-container: #8C1D18;
+	--color-error-container: #FCE8E6;
+	--color-tertiary: #8B4D3E;
+	--color-tertiary-container: #F6E2DC;
+	--color-outline: #7D8884;
+	--color-outline-sketch: #242B28;
+	--color-secondary-container: #E5EBE6;
 
 	--spacing-gutter: 24px;
-	--spacing-section-gap: 80px;
+	--spacing-section-gap: 60px;
 	--spacing-container-max: 1200px;
 }
 
 :root {
-	--color-primary: #006954;
-	--color-primary-container: #22836b;
-	--color-surface: #f6faf7;
-	--color-surface-low: #f1f5f1;
-	--color-surface-variant: #dfe3e0;
-	--color-surface-off-white: #FBFDFB;
-	--color-warm-cream: #F2F7E9;
-	--color-emergency-red: #D9534F;
-	--color-text-main: #22332F;
-	--color-text-subtle: #576158;
+	--color-primary: #1F523D;
+	--color-primary-light: #2D6E54;
+	--color-surface: #FAF8F5;
+	--color-surface-low: #F4EFEA;
+	--color-surface-variant: #E6DFD5;
+	--color-surface-off-white: #FCFBF9;
+	--color-warm-cream: #FAF4E8;
+	--color-emergency-red: #D24D48;
+	--color-text-main: #242B28;
+	--color-text-subtle: #5C6662;
+	--sketch-border: #242B28;
 }
 
 html {
 	font-size: 16px;
+	background-color: #EDE8DF;
 }
 
 body {
 	font-size: 1rem;
-	font-family: 'Be Vietnam Pro', sans-serif;
+	font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 	background-color: var(--color-surface);
 	color: var(--color-text-main);
 	overflow-x: hidden;
 }
 
 h1, h2, h3, h4, h5, h6, .font-headline {
-	font-family: 'Be Vietnam Pro', sans-serif;
+	font-family: 'Be Vietnam Pro', -apple-system, BlinkMacSystemFont, sans-serif;
+	letter-spacing: -0.015em;
+}
+
+/* Wired.js / Hand-Drawn Sketch Utility Styles */
+@layer components {
+	.sketch-card {
+		position: relative;
+		background-color: #FFFFFF;
+		border: 1.5px solid var(--sketch-border);
+		box-shadow: 2px 3px 0px rgba(36, 43, 40, 0.9);
+		transition: all 0.15s ease-out;
+	}
+
+	.sketch-card:hover {
+		transform: translate(-1px, -1px);
+		box-shadow: 3px 4px 0px rgba(36, 43, 40, 0.9);
+	}
+
+	.sketch-card:active {
+		transform: translate(1px, 1px);
+		box-shadow: 1px 1px 0px rgba(36, 43, 40, 0.9);
+	}
+
+	.sketch-button {
+		position: relative;
+		border: 1.5px solid var(--sketch-border);
+		box-shadow: 2px 2px 0px rgba(36, 43, 40, 0.9);
+		transition: all 0.12s ease-out;
+		cursor: pointer;
+	}
+
+	.sketch-button:hover {
+		transform: translate(-1px, -1px);
+		box-shadow: 3px 3px 0px rgba(36, 43, 40, 0.9);
+	}
+
+	.sketch-button:active {
+		transform: translate(1.5px, 1.5px);
+		box-shadow: 0.5px 0.5px 0px rgba(36, 43, 40, 0.9);
+	}
+
+	.sketch-pill {
+		border: 1.5px solid var(--sketch-border);
+		box-shadow: 1.5px 1.5px 0px rgba(36, 43, 40, 0.85);
+	}
 }
 
 /* Animations */
 .fade-in {
-	animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 .slide-up {
-	animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
-
-.pulse-glow {
-	animation: pulseGlow 2.5s infinite alternate ease-in-out;
+	animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
 @keyframes fadeIn {
@@ -81,71 +131,30 @@ h1, h2, h3, h4, h5, h6, .font-headline {
 }
 
 @keyframes slideUp {
-	from { opacity: 0; transform: translateY(20px); }
+	from { opacity: 0; transform: translateY(12px); }
 	to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes pulseGlow {
-	0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(0, 105, 84, 0.2); }
-	100% { transform: scale(1.03); box-shadow: 0 0 20px 10px rgba(0, 105, 84, 0); }
-}
-
-/* Delay Helpers */
-.delay-1 { animation-delay: 0.15s; }
-.delay-2 { animation-delay: 0.3s; }
-.delay-3 { animation-delay: 0.45s; }
-
 /* Custom Scrollbar */
 ::-webkit-scrollbar {
-	width: 8px;
-	height: 8px;
+	width: 6px;
+	height: 6px;
 }
 ::-webkit-scrollbar-track {
-	background: #f1f5f1; 
+	background: #FAF4E8; 
 	border-radius: 4px;
 }
 ::-webkit-scrollbar-thumb {
-	background: #bdc9c3; 
+	background: #D5CCC0; 
 	border-radius: 4px;
+	border: 1px solid #242B28;
 }
 ::-webkit-scrollbar-thumb:hover {
-	background: #006954; 
-}
-
-/* Interactive Map Nodes */
-.map-node {
-	transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-.map-node:hover {
-	transform: translateY(-8px) scale(1.05);
-	box-shadow: 0 15px 30px rgba(0, 105, 84, 0.15);
+	background: #1F523D; 
 }
 
 /* Modal Overlay */
 .modal-backdrop {
-	background-color: rgba(24, 29, 27, 0.55);
-	backdrop-filter: blur(6px);
-}
-
-/* Progress bar */
-.progress-bar-fill {
-	transition: width 0.15s linear;
-}
-
-/* Voice Indicator Waves */
-.recording-wave {
-	display: inline-block;
-	width: 4px;
-	height: 16px;
-	border-radius: 2px;
-	background-color: var(--color-primary);
-	animation: wave 1s infinite ease-in-out;
-}
-.recording-wave:nth-child(2) { animation-delay: 0.2s; }
-.recording-wave:nth-child(3) { animation-delay: 0.4s; }
-
-@keyframes wave {
-	0%, 100% { height: 8px; }
-	50% { height: 24px; }
+	background-color: rgba(36, 43, 40, 0.6);
+	backdrop-filter: blur(4px);
 }

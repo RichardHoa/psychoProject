@@ -1,5 +1,6 @@
 <script>
 	import { m } from '$lib/paraglide/messages.js';
+	import WiredButton from '$lib/components/wired/WiredButton.svelte';
 
 	/**
 	 * @type {{
@@ -86,52 +87,52 @@
 		role="dialog"
 		aria-modal="true"
 		aria-label="Bài tập thở vuông 5 giây"
-		class="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-md fade-in"
+		class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop fade-in"
 	>
-		<!-- Modal Box -->
+		<!-- Hand-Drawn Modal Box -->
 		<div
-			class="w-full max-w-sm bg-surface-off-white rounded-3xl p-6 shadow-2xl border border-primary/20 flex flex-col items-center text-center relative overflow-hidden space-y-5"
+			class="sketch-card w-full max-w-sm bg-surface-off-white rounded-3xl p-6 flex flex-col items-center text-center relative overflow-hidden space-y-5"
 		>
 			<!-- Close Button -->
 			<button
 				type="button"
 				onclick={onClose}
-				class="absolute top-4 right-4 w-9 h-9 rounded-full bg-surface-container-low hover:bg-surface-container flex items-center justify-center text-on-surface-variant transition-colors cursor-pointer"
+				class="sketch-button absolute top-4 right-4 w-8 h-8 rounded-full bg-white flex items-center justify-center text-text-subtle hover:text-text-main transition-colors"
 				aria-label="Đóng"
 			>
-				<span class="material-symbols-outlined text-xl">close</span>
+				<span class="material-symbols-outlined text-lg">close</span>
 			</button>
 
 			<!-- Header -->
 			<div class="space-y-1 pt-1">
-				<span class="inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-800 dark:bg-emerald-900/60 dark:text-emerald-300 uppercase tracking-wide">
+				<span class="sketch-pill inline-flex items-center gap-1 text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-warm-sage text-primary uppercase tracking-wide">
 					<span class="material-symbols-outlined text-xs">spa</span>
 					Thở vuông 5 giây (Box Breathing)
 				</span>
-				<h3 class="text-lg font-extrabold text-primary">Điều hòa & Giảm căng thẳng</h3>
+				<h3 class="text-lg font-black text-text-main">Điều hòa & Giảm căng thẳng</h3>
 			</div>
 
 			<!-- Visual Breathing Box Animation -->
 			<div class="relative w-48 h-48 flex items-center justify-center my-2">
 				<!-- Outer Pulse Rings -->
 				<div
-					class="absolute inset-0 rounded-3xl border-2 transition-all duration-1000 ease-in-out {currentPhase.id === 'inhale'
-						? 'scale-110 border-primary bg-primary/10 shadow-lg'
+					class="absolute inset-0 rounded-3xl border-2 border-sketch-border transition-all duration-1000 ease-in-out {currentPhase.id === 'inhale'
+						? 'scale-110 bg-warm-sage/60'
 						: currentPhase.id === 'hold1'
-							? 'scale-110 border-emerald-500 bg-emerald-500/10'
+							? 'scale-110 bg-warm-amber/60'
 							: currentPhase.id === 'exhale'
-								? 'scale-90 border-sky-400 bg-sky-500/5'
-								: 'scale-95 border-amber-400 bg-amber-500/5'}"
+								? 'scale-90 bg-warm-terracotta/60'
+								: 'scale-95 bg-surface-container-low'}"
 				></div>
 
 				<!-- Inner Center Circle with Timer -->
 				<div
-					class="w-32 h-32 rounded-2xl bg-surface shadow-md flex flex-col items-center justify-center border border-surface-variant transition-all"
+					class="sketch-card w-32 h-32 rounded-2xl bg-white flex flex-col items-center justify-center transition-all"
 				>
 					<span class="material-symbols-outlined text-3xl text-primary mb-0.5 animate-bounce">
 						{currentPhase.icon}
 					</span>
-					<span class="text-3xl font-black text-on-surface tabular-nums">
+					<span class="text-3xl font-black text-text-main tabular-nums">
 						{secondsLeft}s
 					</span>
 					<span class="text-[10px] font-bold tracking-wider uppercase text-primary mt-0.5">
@@ -142,35 +143,25 @@
 
 			<!-- Phase Guidance Text -->
 			<div class="space-y-1 px-2">
-				<p class="text-sm font-bold text-on-surface">
+				<p class="text-sm font-black text-text-main">
 					{currentPhase.text}
 				</p>
-				<p class="text-xs text-on-surface-variant">
-					Vòng lặp: {cycleCount} • Nhịp độ 5s giúp cân bằng hệ thần kinh phó giao cảm
+				<p class="text-xs text-text-subtle">
+					Vòng lặp: {cycleCount} • Nhịp độ 5s giúp làm dịu tâm trí
 				</p>
 			</div>
 
 			<!-- Control Buttons -->
 			<div class="flex items-center gap-3 w-full pt-1">
-				<button
-					type="button"
-					onclick={togglePause}
-					class="flex-1 py-2.5 px-4 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5 transition-all cursor-pointer {isRunning
-						? 'bg-surface-container-low hover:bg-surface-container text-on-surface border border-surface-variant'
-						: 'bg-primary text-white shadow-xs'}"
-				>
+				<WiredButton onclick={togglePause} fill="#FAF4E8" class="flex-1 py-2">
 					<span class="material-symbols-outlined text-base">
 						{isRunning ? 'pause' : 'play_arrow'}
 					</span>
 					<span>{isRunning ? 'Tạm dừng' : 'Tiếp tục'}</span>
-				</button>
-				<button
-					type="button"
-					onclick={onClose}
-					class="py-2.5 px-4 rounded-xl bg-primary text-white font-bold text-xs flex items-center justify-center gap-1 shadow-sm hover:bg-emerald-800 transition-all cursor-pointer"
-				>
-					<span>Xong</span>
-				</button>
+				</WiredButton>
+				<WiredButton onclick={onClose} fill="#EAF2EC" class="flex-1 py-2">
+					<span>Hoàn tất</span>
+				</WiredButton>
 			</div>
 		</div>
 	</div>

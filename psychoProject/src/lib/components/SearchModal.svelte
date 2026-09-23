@@ -1,7 +1,9 @@
 <script>
+	import { pushState } from '$app/navigation';
 	import { SEARCH_DATABASE } from '$lib/data/searchData.js';
 	import { searchState } from '$lib/state/searchState.svelte.js';
 	import { m } from '$lib/paraglide/messages.js';
+	import WiredButton from '$lib/components/wired/WiredButton.svelte';
 
 	let isListening = $state(false);
 	let voiceError = $state('');
@@ -88,12 +90,12 @@
 		}
 	}
 
-	// Maximum 4 clean suggestion chips as requested
+	// 4 clean suggestion chips
 	const suggestionChips = [
 		{ label: 'Bảo mật', icon: 'lock' },
 		{ label: 'Thân chủ', icon: 'person' },
 		{ label: 'Nhà tham vấn', icon: 'psychology' },
-		{ label: 'Quyền thân chủ', icon: 'gavel' }
+		{ label: 'Quyền thân chủ', icon: 'balance' }
 	];
 
 	/** @param {string} term */
@@ -110,6 +112,19 @@
 		}
 	}
 
+	/**
+	 * @param {MouseEvent} e
+	 * @param {string} link
+	 */
+	function navigateToResult(e, link) {
+		e.preventDefault();
+		const url = new URL(link, window.location.origin);
+		const folder = url.searchParams.get('folder');
+		const sub = url.searchParams.get('sub');
+		closeSearch();
+		pushState(link, { slide: 1, folder, sub });
+	}
+
 	/** @param {KeyboardEvent} e */
 	function handleKeydown(e) {
 		if (e.key === 'Escape' && searchState.isOpen) {
@@ -121,9 +136,9 @@
 <svelte:window onkeydown={handleKeydown} />
 
 {#if searchState.isOpen}
-	<!-- Fullscreen Blurred Backdrop -->
+	<!-- Fullscreen Backdrop -->
 	<div
-		class="fixed inset-0 z-50 bg-neutral-950/65 backdrop-blur-md flex flex-col items-center justify-center p-4 sm:p-6 overflow-y-auto fade-in font-body"
+		class="fixed inset-0 z-50 modal-backdrop flex flex-col items-center justify-center p-4 sm:p-6 overflow-y-auto fade-in font-body"
 		onclick={(e) => {
 			if (e.target === e.currentTarget) closeSearch();
 		}}
@@ -132,10 +147,10 @@
 		}}
 		role="presentation"
 	>
-		<!-- Center Modal Shell (Centered in screen, shifted 30px upward) -->
-		<div class="w-full max-w-lg bg-surface-off-white rounded-3xl shadow-2xl border border-surface-variant flex flex-col overflow-hidden slide-up max-h-[85vh] -translate-y-[15px]">
+		<!-- Center Modal Shell with Sketch Card Style -->
+		<div class="sketch-card w-full max-w-lg bg-surface-off-white rounded-3xl flex flex-col overflow-hidden slide-up max-h-[85vh] -translate-y-[15px]">
 			<!-- Modal Top Bar / Input -->
-			<div class="p-4 sm:p-5 border-b border-surface-variant/80 bg-surface-off-white sticky top-0 z-20">
+			<div class="p-4 sm:p-5 border-b-1.5 border-sketch-border bg-surface-off-white sticky top-0 z-20">
 				<div class="relative flex items-center">
 					<!-- Search Icon -->
 					<div class="absolute left-4 flex items-center pointer-events-none text-primary">
@@ -147,7 +162,7 @@
 						type="text"
 						bind:this={modalInputRef}
 						bind:value={searchState.query}
-						class="w-full h-14 pl-12 pr-24 text-sm sm:text-base bg-surface-container-low border border-surface-variant rounded-2xl shadow-xs focus:ring-2 focus:ring-primary focus:border-primary text-on-surface font-semibold outline-hidden transition-all placeholder:text-outline"
+						class="w-full h-13 pl-12 pr-24 text-sm sm:text-base bg-white border-1.5 border-sketch-border rounded-2xl shadow-xs text-text-main font-bold outline-hidden transition-all placeholder:text-text-subtle/70"
 						placeholder={m.home_search_placeholder()}
 					/>
 
@@ -157,7 +172,7 @@
 							<button
 								type="button"
 								onclick={() => searchState.setQuery('')}
-								class="p-2 text-outline hover:text-on-surface hover:bg-surface-variant/60 rounded-full cursor-pointer transition-colors"
+								class="p-1.5 text-text-subtle hover:text-text-main rounded-full cursor-pointer"
 								title="Xóa chữ"
 							>
 								<span class="material-symbols-outlined text-lg">close</span>
@@ -169,101 +184,88 @@
 							type="button"
 							onclick={toggleVoiceSearch}
 							title="Tìm kiếm bằng giọng nói"
-							class="p-2.5 rounded-xl transition-all flex items-center justify-center cursor-pointer {isListening
+							class="sketch-button p-2 rounded-xl transition-all flex items-center justify-center {isListening
 								? 'bg-emergency-red text-white animate-pulse'
-								: 'bg-primary/10 text-primary hover:bg-primary/20'}"
+								: 'bg-warm-sage text-primary'}"
 						>
-							<span class="material-symbols-outlined text-xl">mic</span>
+							<span class="material-symbols-outlined text-lg">mic</span>
 						</button>
 					</div>
 				</div>
 
 				<!-- Voice Status Indicator -->
 				{#if isListening}
-					<div class="flex items-center gap-2 text-primary font-semibold text-xs mt-2.5 px-2 fade-in">
+					<div class="flex items-center gap-2 text-primary font-bold text-xs mt-2.5 px-2 fade-in">
 						<span class="material-symbols-outlined text-sm animate-spin">sync</span>
 						<span>Đang lắng nghe... Hãy nói từ khóa bạn cần tìm!</span>
 					</div>
 				{/if}
 
 				{#if voiceError}
-					<div class="text-xs text-emergency-red mt-2 px-2 fade-in">
+					<div class="text-xs text-emergency-red mt-2 px-2 fade-in font-bold">
 						{voiceError}
 					</div>
 				{/if}
 			</div>
 
-			<!-- Modal Body (4 Chips Max or Search Results) -->
-			<div class="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6 min-h-[220px]">
-				<!-- IF NO QUERY: SHOW EXACTLY 4 CLEAN SUGGESTION CHIPS -->
+			<!-- Modal Body -->
+			<div class="flex-1 overflow-y-auto p-4 sm:p-5 space-y-4 min-h-[200px]">
 				{#if !showResults}
-					<div class="space-y-4 fade-in py-2">
+					<div class="space-y-3.5 fade-in py-1">
 						<div class="flex items-center justify-between px-1">
-							<span class="text-xs font-bold text-outline uppercase tracking-wider">
+							<span class="text-xs font-bold text-text-subtle uppercase tracking-wider">
 								Gợi ý chủ đề nhanh
 							</span>
-							<span class="text-[11px] text-outline">Chạm để lọc</span>
+							<span class="text-[11px] text-text-subtle">Chạm để chọn</span>
 						</div>
 
 						<!-- 4 Suggestion Chips in a 2x2 Grid -->
-						<div class="grid grid-cols-2 gap-2.5 pt-1">
+						<div class="grid grid-cols-2 gap-2.5">
 							{#each suggestionChips as chip (chip.label)}
 								<button
 									type="button"
 									onclick={() => setSuggestion(chip.label)}
-									class="inline-flex items-center justify-start gap-2.5 px-3.5 py-3 rounded-2xl bg-surface-container-low hover:bg-primary/10 hover:text-primary text-on-surface border border-surface-variant/90 text-xs sm:text-sm font-semibold transition-all active:scale-95 cursor-pointer shadow-2xs hover:border-primary/40"
+									class="sketch-button inline-flex items-center justify-start gap-2.5 px-3.5 py-2.5 rounded-xl bg-white text-text-main text-xs sm:text-sm font-bold transition-all active:scale-95"
 								>
 									<span class="material-symbols-outlined text-lg text-primary shrink-0">{chip.icon}</span>
 									<span class="truncate">{chip.label}</span>
 								</button>
 							{/each}
 						</div>
-
-						<!-- Open Airy Space For Typing -->
-						<div class="pt-8 pb-4 text-center">
-							<p class="text-xs text-outline leading-relaxed max-w-xs mx-auto">
-								Gõ bất kỳ từ khóa hoặc câu hỏi nào để tìm kiếm câu trả lời nhanh chóng.
-							</p>
-						</div>
 					</div>
-
-				<!-- IF QUERY TYPED: SHOW SPACIOUS RESULTS -->
 				{:else}
-					<div class="space-y-3 fade-in">
+					<div class="space-y-2.5 fade-in">
 						{#if searchResults.length === 0}
-							<div class="py-12 text-center text-on-surface-variant space-y-2">
-								<div class="w-12 h-12 rounded-full bg-surface-container-high mx-auto flex items-center justify-center text-outline">
-									<span class="material-symbols-outlined text-2xl">search_off</span>
-								</div>
-								<h3 class="font-bold text-sm text-on-surface">Không tìm thấy kết quả cho "{searchState.query}"</h3>
-								<p class="text-xs text-outline max-w-xs mx-auto">
-									Bạn hãy thử các từ khóa như "thân chủ", "bảo mật", "nhà tham vấn", "quyền thân chủ"
+							<div class="py-10 text-center text-text-subtle space-y-2">
+								<h3 class="font-bold text-sm text-text-main">Không tìm thấy kết quả cho "{searchState.query}"</h3>
+								<p class="text-xs text-text-subtle max-w-xs mx-auto">
+									Bạn hãy thử từ khóa như "thân chủ", "bảo mật", "nhà tham vấn"
 								</p>
 							</div>
 						{:else}
-							<div class="flex justify-between items-center px-1 text-xs font-bold text-outline">
-								<span>Tìm thấy {searchResults.length} kết quả phù hợp:</span>
+							<div class="px-1 text-xs font-bold text-text-subtle">
+								<span>Tìm thấy {searchResults.length} kết quả:</span>
 							</div>
 
 							<div class="space-y-2.5">
 								{#each searchResults as item (item.id)}
 									<a
 										href={item.link}
-										onclick={closeSearch}
-										class="block p-3.5 rounded-2xl bg-surface-container-low hover:bg-primary/10 border border-surface-variant/80 hover:border-primary/40 transition-all group text-left shadow-xs"
+										onclick={(e) => navigateToResult(e, item.link)}
+										class="sketch-card block p-3.5 rounded-2xl bg-white transition-all group text-left"
 									>
 										<div class="flex items-center justify-between gap-2 mb-1">
-											<span class="text-[10px] font-bold px-2.5 py-0.5 rounded-full bg-primary/10 text-primary">
+											<span class="sketch-pill text-[10px] font-bold px-2 py-0.5 rounded-md bg-warm-sage text-primary">
 												{item.category}
 											</span>
-											<span class="material-symbols-outlined text-xs text-outline group-hover:text-primary group-hover:translate-x-1 transition-transform">
+											<span class="material-symbols-outlined text-xs text-text-subtle group-hover:text-primary group-hover:translate-x-1 transition-transform">
 												arrow_forward
 											</span>
 										</div>
-										<h4 class="font-bold text-sm text-on-surface group-hover:text-primary transition-colors">
+										<h4 class="font-black text-sm text-text-main group-hover:text-primary transition-colors">
 											{item.title}
 										</h4>
-										<p class="text-xs text-on-surface-variant line-clamp-2 mt-0.5 leading-relaxed">
+										<p class="text-xs text-text-subtle line-clamp-2 mt-0.5 leading-relaxed">
 											{item.desc}
 										</p>
 									</a>
@@ -275,15 +277,11 @@
 			</div>
 
 			<!-- Modal Bottom Bar -->
-			<div class="p-3.5 border-t border-surface-variant/80 bg-surface-container-low/60 flex items-center justify-between text-xs text-outline px-5">
-				<span>Phím <kbd class="px-1.5 py-0.5 rounded-md bg-surface-off-white border border-surface-variant font-mono text-[10px] font-bold">ESC</kbd> để đóng</span>
-				<button
-					type="button"
-					onclick={closeSearch}
-					class="px-4 py-1.5 rounded-xl bg-surface-off-white hover:bg-surface-variant text-on-surface font-semibold border border-surface-variant transition-colors cursor-pointer text-xs"
-				>
-					Đóng
-				</button>
+			<div class="p-3 border-t-1.5 border-sketch-border bg-surface-container-low flex items-center justify-between text-xs text-text-subtle px-4">
+				<span>Phím <kbd class="px-1.5 py-0.5 rounded-md bg-white border border-sketch-border font-mono text-[10px] font-bold">ESC</kbd> để đóng</span>
+				<WiredButton onclick={closeSearch} fill="#FFFFFF">
+					<span>Đóng</span>
+				</WiredButton>
 			</div>
 		</div>
 	</div>

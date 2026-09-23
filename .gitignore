@@ -1,3 +1,13 @@
 log.txt
 .server.pid
 .DS_Store
+
+# Claude-Code-Development-Kit (https://github.com/peterkrueck/Claude-Code-Development-Kit)
+.claude/
+AGENTS.md
+CLAUDE.md
+docs/
+
+.agents
+
+/Cat
