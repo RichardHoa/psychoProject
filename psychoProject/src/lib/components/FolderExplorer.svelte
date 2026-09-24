@@ -167,6 +167,8 @@
 	{:else}
 		<FolderReader
 			folder={currentFolder}
+			targetId={nav.targetId}
+			targetVersion={nav.targetVersion}
 			onNavigateFolder={selectFolder}
 			onBack={goBack}
 		/>

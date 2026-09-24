@@ -52,6 +52,23 @@
 			<path d="M8 15c2-1 4-1 4-1"></path>
 			<path d="M16 15c-2-1-4-1-4-1"></path>
 		`,
+		air: `
+			<path d="M3 8h9.5a2.5 2.5 0 1 0-2.5-2.5"></path>
+			<path d="M3 12h15.5a2.5 2.5 0 1 1-2.5 2.5"></path>
+			<path d="M3 16h7.5a2 2 0 1 1-2 2"></path>
+		`,
+		mic: `
+			<rect x="9" y="3" width="6" height="11" rx="3"></rect>
+			<path d="M5.5 11a6.5 6.5 0 0 0 13 0"></path>
+			<path d="M12 17.5V21"></path>
+			<path d="M9 21h6"></path>
+		`,
+		sync: `
+			<path d="M20 12a8 8 0 0 1-14.3 4.9"></path>
+			<path d="M4 12a8 8 0 0 1 14.3-4.9"></path>
+			<path d="M18.5 3v4.2h-4.2"></path>
+			<path d="M5.5 21v-4.2h4.2"></path>
+		`,
 		folder: `
 			<path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"></path>
 		`,

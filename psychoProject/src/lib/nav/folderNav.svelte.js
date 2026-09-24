@@ -1,7 +1,8 @@
+import { untrack } from 'svelte';
 import { FOLDERS_DATA } from '$lib/data/folderData.js';
 
 /**
- * @typedef {{ slide: number, folderId: string | null, subfolderId: string | null }} NavSnapshot
+ * @typedef {{ slide: number, folderId: string | null, subfolderId: string | null, targetId?: string | null }} NavSnapshot
  */
 
 /**
@@ -14,6 +15,10 @@ export function createFolderNav() {
 	let slide = $state(0);
 	let folderId = $state(/** @type {string | null} */ (null));
 	let subfolderId = $state(/** @type {string | null} */ (null));
+	// Element inside the folder reader to scroll to (set by search results / deep links).
+	let targetId = $state(/** @type {string | null} */ (null));
+	// Bumped on every reset that carries a target, so re-selecting the same result scrolls again.
+	let targetVersion = $state(0);
 
 	/** @param {number} index */
 	function goToSlide(index) {
@@ -25,17 +30,20 @@ export function createFolderNav() {
 		const folder = FOLDERS_DATA.find((f) => f.id === id);
 		folderId = id;
 		subfolderId = folder?.subfolders[0]?.id ?? null;
+		targetId = null;
 		slide = 1;
 	}
 
 	/** @param {string} id */
 	function selectSubfolder(id) {
 		subfolderId = id;
+		targetId = null;
 	}
 
 	function goToRoot() {
 		folderId = null;
 		subfolderId = null;
+		targetId = null;
 	}
 
 	/** @param {NavSnapshot} snapshot */
@@ -43,6 +51,10 @@ export function createFolderNav() {
 		slide = snapshot.slide;
 		folderId = snapshot.folderId;
 		subfolderId = snapshot.subfolderId;
+		const nextTarget = snapshot.targetId ?? null;
+		targetId = nextTarget;
+		// untrack: reset runs inside the page's $effect, which must not depend on its own write
+		if (nextTarget) targetVersion = untrack(() => targetVersion) + 1;
 	}
 
 	return {
@@ -54,6 +66,12 @@ export function createFolderNav() {
 		},
 		get subfolderId() {
 			return subfolderId;
+		},
+		get targetId() {
+			return targetId;
+		},
+		get targetVersion() {
+			return targetVersion;
 		},
 		goToSlide,
 		selectFolder,
@@ -74,6 +92,7 @@ export function navStateToUrl(snapshot, pathname) {
 	if (snapshot.slide) params.set('slide', String(snapshot.slide));
 	if (snapshot.folderId) params.set('folder', snapshot.folderId);
 	if (snapshot.subfolderId) params.set('sub', snapshot.subfolderId);
+	if (snapshot.folderId && snapshot.targetId) params.set('target', snapshot.targetId);
 	const qs = params.toString();
 	return qs ? `?${qs}` : pathname;
 }
@@ -85,6 +104,7 @@ export function navStateToUrl(snapshot, pathname) {
 export function navStateFromSearchParams(params) {
 	const folderId = params.get('folder');
 	const subfolderId = params.get('sub');
+	const targetId = folderId ? params.get('target') : null;
 	const slide = folderId || params.get('slide') === '1' ? 1 : 0;
-	return { slide, folderId, subfolderId };
+	return { slide, folderId, subfolderId, targetId };
 }

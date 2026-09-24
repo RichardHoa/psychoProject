@@ -22,11 +22,17 @@
 	let showUsageHint = $state(true);
 
 	function pushNavState() {
-		const snapshot = { slide: nav.slide, folderId: nav.folderId, subfolderId: nav.subfolderId };
+		const snapshot = {
+			slide: nav.slide,
+			folderId: nav.folderId,
+			subfolderId: nav.subfolderId,
+			targetId: nav.targetId
+		};
 		pushState(navStateToUrl(snapshot, page.url.pathname), {
 			slide: snapshot.slide,
 			folder: snapshot.folderId,
-			sub: snapshot.subfolderId
+			sub: snapshot.subfolderId,
+			target: snapshot.targetId
 		});
 	}
 
@@ -36,7 +42,8 @@
 			nav.reset({
 				slide: state.slide,
 				folderId: state.folder ?? null,
-				subfolderId: state.sub ?? null
+				subfolderId: state.sub ?? null,
+				targetId: state.target ?? null
 			});
 		} else {
 			nav.reset(navStateFromSearchParams(page.url.searchParams));
@@ -51,7 +58,8 @@
 		replaceState(navStateToUrl(snapshot, page.url.pathname), {
 			slide: snapshot.slide,
 			folder: snapshot.folderId,
-			sub: snapshot.subfolderId
+			sub: snapshot.subfolderId,
+			target: snapshot.targetId
 		});
 	});
 
@@ -134,7 +142,7 @@
 				title="Thở vuông 5 giây giải tỏa căng thẳng"
 				class="shrink-0"
 			>
-				<RoughIcon name="spa" size={18} stroke="#D24D48" strokeWidth={1.8} />
+				<RoughIcon name="air" size={18} stroke="#D24D48" strokeWidth={1.8} />
 				<span class="font-black tracking-tight text-emergency-red">Thở 5s</span>
 			</WiredButton>
 		</header>

@@ -9,6 +9,7 @@ declare global {
 			slide?: number;
 			folder?: string | null;
 			sub?: string | null;
+			target?: string | null;
 		}
 		// interface Platform {}
 	}

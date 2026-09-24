@@ -1,9 +1,16 @@
 <script>
-	import { pushState } from '$app/navigation';
-	import { SEARCH_DATABASE } from '$lib/data/searchData.js';
+	import { goto, pushState } from '$app/navigation';
+	import { page } from '$app/state';
+	import { FOLDERS_DATA } from '$lib/data/folderData.js';
+	import { buildSearchIndex, searchEntries } from '$lib/search/searchIndex.js';
+	import { navStateToUrl } from '$lib/nav/folderNav.svelte.js';
 	import { searchState } from '$lib/state/searchState.svelte.js';
 	import { m } from '$lib/paraglide/messages.js';
 	import WiredButton from '$lib/components/wired/WiredButton.svelte';
+	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
+
+	const HOME_PATH = '/trang-chu';
+	const SEARCH_INDEX = buildSearchIndex(FOLDERS_DATA);
 
 	let isListening = $state(false);
 	let voiceError = $state('');
@@ -19,17 +26,9 @@
 		}
 	});
 
-	let trimmedQuery = $derived(searchState.query.trim().toLowerCase());
+	let trimmedQuery = $derived(searchState.query.trim());
 
-	let searchResults = $derived.by(() => {
-		if (!trimmedQuery) return [];
-		return SEARCH_DATABASE.filter(
-			(item) =>
-				item.title.toLowerCase().includes(trimmedQuery) ||
-				item.category.toLowerCase().includes(trimmedQuery) ||
-				item.desc.toLowerCase().includes(trimmedQuery)
-		);
-	});
+	let searchResults = $derived(searchEntries(SEARCH_INDEX, trimmedQuery));
 
 	let showResults = $derived(trimmedQuery.length > 0);
 
@@ -90,13 +89,15 @@
 		}
 	}
 
-	// 4 clean suggestion chips
-	const suggestionChips = [
-		{ label: 'Bảo mật', icon: 'lock' },
-		{ label: 'Thân chủ', icon: 'person' },
-		{ label: 'Nhà tham vấn', icon: 'psychology' },
-		{ label: 'Quyền thân chủ', icon: 'balance' }
-	];
+	// Suggestion chips are the real topics, so every chip is guaranteed to return results
+	const suggestionChips = FOLDERS_DATA.map((f) => ({
+		label: f.shortTitle || f.title,
+		icon: f.icon
+	}));
+
+	const exampleKeywords = FOLDERS_DATA.slice(0, 3)
+		.map((f) => `"${(f.shortTitle || f.title).toLowerCase()}"`)
+		.join(', ');
 
 	/** @param {string} term */
 	function setSuggestion(term) {
@@ -112,17 +113,40 @@
 		}
 	}
 
+	/** @param {import('$lib/search/searchIndex.js').SearchEntry} entry */
+	function resultHref(entry) {
+		// Results always carry a folder, so navStateToUrl yields a query string
+		return HOME_PATH + navStateToUrl(toSnapshot(entry), HOME_PATH);
+	}
+
+	/** @param {import('$lib/search/searchIndex.js').SearchEntry} entry */
+	function toSnapshot(entry) {
+		return {
+			slide: 1,
+			folderId: entry.folderId,
+			subfolderId: entry.subfolderId,
+			targetId: entry.targetId
+		};
+	}
+
 	/**
 	 * @param {MouseEvent} e
-	 * @param {string} link
+	 * @param {import('$lib/search/searchIndex.js').SearchEntry} entry
 	 */
-	function navigateToResult(e, link) {
+	function navigateToResult(e, entry) {
 		e.preventDefault();
-		const url = new URL(link, window.location.origin);
-		const folder = url.searchParams.get('folder');
-		const sub = url.searchParams.get('sub');
 		closeSearch();
-		pushState(link, { slide: 1, folder, sub });
+		const href = resultHref(entry);
+		if (page.url.pathname !== HOME_PATH) {
+			goto(href);
+			return;
+		}
+		pushState(href, {
+			slide: 1,
+			folder: entry.folderId,
+			sub: entry.subfolderId,
+			target: entry.targetId
+		});
 	}
 
 	/** @param {KeyboardEvent} e */
@@ -154,7 +178,7 @@
 				<div class="relative flex items-center">
 					<!-- Search Icon -->
 					<div class="absolute left-4 flex items-center pointer-events-none text-primary">
-						<span class="material-symbols-outlined text-2xl">search</span>
+						<RoughIcon name="search" size={22} stroke="#1F523D" strokeWidth={1.9} />
 					</div>
 
 					<!-- Search Input -->
@@ -175,7 +199,7 @@
 								class="p-1.5 text-text-subtle hover:text-text-main rounded-full cursor-pointer"
 								title="Xóa chữ"
 							>
-								<span class="material-symbols-outlined text-lg">close</span>
+								<RoughIcon name="close" size={18} strokeWidth={1.9} />
 							</button>
 						{/if}
 
@@ -188,7 +212,7 @@
 								? 'bg-emergency-red text-white animate-pulse'
 								: 'bg-warm-sage text-primary'}"
 						>
-							<span class="material-symbols-outlined text-lg">mic</span>
+							<RoughIcon name="mic" size={18} strokeWidth={1.9} />
 						</button>
 					</div>
 				</div>
@@ -196,7 +220,7 @@
 				<!-- Voice Status Indicator -->
 				{#if isListening}
 					<div class="flex items-center gap-2 text-primary font-bold text-xs mt-2.5 px-2 fade-in">
-						<span class="material-symbols-outlined text-sm animate-spin">sync</span>
+						<RoughIcon name="sync" size={14} strokeWidth={1.9} class="animate-spin" />
 						<span>Đang lắng nghe... Hãy nói từ khóa bạn cần tìm!</span>
 					</div>
 				{/if}
@@ -219,7 +243,7 @@
 							<span class="text-[11px] text-text-subtle">Chạm để chọn</span>
 						</div>
 
-						<!-- 4 Suggestion Chips in a 2x2 Grid -->
+						<!-- Topic Suggestion Chips (generated from the folder content) -->
 						<div class="grid grid-cols-2 gap-2.5">
 							{#each suggestionChips as chip (chip.label)}
 								<button
@@ -227,7 +251,7 @@
 									onclick={() => setSuggestion(chip.label)}
 									class="sketch-button inline-flex items-center justify-start gap-2.5 px-3.5 py-2.5 rounded-xl bg-white text-text-main text-xs sm:text-sm font-bold transition-all active:scale-95"
 								>
-									<span class="material-symbols-outlined text-lg text-primary shrink-0">{chip.icon}</span>
+									<RoughIcon name={chip.icon} size={18} stroke="#1F523D" strokeWidth={1.8} />
 									<span class="truncate">{chip.label}</span>
 								</button>
 							{/each}
@@ -239,7 +263,7 @@
 							<div class="py-10 text-center text-text-subtle space-y-2">
 								<h3 class="font-bold text-sm text-text-main">Không tìm thấy kết quả cho "{searchState.query}"</h3>
 								<p class="text-xs text-text-subtle max-w-xs mx-auto">
-									Bạn hãy thử từ khóa như "thân chủ", "bảo mật", "nhà tham vấn"
+									Bạn hãy thử từ khóa như {exampleKeywords}
 								</p>
 							</div>
 						{:else}
@@ -250,23 +274,26 @@
 							<div class="space-y-2.5">
 								{#each searchResults as item (item.id)}
 									<a
-										href={item.link}
-										onclick={(e) => navigateToResult(e, item.link)}
+										href={resultHref(item)}
+										onclick={(e) => navigateToResult(e, item)}
 										class="sketch-card block p-3.5 rounded-2xl bg-white transition-all group text-left"
 									>
 										<div class="flex items-center justify-between gap-2 mb-1">
-											<span class="sketch-pill text-[10px] font-bold px-2 py-0.5 rounded-md bg-warm-sage text-primary">
-												{item.category}
+											<span class="sketch-pill truncate min-w-0 text-[10px] font-bold px-2 py-0.5 rounded-md bg-warm-sage text-primary">
+												{item.context}
 											</span>
-											<span class="material-symbols-outlined text-xs text-text-subtle group-hover:text-primary group-hover:translate-x-1 transition-transform">
-												arrow_forward
-											</span>
+											<RoughIcon
+												name="arrow_forward"
+												size={14}
+												strokeWidth={1.9}
+												class="text-text-subtle group-hover:text-primary group-hover:translate-x-1 transition-transform"
+											/>
 										</div>
 										<h4 class="font-black text-sm text-text-main group-hover:text-primary transition-colors">
 											{item.title}
 										</h4>
 										<p class="text-xs text-text-subtle line-clamp-2 mt-0.5 leading-relaxed">
-											{item.desc}
+											{item.snippet}
 										</p>
 									</a>
 								{/each}
