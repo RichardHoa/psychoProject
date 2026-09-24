@@ -8,6 +8,18 @@
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 		<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,600&display=swap" rel="stylesheet">
 		<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
+		<!-- Hand-drawn Wired* borders are drawn by rough.js in the browser; without JavaScript,
+		     fall back to plain CSS sketch borders so buttons and cards stay recognisable. -->
+		<noscript>
+			<style>
+				.wired {
+					background: var(--wired-fill, #fff);
+					border: 1.5px solid var(--wired-stroke, #242b28);
+					border-radius: 0.75rem;
+					box-shadow: 2px 2px 0 rgba(36, 43, 40, 0.22);
+				}
+			</style>
+		</noscript>
 		%sveltekit.head%
 	</head>
 	<body data-sveltekit-preload-data="hover" class="font-body bg-background text-text-main min-h-screen">

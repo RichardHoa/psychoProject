@@ -5,7 +5,7 @@ MÈO is a Vietnamese-language self-help/mental-health resource site (SvelteKit, 
 ## Language
 
 **Landing page**:
-The site's main content hub, at the `trang-chu` route. Deep links into it carry `slide`/`folder`/`sub` query params that restore a specific slide/folder/subfolder in its nav.
+The site's main content hub, at the `trang-chu` route: a hero screen (`#gioi-thieu`) and the 4-topic hub (`#chu-de`) side by side as CSS scroll-snap slides. Each topic has its own URL, `/trang-chu/<folder>`, and every section/item inside it has an anchor (`/trang-chu/<folder>#<section>`), which search results link to. Old `?slide=`/`?folder=`/`?sub=` deep links redirect to these URLs.
 _Avoid_: Home page, index
 
 **Cat mascot**:
@@ -13,7 +13,7 @@ A recurring illustrated cat character (static PNG poses: happy, waving, etc., un
 _Avoid_: Cat icon, logo
 
 **Safety check-in gate**:
-A page shown before any other route loads (once per browser session) that asks the visitor whether they are having thoughts of self-harm, and routes them to crisis help or on to their originally requested page depending on the answer.
+A page shown before any other route loads (once per browser session, enforced on the server via a session cookie in `hooks.server.js`, so it also applies without JavaScript) that asks the visitor whether they are having thoughts of self-harm, and routes them to crisis help or on to their originally requested page depending on the answer.
 _Avoid_: Consent screen, disclaimer page, chatbox intro (this is the mechanism; "chatbox" describes only its visual styling)
 
 **Hotline hours window**:

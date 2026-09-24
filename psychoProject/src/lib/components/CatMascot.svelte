@@ -1,5 +1,6 @@
 <script>
 	import { onDestroy, onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import {
 		happy,
 		happyOpenEyes,
@@ -21,7 +22,7 @@
 		happy
 	];
 
-	// Played when the mascot is clicked, before onActivate fires: a quick wave burst.
+	// Played when the mascot link is clicked, before navigating: a quick wave burst.
 	const defaultClickSequence = [happyOpenEyesWaving, happyWaving, happyOpenEyesWaving, happy];
 
 	/**
@@ -33,7 +34,7 @@
 	 *   autoplay?: boolean,
 	 *   sizeClass?: string,
 	 *   class?: string,
-	 *   onActivate?: () => void,
+	 *   href?: string,
 	 *   ariaLabel?: string,
 	 *   children?: import('svelte').Snippet
 	 * }}
@@ -46,7 +47,7 @@
 		autoplay = true,
 		sizeClass = 'h-28 w-28 sm:h-36 sm:w-36',
 		class: className = '',
-		onActivate,
+		href,
 		ariaLabel = 'Về trang chủ',
 		children
 	} = $props();
@@ -102,11 +103,18 @@
 		if (autoplay) playSequence(sequence);
 	});
 
-	async function handleClick() {
-		if (!onActivate) return;
+	/**
+	 * Without JavaScript this is a plain link. With it, the cat waves first, then navigates.
+	 * Modified clicks (new tab, etc.) keep the browser's default behaviour.
+	 * @param {MouseEvent} e
+	 */
+	async function handleClick(e) {
+		if (!href || e.defaultPrevented || e.button !== 0) return;
+		if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+		e.preventDefault();
 		await playSequence(clickSequence);
 		if (destroyed) return;
-		onActivate();
+		goto(href);
 	}
 </script>
 
@@ -126,16 +134,16 @@
 	</span>
 {/snippet}
 
-{#if onActivate}
-	<button
-		type="button"
+{#if href}
+	<a
+		{href}
 		onclick={handleClick}
 		aria-label={ariaLabel}
 		class="group flex shrink-0 cursor-pointer items-center gap-0.5 text-left select-none focus:outline-hidden {className}"
 	>
 		{@render stack()}
 		{@render children?.()}
-	</button>
+	</a>
 {:else}
 	<div class="pointer-events-none select-none {className}" aria-hidden="true">
 		{@render stack()}

@@ -4,6 +4,10 @@ HOST ?= 0.0.0.0
 APP_DIR ?= psychoProject
 LOG_FILE ?= log.txt
 PID_FILE ?= .server.pid
+# Public URL visitors use. SvelteKit rejects form POSTs (e.g. the safety gate) whose Origin
+# doesn't match it, and adapter-node assumes https when it is unset.
+# Override for real deploys: make prod ORIGIN=https://your-domain
+ORIGIN ?= http://localhost:$(PORT)
 
 .PHONY: all prod build start down stop status logs clean help
 
@@ -12,6 +16,7 @@ all: prod
 help:
 	@echo "Available commands:"
 	@echo "  make prod    - Build application and start standalone production Node server on port $(PORT)"
+	@echo "                 (set ORIGIN=https://your-domain when not browsing via localhost)"
 	@echo "  make down    - Stop the running production server"
 	@echo "  make build   - Build the production bundle into $(APP_DIR)/build"
 	@echo "  make status  - Check status of the production server"
@@ -24,12 +29,13 @@ build:
 
 prod: down build
 	@echo "==> Starting production server on port $(PORT) with nohup in background..."
-	@PORT=$(PORT) HOST=$(HOST) nohup node $(APP_DIR)/build/index.js > $(LOG_FILE) 2>&1 & echo $$! > $(PID_FILE)
+	@PORT=$(PORT) HOST=$(HOST) ORIGIN=$(ORIGIN) nohup node $(APP_DIR)/build/index.js > $(LOG_FILE) 2>&1 & echo $$! > $(PID_FILE)
 	@sleep 2
 	@if [ -f $(PID_FILE) ] && kill -0 $$(cat $(PID_FILE) 2>/dev/null) 2>/dev/null; then \
 		echo "==> Production server started successfully!"; \
 		echo "    - Port: $(PORT)"; \
 		echo "    - Host: $(HOST)"; \
+		echo "    - Origin: $(ORIGIN)"; \
 		echo "    - Log file: $(LOG_FILE)"; \
 		echo "    - PID file: $(PID_FILE) (PID: $$(cat $(PID_FILE)))"; \
 	elif lsof -ti :$(PORT) >/dev/null 2>&1; then \

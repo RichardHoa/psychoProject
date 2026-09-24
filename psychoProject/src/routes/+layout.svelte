@@ -1,20 +1,23 @@
 <script>
-	import { onMount } from 'svelte';
-	import { goto } from '$app/navigation';
-	import { page } from '$app/state';
+	import { onNavigate } from '$app/navigation';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import SearchModal from '$lib/components/SearchModal.svelte';
-	import { hasAnsweredSafetyGate } from '$lib/safety/gateSession.js';
-	import { SAFETY_GATE_PATH, resolveGateDestination } from '$lib/safety/gateDestination.js';
 
 	let { children } = $props();
 
-	onMount(() => {
-		if (page.url.pathname === SAFETY_GATE_PATH) return;
-		if (hasAnsweredSafetyGate()) return;
-		const { gateUrl } = resolveGateDestination(page.url);
-		goto(gateUrl, { replaceState: true });
+	// Client-side navigations animate with the View Transitions API where supported. Full page
+	// loads (no JavaScript) get the same effect from `@view-transition` in layout.css.
+	onNavigate((navigation) => {
+		if (!document.startViewTransition) return;
+		if (navigation.from?.url.pathname === navigation.to?.url.pathname) return;
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+		return new Promise((resolve) => {
+			document.startViewTransition(async () => {
+				resolve();
+				await navigation.complete;
+			});
+		});
 	});
 </script>
 
@@ -23,6 +26,3 @@
 </svelte:head>
 
 {@render children()}
-
-<!-- Global Fullscreen Search Modal (Unconstrained by any parent container or backdrop-blur) -->
-<SearchModal />
