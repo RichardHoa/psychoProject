@@ -1,7 +1,7 @@
 # Configuration variables
 PORT ?= 3000
 HOST ?= 0.0.0.0
-APP_DIR ?= psychoProject
+APP_DIR ?= .
 LOG_FILE ?= log.txt
 PID_FILE ?= .server.pid
 # Public URL visitors use. SvelteKit rejects form POSTs (e.g. the safety gate) whose Origin
