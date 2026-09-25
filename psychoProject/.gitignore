@@ -36,3 +36,7 @@ project.inlang/cache/
 
 *storybook.log
 storybook-static
+
+# Playwright
+/test-results
+/playwright-report

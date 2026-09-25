@@ -80,6 +80,7 @@
 					{#each subfolder.items as item (item.anchor)}
 						<div id={item.anchor} class="anchor-target">
 							<WiredCard
+								seed={item.anchor.length}
 								fill={item.isAlert ? '#FFF7F6' : '#FFFFFF'}
 								stroke={item.isAlert ? '#D9534F' : '#242B28'}
 								roughness={1.0}
@@ -110,7 +111,12 @@
 												class="sketch-button inline-flex items-center gap-1.5 rounded-xl bg-warm-sage px-3 py-1.5 text-xs font-black text-primary transition-colors hover:bg-primary hover:text-white"
 											>
 												<span>{m.folder_open_link()}</span>
-												<span class="material-symbols-outlined text-xs">open_in_new</span>
+												<RoughIcon
+													name="open_in_new"
+													size={13}
+													stroke="currentColor"
+													strokeWidth={2}
+												/>
 											</a>
 										</div>
 									{/if}
@@ -126,13 +132,14 @@
 		<div class="space-y-4 pt-4">
 			<div class="flex flex-col items-center justify-center space-y-1.5 py-2 text-center">
 				<p class="text-xs font-semibold text-text-subtle">
-					Đã hết nội dung chủ đề <strong>{folder.shortTitle || folder.title}</strong>
+					{m.folder_end()} <strong>{folder.shortTitle || folder.title}</strong>
 				</p>
 			</div>
 
 			<div class="flex flex-col items-center gap-3 pt-1 sm:flex-row">
 				<WiredButton
 					href={backHref}
+					shape="bar"
 					fill="#FFFFFF"
 					class="w-full py-2.5 text-xs sm:flex-1 sm:text-sm"
 				>
@@ -143,6 +150,8 @@
 				{#if nextFolder}
 					<WiredButton
 						href="/trang-chu/{nextFolder.id}"
+						shape="bar"
+						seed={2}
 						fill="#EAF2EC"
 						class="w-full py-2.5 text-xs sm:flex-1 sm:text-sm"
 					>

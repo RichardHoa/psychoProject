@@ -91,9 +91,27 @@
 			<path d="M4 12l3-3-3-3"></path>
 			<path d="M20 12l-3 3 3 3"></path>
 			<path d="M6 12h12"></path>
+		`,
+		mic: `
+			<rect x="9" y="3" width="6" height="11" rx="3"></rect>
+			<path d="M5 11a7 7 0 0 0 14 0"></path>
+			<path d="M12 18v3"></path>
+		`,
+		open_in_new: `
+			<path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+			<path d="M15 3h6v6"></path>
+			<path d="M10 14L21 3"></path>
+		`,
+		pause: `
+			<path d="M9 5v14"></path>
+			<path d="M15 5v14"></path>
+		`,
+		play_arrow: `
+			<path d="M7 4.5v15l12-7.5z"></path>
 		`
 	};
 
+	// Unknown names render nothing (no icon font fallback: every icon is inline SVG).
 	let svgContent = $derived(ICONS_SVG_MAP[/** @type {keyof typeof ICONS_SVG_MAP} */ (name)] || '');
 </script>
 
@@ -114,6 +132,4 @@
 		<!-- eslint-disable-next-line svelte/no-at-html-tags -->
 		{@html svgContent}
 	</svg>
-{:else}
-	<span class="material-symbols-outlined text-base {className}">{name}</span>
 {/if}

@@ -1,13 +1,15 @@
 <script>
 	import { page } from '$app/state';
+	import { pushState } from '$app/navigation';
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import SearchModal from '$lib/components/SearchModal.svelte';
-	import SquareBreathingModal from '$lib/components/SquareBreathingModal.svelte';
+	import BreathingDialog from '$lib/components/BreathingDialog.svelte';
 	import WiredButton from '$lib/components/wired/WiredButton.svelte';
 	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
 	import CatMascot from '$lib/components/CatMascot.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 	import { ShellState, setShell } from '$lib/state/shell.svelte.js';
+	import { BREATHING_PATH, breathingHref } from '$lib/breathing.js';
 
 	let { children } = $props();
 
@@ -17,6 +19,18 @@
 	const showNavSearch = $derived(
 		page.route.id === '/(app)/trang-chu' ? !shell.heroInView : page.route.id !== '/(app)/tim-kiem'
 	);
+
+	// A real link to /tho-vuong (remembering this page for "Done"). With JavaScript it opens the
+	// same exercise as an overlay via shallow routing, keeping the current page underneath.
+	const breathingLink = $derived(breathingHref(page.url));
+
+	/** @param {MouseEvent} e */
+	function openBreathing(e) {
+		if (page.url.pathname === BREATHING_PATH) return;
+		if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+		e.preventDefault();
+		pushState(breathingLink, { breathing: { returnTo: page.url.pathname + page.url.search } });
+	}
 </script>
 
 <!-- Mobile Viewport Container Shell with Warm Atmosphere -->
@@ -34,6 +48,7 @@
 				autoplay={false}
 				href="/trang-chu#gioi-thieu"
 				sizeClass="h-11 w-11"
+				sizes="30px"
 				class="shrink-0"
 				ariaLabel={m.home_logo_label()}
 			>
@@ -51,7 +66,8 @@
 			</div>
 
 			<WiredButton
-				onclick={() => (shell.isBreathingOpen = true)}
+				href={breathingLink}
+				onclick={openBreathing}
 				fill="#FDF0EE"
 				stroke="#D24D48"
 				title={m.breathing_btn_title()}
@@ -73,7 +89,7 @@
 	<SearchModal search={page.state.search} />
 {/if}
 
-<SquareBreathingModal
-	isOpen={shell.isBreathingOpen}
-	onClose={() => (shell.isBreathingOpen = false)}
-/>
+<!-- Shallow-routed breathing exercise: /tho-vuong opened as a modal over the current page. -->
+{#if page.state.breathing}
+	<BreathingDialog doneHref={page.state.breathing.returnTo} />
+{/if}

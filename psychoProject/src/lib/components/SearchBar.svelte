@@ -18,12 +18,12 @@
 		e.preventDefault();
 
 		const href = /** @type {HTMLAnchorElement} */ (e.currentTarget).href;
-		const result = await preloadData(href);
-		if (result.type === 'loaded' && result.status === 200) {
+		const result = await preloadData(href).catch(() => null);
+		if (result?.type === 'loaded' && result.status === 200) {
 			const { query, results, suggestions } = result.data;
 			pushState(href, { search: { query, results, suggestions } });
 		} else {
-			// Redirect (e.g. safety gate) or error: fall back to a real navigation.
+			// Redirect (e.g. safety gate), error or network failure: fall back to a real navigation.
 			location.href = href;
 		}
 	}
