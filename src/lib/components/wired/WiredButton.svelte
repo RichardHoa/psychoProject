@@ -5,6 +5,8 @@
 	 * @type {{
 	 *   type?: 'button' | 'submit' | 'reset',
 	 *   href?: string,
+	 *   target?: string,
+	 *   rel?: string,
 	 *   formaction?: string,
 	 *   onclick?: (e: MouseEvent) => void,
 	 *   fill?: string,
@@ -24,6 +26,8 @@
 	let {
 		type = 'button',
 		href,
+		target,
+		rel,
 		formaction,
 		onclick,
 		fill = '#FAF4E8',
@@ -45,6 +49,8 @@
 	this={href ? 'a' : 'button'}
 	type={href ? undefined : type}
 	href={href && !disabled ? href : undefined}
+	target={href ? target : undefined}
+	rel={href ? rel : undefined}
 	formaction={href ? undefined : formaction}
 	disabled={href ? undefined : disabled}
 	aria-disabled={href && disabled ? 'true' : undefined}

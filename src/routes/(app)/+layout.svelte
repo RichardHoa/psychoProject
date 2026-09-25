@@ -46,6 +46,7 @@
 		>
 			<CatMascot
 				autoplay={false}
+				clickSequence={[]}
 				href="/trang-chu#gioi-thieu"
 				sizeClass="h-11 w-11"
 				sizes="30px"

@@ -61,8 +61,7 @@
 			countdown -= 1;
 			if (countdown <= 0) {
 				clearInterval(countdownInterval);
-				// Same-tab navigation: unlike window.open from a timer, browsers never block it.
-				window.location.assign(HOTLINE_URL);
+				window.open(HOTLINE_URL, '_blank', 'noopener,noreferrer');
 			}
 		}, 1000);
 	}
@@ -204,7 +203,13 @@
 								{/if}
 							</div>
 							<div class="flex flex-wrap gap-2">
-								<WiredButton href={HOTLINE_URL} fill="#FDF0EE" stroke="#D24D48">
+								<WiredButton
+									href={HOTLINE_URL}
+									target="_blank"
+									rel="noopener noreferrer"
+									fill="#FDF0EE"
+									stroke="#D24D48"
+								>
 									{m.safety_redirect_btn()}
 								</WiredButton>
 							</div>
@@ -214,7 +219,13 @@
 								<p class="mt-1 text-text-subtle">{m.safety_offhours_desc()}</p>
 							</div>
 							<div class="flex flex-wrap gap-2">
-								<WiredButton href={HOTLINE_URL} fill="#FDF0EE" stroke="#D24D48">
+								<WiredButton
+									href={HOTLINE_URL}
+									target="_blank"
+									rel="noopener noreferrer"
+									fill="#FDF0EE"
+									stroke="#D24D48"
+								>
 									{m.safety_go_anyway()}
 								</WiredButton>
 							</div>

@@ -6,8 +6,8 @@ LOG_FILE ?= log.txt
 PID_FILE ?= .server.pid
 # Public URL visitors use. SvelteKit rejects form POSTs (e.g. the safety gate) whose Origin
 # doesn't match it, and adapter-node assumes https when it is unset.
-# Override for real deploys: make prod ORIGIN=https://your-domain
-ORIGIN ?= http://localhost:$(PORT)
+# Defaults to the production origin; override for local/other deploys: make prod ORIGIN=http://localhost:3000
+ORIGIN ?= https://psychology.richardhoa.io.vn
 
 .PHONY: all prod build start down stop status logs clean help
 
@@ -16,7 +16,7 @@ all: prod
 help:
 	@echo "Available commands:"
 	@echo "  make prod    - Build application and start standalone production Node server on port $(PORT)"
-	@echo "                 (set ORIGIN=https://your-domain when not browsing via localhost)"
+	@echo "                 (defaults to ORIGIN=$(ORIGIN); override with ORIGIN=... for other deploys)"
 	@echo "  make down    - Stop the running production server"
 	@echo "  make build   - Build the production bundle into $(APP_DIR)/build"
 	@echo "  make status  - Check status of the production server"
