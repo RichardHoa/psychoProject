@@ -153,6 +153,41 @@ h1, h2, h3, h4, h5, h6, .font-headline {
 	background: #1F523D; 
 }
 
+/* Hand-drawn Wired* borders: static SVG from the server (see $lib/wired/rough.js), stretched over
+   the element. Hover/press only nudge the shadow layer, so no redraw is ever needed. */
+.wired-shadow,
+.wired-box {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	overflow: visible;
+	pointer-events: none;
+}
+
+.wired-shadow {
+	translate: 2px 2px;
+	transition: translate 0.12s ease-out;
+}
+
+.wired-card > .wired-shadow {
+	translate: 3px 3px;
+}
+
+@media (hover: hover) {
+	.wired-button:hover > .wired-shadow {
+		translate: 3px 3px;
+	}
+}
+
+.wired-button:active > .wired-shadow {
+	translate: 1px 1px;
+}
+
+.wired-button:active > .wired-content {
+	translate: 1px 1px;
+}
+
 /* Modal Overlay */
 .modal-backdrop {
 	background-color: rgba(36, 43, 40, 0.6);

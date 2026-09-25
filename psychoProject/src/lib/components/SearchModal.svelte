@@ -17,7 +17,13 @@
 	async function runQuery(query) {
 		const request = ++latestRequest;
 		const url = query ? `/tim-kiem?q=${encodeURIComponent(query)}` : '/tim-kiem';
-		const result = await preloadData(url);
+		let result;
+		try {
+			result = await preloadData(url);
+		} catch {
+			// Aborted (a newer query, or the visitor followed a result): nothing to update.
+			return;
+		}
 		// Ignore responses that arrive after a newer query was sent.
 		if (request !== latestRequest || result.type !== 'loaded' || result.status !== 200) return;
 		replaceState(url, {

@@ -174,7 +174,7 @@
 							? 'animate-pulse bg-emergency-red text-white'
 							: 'bg-warm-sage text-primary'}"
 					>
-						<span class="material-symbols-outlined text-lg">mic</span>
+						<RoughIcon name="mic" size={18} stroke="currentColor" strokeWidth={1.8} />
 					</button>
 				{:else}
 					<button

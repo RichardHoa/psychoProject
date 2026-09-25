@@ -1,5 +1,12 @@
 <script>
 	import { onNavigate } from '$app/navigation';
+	// Self-hosted Be Vietnam Pro (each file carries Vietnamese/Latin subsets via unicode-range).
+	import '@fontsource/be-vietnam-pro/400.css';
+	import '@fontsource/be-vietnam-pro/500.css';
+	import '@fontsource/be-vietnam-pro/600.css';
+	import '@fontsource/be-vietnam-pro/700.css';
+	import '@fontsource/be-vietnam-pro/800.css';
+	import '@fontsource/be-vietnam-pro/900.css';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 

@@ -37,6 +37,9 @@
 
 	/** @type {import('./$types').SubmitFunction} */
 	function submitAnswer() {
+		// Before `update()` renders the answer: otherwise the no-JS <meta refresh> would be in the
+		// head for one render, and browsers don't cancel a refresh once it has been inserted.
+		enhanced = true;
 		submitting = true;
 		return async ({ result, update }) => {
 			// Keep the current load data: re-running load now would see the fresh cookie and
@@ -44,7 +47,6 @@
 			await update({ invalidateAll: false });
 			submitting = false;
 			if (result.type !== 'success') return;
-			enhanced = true;
 			if (result.data?.answer === 'no') {
 				ackTimer = setTimeout(() => goto(data.destination), ACK_DELAY_S * 1000);
 			} else if (data.inHours) {
@@ -82,7 +84,7 @@
 		<header
 			class="border-b-1.5 border-sketch-border flex h-16 shrink-0 items-center gap-3 bg-surface-off-white px-4"
 		>
-			<CatMascot autoplay={false} sizeClass="h-11 w-11" class="shrink-0" />
+			<CatMascot autoplay={false} sizeClass="h-11 w-11" sizes="30px" class="shrink-0" />
 			<div>
 				<p class="text-sm font-black tracking-tight text-primary">{m.brand_name()}</p>
 				<p class="text-[11px] text-text-subtle">{m.safety_title()}</p>
@@ -92,7 +94,13 @@
 		<div class="flex-1 space-y-4 overflow-y-auto px-4 py-6" aria-live="polite">
 			<!-- Bubbles reveal with CSS animation delays, so the sequence plays without JavaScript. -->
 			<div class="bubble flex items-start gap-2" style:--delay={answer ? '0ms' : '400ms'}>
-				<CatMascot autoplay={false} restImg={happyWaving} sizeClass="h-11 w-11" class="shrink-0" />
+				<CatMascot
+					autoplay={false}
+					restImg={happyWaving}
+					sizeClass="h-11 w-11"
+					sizes="30px"
+					class="shrink-0"
+				/>
 				<div
 					class="sketch-card max-w-[80%] rounded-2xl rounded-tl-sm bg-warm-cream px-3.5 py-2.5 text-sm text-text-main"
 				>
@@ -105,6 +113,7 @@
 					autoplay={false}
 					restImg={happyOpenEyes}
 					sizeClass="h-11 w-11"
+					sizes="30px"
 					class="shrink-0"
 				/>
 				<div class="flex max-w-[85%] flex-col gap-3">
@@ -144,7 +153,13 @@
 					{m.safety_btn_no()}
 				</div>
 				<div class="bubble flex items-start gap-2" style:--delay="400ms">
-					<CatMascot autoplay={false} restImg={happyAlt} sizeClass="h-11 w-11" class="shrink-0" />
+					<CatMascot
+						autoplay={false}
+						restImg={happyAlt}
+						sizeClass="h-11 w-11"
+						sizes="30px"
+						class="shrink-0"
+					/>
 					<div
 						class="sketch-card max-w-[80%] rounded-2xl rounded-tl-sm bg-warm-cream px-3.5 py-2.5 text-sm text-text-main"
 					>
@@ -167,6 +182,7 @@
 						autoplay={false}
 						restImg={happyDifferent}
 						sizeClass="h-11 w-11"
+						sizes="30px"
 						class="shrink-0"
 					/>
 					<div class="flex max-w-[85%] flex-col gap-3">

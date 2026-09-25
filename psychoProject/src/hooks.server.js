@@ -30,4 +30,21 @@ const handleSafetyGate = ({ event, resolve }) => {
 	return resolve(event);
 };
 
-export const handle = sequence(handleParaglide, handleSafetyGate);
+/**
+ * Baseline security headers (the Content-Security-Policy itself comes from `csp` in vite.config.js).
+ * @type {import('@sveltejs/kit').Handle}
+ */
+const handleSecurityHeaders = async ({ event, resolve }) => {
+	const response = await resolve(event);
+	response.headers.set('X-Content-Type-Options', 'nosniff');
+	response.headers.set('Referrer-Policy', 'strict-origin-when-cross-origin');
+	response.headers.set('X-Frame-Options', 'DENY');
+	// The microphone stays available to this site for voice search.
+	response.headers.set(
+		'Permissions-Policy',
+		'camera=(), geolocation=(), microphone=(self), payment=(), usb=()'
+	);
+	return response;
+};
+
+export const handle = sequence(handleSecurityHeaders, handleParaglide, handleSafetyGate);

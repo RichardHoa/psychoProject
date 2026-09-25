@@ -1,4 +1,4 @@
-Status: phases 1–3 done, phases 4–6 ready-for-agent
+Status: phases 1–6 done
 
 # Make MÈO work without JavaScript (progressive enhancement)
 
@@ -42,48 +42,58 @@ Principles:
   (`preloadData` + `pushState`). Results update as you type; Escape / Đóng go back in history.
 - Global `searchState` singleton removed (module state is shared between users during SSR).
 
+### Phase 4 — Breathing exercise without JS
+- `/tho-vuong` is a real route; the navbar "Thở 5s" button links to `/tho-vuong?quay-lai=<current page>`
+  ("Hoàn tất" goes back there; the param is sanitised like the gate's `dest`, see `$lib/breathing.js`).
+- `BoxBreathing.svelte`: the 20 s cycle is pure CSS on one clock — square scale/colour, a dot tracing
+  the edges, phase labels via `visibility` keyframes with negative delays, seconds and cycle counters
+  via `@property` integers + `counter()`. Pause is a checkbox + `:has(:checked)`. Reduced motion keeps
+  the cues and drops the movement.
+- With JS, the link is shallow-routed (`pushState`, `page.state.breathing`) into a native `<dialog>`
+  (`BreathingDialog.svelte`); Escape / Đóng / Hoàn tất go back in history. `SquareBreathingModal` removed.
+
+### Phase 5 — Hand-drawn look rendered on the server
+- `$lib/wired/rough.js` computes rough.js paths with `rough.generator()` and a fixed seed (memoised,
+  unit-tested for determinism) in preset boxes (`square`, `wide`, `banner`, `bar`) stretched with
+  `preserveAspectRatio="none"` + `vector-effect="non-scaling-stroke"`. `RoughRect.svelte` renders them.
+- `WiredButton` / `WiredCard` / `WiredDivider` have no `onMount` / ResizeObserver / redraw effects;
+  hover/press only translates the shadow layer in CSS. The `<noscript>` fallback is gone.
+- All icons are `RoughIcon` SVGs (mic, open_in_new, pause, play added); the Material Symbols
+  fallback and font are gone. Be Vietnam Pro is self-hosted via `@fontsource` (400–900).
+
+### Phase 6 — Mascot, images, cleanup
+- Cat poses go through `@sveltejs/enhanced-img` (AVIF/WebP at 64–240 px wide; `sizes` prop on `CatMascot`).
+- The greeting is CSS (`cat-frame` / `cat-hide` keyframes, one `step-end` animation per frame);
+  the click-wave stays a JS extra. No page autoplays it today (all use `autoplay={false}`), so it is
+  covered by an SSR unit test (`CatMascot.test.js`).
+- Storybook boilerplate, stories and deps removed (`.storybook/` never existed in the repo).
+- Breathing strings (and the folder-end line) moved to `messages/vi.json`.
+- `csp` (mode `auto`: nonces for SvelteKit's inline script; `style-src 'unsafe-inline'` because
+  components use style attributes) + `X-Content-Type-Options`, `Referrer-Policy`, `X-Frame-Options`,
+  `Permissions-Policy` (microphone kept for voice search) in `hooks.server.js`.
+- Paraglide plugins vendored from npm (`project.inlang/settings.json` → `./node_modules/...`), so
+  builds no longer depend on cdn.jsdelivr.net (the "known environment issue" below is fixed).
+
+### Bugs found by the e2e suite and fixed
+- Gate + JS: the no-JS `<meta refresh>` was inserted for one render before `enhanced` flipped, so a
+  full reload raced the client-side `goto` after "No". `enhanced` is now set when the submit starts.
+- Search overlay: an aborted `preloadData` (newer query / following a result) was an unhandled rejection.
+
+### Tests
+- `npm test` — unit tests (vitest), incl. rough path determinism, breathing return path, mascot SSR.
+- `npm run test:e2e` — Playwright against the production build (`npm run build && node build`),
+  every spec in two projects: `no-js` (`javaScriptEnabled: false`) and `js`. Covers gate → No →
+  deep link → topic → search → result anchor → breathing → back; the breathing clock, counter and
+  pause; server-rendered borders, no icon font, no third-party requests, no page/CSP errors,
+  self-hosted font, optimised mascot images, security headers.
+  Where Playwright's bundled Chromium isn't installed: `PLAYWRIGHT_CHROMIUM_PATH=/path/to/chromium`.
+- Test-only quirk: with JS disabled, Playwright's actionability checks stall after a meta refresh or
+  a `#fragment` load; the `click()` helper in `e2e/helpers.js` sends a real pointer click instead
+  (verified that real clicks land fine — visitors are not affected).
+
 ### How to check no-JS behaviour
 - `PUBLIC_NO_JS=1 npm run dev` serves pages with `csr = false`.
-- Or disable JavaScript in the browser dev tools.
-
-## Remaining
-
-### Phase 4 — Breathing exercise without JS (~½ day)
-Today the "Thở 5s" button opens a JS-only modal (`SquareBreathingModal`, `setInterval`), so it does
-nothing without JavaScript.
-- Add a `/tho-vuong` route (sharable, works everywhere); the navbar button becomes a link to it.
-- Rewrite the 20 s box-breathing cycle in pure CSS: one `@keyframes` for the square (inhale → hold
-  → exhale → hold); phase labels stacked and shown in turn with `animation-delay`; the seconds
-  counter with `@property --n` + `counter()`.
-- Pause/resume: a checkbox + `:has(input:checked) { animation-play-state: paused }`.
-- Enhancement: with JS, intercept the link and open the same component in a `<dialog>`/`popover`
-  (or shallow-route it like search), so the current page stays underneath.
-- Keep `prefers-reduced-motion` handling.
-
-### Phase 5 — Hand-drawn look rendered on the server (~1 day)
-`WiredButton` / `WiredCard` / `WiredDivider` draw with rough.js after mount (ResizeObserver).
-Without JS there is no border (a `<noscript>` CSS fallback in `app.html` covers it for now), and
-with JS the borders pop in after load.
-- Use `rough.generator()` (no DOM needed) with a fixed `seed` to compute the path strings in a
-  `$derived`, identical on server and client → no hydration mismatch.
-- Render into `<svg viewBox="0 0 100 100" preserveAspectRatio="none">` with
-  `vector-effect="non-scaling-stroke"`; pick 2–3 aspect-ratio presets if wide elements look stretched.
-- Delete the ResizeObserver / `onMount` / redraw `$effect`s; hover/press becomes a CSS transform
-  on the shadow path. Remove the `<noscript>` fallback afterwards.
-- Replace all remaining `material-symbols-outlined` uses (mic, open_in_new, breathing modal icons,
-  folder icons not in `ICONS_SVG_MAP`) with `RoughIcon`, then drop the render-blocking Material
-  Symbols font. Consider one snippet per icon instead of `{@html}` strings.
-- Self-host Be Vietnam Pro with `@fontsource`.
-
-### Phase 6 — Mascot, images, cleanup (~½ day)
-- `@sveltejs/enhanced-img` for the six cat PNGs (~80–104 KB each, ~576 KB total) → AVIF/WebP at display size.
-- Greeting animation in pure CSS (per-pose opacity keyframes with `steps()`); the click-wave stays a JS extra.
-- Remove the Storybook boilerplate (`src/stories/`) and the Storybook deps or restore `.storybook/`
-  (its vitest project was removed in phase 1–3 because the config folder doesn't exist).
-- Move the last hard-coded Vietnamese strings (breathing modal) into `messages/vi.json`.
-- Enable `kit.csp` (automatic nonces) and basic security headers.
-- Add a Playwright e2e suite with a `javaScriptEnabled: false` project covering: gate → No →
-  deep link → topic → search → result anchor → breathing page; and the same with JS on.
+- Or disable JavaScript in the browser dev tools, or run `npm run test:e2e -- --project=no-js`.
 
 ## Notes — SvelteKit rendering optimization (not started)
 
@@ -113,7 +123,7 @@ load type.
 (temporary); since it's permanent by design, `308` would let browsers cache the redirect and skip
 the hop on repeat visits.
 
-## Known environment issue
+## Known environment issue (fixed in phase 6)
 `project.inlang/settings.json` loads Paraglide plugins from `cdn.jsdelivr.net`. Where that host is
 blocked, message compilation silently produces an empty `messages/_index.js` and every `m.*()` is
 undefined at runtime. Consider vendoring the plugins (npm `@inlang/plugin-message-format`,

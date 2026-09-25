@@ -14,30 +14,24 @@
 		"test": "vitest run --project unit",
 		"lint": "prettier --check .",
 		"format": "prettier --write .",
-		"storybook": "storybook dev -p 6006",
-		"build-storybook": "storybook build"
+		"test:e2e": "playwright test"
 	},
 	"devDependencies": {
-		"@chromatic-com/storybook": "latest",
 		"@inlang/paraglide-js": "^2.18.2",
-		"@storybook/addon-a11y": "^10.6.0",
-		"@storybook/addon-docs": "^10.6.0",
-		"@storybook/addon-svelte-csf": "latest",
-		"@storybook/addon-vitest": "^10.6.0",
-		"@storybook/sveltekit": "^10.6.0",
+		"@inlang/plugin-m-function-matcher": "^2.2.16",
+		"@inlang/plugin-message-format": "^4.4.4",
+		"@playwright/test": "^1.63.0",
 		"@sveltejs/adapter-node": "^5.5.7",
+		"@sveltejs/enhanced-img": "^0.11.0",
 		"@sveltejs/kit": "^2.63.0",
 		"@sveltejs/mcp": "^0.1.26",
 		"@sveltejs/vite-plugin-svelte": "^7.1.2",
 		"@tailwindcss/vite": "^4.3.0",
 		"@types/node": "^24",
-		"@vitest/browser-playwright": "latest",
 		"@vitest/coverage-v8": "latest",
-		"playwright": "latest",
 		"prettier": "^3.8.3",
 		"prettier-plugin-svelte": "^4.1.0",
 		"prettier-plugin-tailwindcss": "^0.8.0",
-		"storybook": "^10.6.0",
 		"svelte": "^5.56.1",
 		"svelte-check": "^4.6.0",
 		"tailwindcss": "^4.3.0",
@@ -46,6 +40,7 @@
 		"vitest": "latest"
 	},
 	"dependencies": {
+		"@fontsource/be-vietnam-pro": "^5.3.0",
 		"roughjs": "^4.6.6"
 	}
 }

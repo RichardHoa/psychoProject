@@ -54,6 +54,8 @@
 						stroke={theme.stroke}
 						tilt={theme.tilt}
 						roughness={1.2}
+						shape={folder.wide ? 'banner' : 'square'}
+						seed={idx + 1}
 						class="flex flex-col items-center justify-center p-3.5 text-center transition-transform hover:-translate-y-0.5 {folder.wide
 							? 'col-span-2 min-h-[96px] sm:min-h-[105px]'
 							: 'min-h-[140px] sm:min-h-[155px]'}"

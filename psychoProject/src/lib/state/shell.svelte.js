@@ -10,7 +10,6 @@ export class ShellState {
 	 * the Landing page; starts true because the server always renders the hero first.
 	 */
 	heroInView = $state(true);
-	isBreathingOpen = $state(false);
 }
 
 export const [getShell, setShell] = /** @type {typeof createContext<ShellState>} */ (
