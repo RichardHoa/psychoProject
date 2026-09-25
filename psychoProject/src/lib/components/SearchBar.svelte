@@ -1,37 +1,52 @@
 <script>
-	import { searchState } from '$lib/state/searchState.svelte.js';
+	import { page } from '$app/state';
+	import { preloadData, pushState } from '$app/navigation';
+	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
-	/** @type {{ initialQuery?: string, placeholder?: string, isCompact?: boolean }} */
-	let { initialQuery = '', placeholder = '', isCompact = false } = $props();
+	/** @type {{ placeholder?: string, isCompact?: boolean }} */
+	let { placeholder = '', isCompact = false } = $props();
 
-	function handleOpen() {
-		searchState.open(initialQuery || searchState.query);
+	/**
+	 * A plain link to the /tim-kiem page. With JavaScript it opens the same page as an overlay
+	 * (shallow routing): the URL still becomes /tim-kiem, so reloading or sharing shows the page.
+	 * @param {MouseEvent} e
+	 */
+	async function openOverlay(e) {
+		if (page.route.id === '/(app)/tim-kiem') return;
+		if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+		e.preventDefault();
+
+		const href = /** @type {HTMLAnchorElement} */ (e.currentTarget).href;
+		const result = await preloadData(href);
+		if (result.type === 'loaded' && result.status === 200) {
+			const { query, results, suggestions } = result.data;
+			pushState(href, { search: { query, results, suggestions } });
+		} else {
+			// Redirect (e.g. safety gate) or error: fall back to a real navigation.
+			location.href = href;
+		}
 	}
 </script>
 
-<!-- TRIGGER SEARCH BAR (Wired Hand-Drawn Sketch Box) -->
-<div class="w-full relative font-body">
-	<button
-		type="button"
-		onclick={handleOpen}
-		class="sketch-button w-full flex items-center justify-between text-left cursor-pointer transition-all bg-white rounded-2xl {isCompact
-			? 'h-10 px-3 text-xs'
-			: 'h-13 px-4 text-xs sm:text-sm'}"
-		aria-label="Mở tìm kiếm kiến thức"
-	>
-		<div class="flex items-center gap-2.5 overflow-hidden">
-			<span class="material-symbols-outlined {isCompact ? 'text-lg' : 'text-xl'} text-primary shrink-0">search</span>
-			<span class="truncate text-text-subtle font-medium">
-				{placeholder || m.home_search_placeholder()}
-			</span>
-		</div>
+<a
+	href="/tim-kiem"
+	onclick={openOverlay}
+	class="sketch-button flex w-full items-center justify-between rounded-2xl bg-white text-left font-body transition-all {isCompact
+		? 'h-10 px-3 text-xs'
+		: 'h-13 px-4 text-xs sm:text-sm'}"
+	aria-label={m.search_open()}
+>
+	<span class="flex items-center gap-2.5 overflow-hidden">
+		<RoughIcon name="search" size={isCompact ? 18 : 20} stroke="#1F523D" strokeWidth={1.8} />
+		<span class="truncate font-medium text-text-subtle">
+			{placeholder || m.home_search_placeholder()}
+		</span>
+	</span>
 
-		<div class="flex items-center gap-1 shrink-0">
-			<span class="material-symbols-outlined {isCompact ? 'text-base' : 'text-lg'} text-primary">mic</span>
-			<span class="hidden sm:inline-block text-[10px] font-bold px-2 py-0.5 rounded-md bg-warm-cream border-1.5 border-sketch-border text-text-main">
-				Tìm
-			</span>
-		</div>
-	</button>
-</div>
+	<span
+		class="border-1.5 border-sketch-border hidden shrink-0 rounded-md bg-warm-cream px-2 py-0.5 text-[10px] font-bold text-text-main sm:inline-block"
+	>
+		{m.search_submit()}
+	</span>
+</a>

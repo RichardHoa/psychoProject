@@ -5,6 +5,8 @@
 	/**
 	 * @type {{
 	 *   type?: 'button' | 'submit' | 'reset',
+	 *   href?: string,
+	 *   formaction?: string,
 	 *   onclick?: (e: MouseEvent) => void,
 	 *   fill?: string,
 	 *   stroke?: string,
@@ -20,6 +22,8 @@
 	 */
 	let {
 		type = 'button',
+		href,
+		formaction,
 		onclick,
 		fill = '#FAF4E8',
 		stroke = '#242B28',
@@ -35,7 +39,7 @@
 
 	/** @type {SVGSVGElement | undefined} */
 	let svgElement = $state();
-	/** @type {HTMLButtonElement | undefined} */
+	/** @type {HTMLElement | undefined} */
 	let buttonElement = $state();
 	let width = $state(0);
 	let height = $state(0);
@@ -113,10 +117,15 @@
 	});
 </script>
 
-<button
-	{type}
+<svelte:element
+	this={href ? 'a' : 'button'}
+	type={href ? undefined : type}
+	href={href && !disabled ? href : undefined}
+	formaction={href ? undefined : formaction}
+	disabled={href ? undefined : disabled}
+	aria-disabled={href && disabled ? 'true' : undefined}
+	role={href && disabled ? 'link' : undefined}
 	{onclick}
-	{disabled}
 	{title}
 	aria-label={ariaLabel}
 	bind:this={buttonElement}
@@ -127,7 +136,9 @@
 	}}
 	onmousedown={() => (isPressed = true)}
 	onmouseup={() => (isPressed = false)}
-	class="relative group transition-all duration-100 inline-flex items-center justify-center cursor-pointer select-none px-3 py-1.5 {disabled ? 'opacity-50 cursor-not-allowed' : ''} {className}"
+	style:--wired-fill={fill}
+	style:--wired-stroke={stroke}
+	class="wired relative group transition-all duration-100 inline-flex items-center justify-center cursor-pointer select-none px-3 py-1.5 {disabled ? 'opacity-50 cursor-not-allowed' : ''} {className}"
 >
 	<!-- Rough SVG underlay -->
 	<svg
@@ -141,4 +152,4 @@
 	<div class="relative z-10 flex items-center justify-center gap-1.5 text-xs font-bold text-text-main {isPressed ? 'translate-x-0.5 translate-y-0.5' : ''}">
 		{@render children?.()}
 	</div>
-</button>
+</svelte:element>

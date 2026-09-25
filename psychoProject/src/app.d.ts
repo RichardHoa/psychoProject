@@ -6,9 +6,12 @@ declare global {
 		// interface Locals {}
 		// interface PageData {}
 		interface PageState {
-			slide?: number;
-			folder?: string | null;
-			sub?: string | null;
+			/** Set when /tim-kiem is shallow-routed as an overlay (see SearchBar). */
+			search?: {
+				query: string;
+				results: import('$lib/server/search.js').SearchResult[];
+				suggestions: { label: string; icon: string }[];
+			};
 		}
 		// interface Platform {}
 	}

@@ -125,7 +125,9 @@
 		{onclick}
 		bind:this={containerElement}
 		style="transform: rotate({tilt}deg);"
-		class="relative group transition-all duration-150 cursor-pointer active:scale-[0.98] text-left select-none {className}"
+		style:--wired-fill={fill}
+		style:--wired-stroke={stroke}
+		class="wired relative group transition-all duration-150 cursor-pointer active:scale-[0.98] text-left select-none {className}"
 	>
 		<svg
 			bind:this={svgElement}
@@ -145,7 +147,9 @@
 		{onclick}
 		bind:this={containerElement}
 		style="transform: rotate({tilt}deg);"
-		class="relative group transition-all duration-150 cursor-pointer active:scale-[0.98] block {className}"
+		style:--wired-fill={fill}
+		style:--wired-stroke={stroke}
+		class="wired relative group transition-all duration-150 cursor-pointer active:scale-[0.98] block {className}"
 	>
 		<svg
 			bind:this={svgElement}
@@ -161,7 +165,9 @@
 	<div
 		bind:this={containerElement}
 		style="transform: rotate({tilt}deg);"
-		class="relative group transition-all duration-150 {className}"
+		style:--wired-fill={fill}
+		style:--wired-stroke={stroke}
+		class="wired relative group transition-all duration-150 {className}"
 	>
 		<svg
 			bind:this={svgElement}

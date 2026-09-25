@@ -19,7 +19,7 @@
 	<div class="flex h-16 w-64 items-center bg-surface-off-white px-4">
 		<CatMascot
 			autoplay={false}
-			onActivate={() => alert('Navigated home!')}
+			href="#"
 			sizeClass="h-11 w-11"
 			class="shrink-0"
 		>

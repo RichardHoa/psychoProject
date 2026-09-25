@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { resolveGateDestination } from './gateDestination.js';
+import { resolveGateDestination, sanitizeDestination } from './gateDestination.js';
 
 describe('resolveGateDestination', () => {
 	it('preserves a bare root/landing request', () => {
@@ -14,5 +14,22 @@ describe('resolveGateDestination', () => {
 		);
 		expect(result.original).toBe('/trang-chu?slide=1&folder=quyen-than-chu&sub=10-quyen-loi');
 		expect(decodeURIComponent(result.gateUrl.split('?dest=')[1])).toBe(result.original);
+	});
+});
+
+describe('sanitizeDestination', () => {
+	it('keeps a same-site path with its query string', () => {
+		expect(sanitizeDestination('/trang-chu/bao-mat?x=1')).toBe('/trang-chu/bao-mat?x=1');
+	});
+
+	it.each([null, '', 'trang-chu', '//evil.example', '/\\evil.example', 'https://evil.example'])(
+		'falls back to the Landing page for %s',
+		(dest) => {
+			expect(sanitizeDestination(dest)).toBe('/trang-chu');
+		}
+	);
+
+	it('never sends the visitor back into the gate itself', () => {
+		expect(sanitizeDestination('/kiem-tra-an-toan?dest=%2Ftrang-chu')).toBe('/trang-chu');
 	});
 });

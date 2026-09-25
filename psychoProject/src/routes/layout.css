@@ -158,3 +158,26 @@ h1, h2, h3, h4, h5, h6, .font-headline {
 	background-color: rgba(36, 43, 40, 0.6);
 	backdrop-filter: blur(4px);
 }
+
+/* Cross-document view transitions: full page loads (including with JavaScript off) cross-fade
+   in supporting browsers. Client-side navigations use onNavigate in +layout.svelte. */
+@view-transition {
+	navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	@view-transition {
+		navigation: none;
+	}
+}
+
+/* Deep-linked section or item (from search results / shared links). */
+.anchor-target {
+	scroll-margin-top: 1rem;
+}
+
+.anchor-target:target {
+	outline: 2.5px dashed var(--color-primary);
+	outline-offset: 4px;
+	border-radius: 1rem;
+}
