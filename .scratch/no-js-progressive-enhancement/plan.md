@@ -85,6 +85,34 @@ with JS the borders pop in after load.
 - Add a Playwright e2e suite with a `javaScriptEnabled: false` project covering: gate → No →
   deep link → topic → search → result anchor → breathing page; and the same with JS on.
 
+## Notes — SvelteKit rendering optimization (not started)
+
+Came up while reviewing current SSR setup; not yet implemented.
+
+**Why `/trang-chu` and `/trang-chu/[folder]` can't be prerendered**, even though their content
+(`FOLDERS_DATA`) is static and identical for every visitor: `hooks.server.js`'s `handleSafetyGate`
+enforces the `meo_safety_gate` cookie check on every request via the `handle` hook. Prerendered
+routes are baked to static HTML at build time and, once served as static files, never go through
+`hooks.server.js` again — so prerendering either route would let visitors reach content directly
+without ever passing the safety gate, defeating its whole purpose. `trang-chu/+page.server.js` also
+handles legacy `?folder=&sub=` / `?slide=1` redirects per-query-string, which prerendering (one
+static output per route, no query variants) can't reproduce either. Conclusion: keep both dynamic.
+
+**Real optimization available: convert `+page.server.js` → `+page.js` (universal load) for
+`trang-chu` and `trang-chu/[folder]`.** `$lib/server/content.js` (`listFolders`, `getFolder`) has no
+server-only dependency — it's a pure function over the bundled `folderData.js` array, so it's safe to
+move out of `$lib/server/` and load universally. Today, being a server load means every client-side
+navigation between these routes triggers a `__data.json` round-trip to the Node server for data that
+never changes. As a universal load, SSR on the first request stays identical, but the load function
+also runs client-side using data already in the JS bundle — so subsequent navigation (home → folder →
+home → another folder) becomes instant with no network call. The safety gate is unaffected: it's
+enforced by the `handle` hook on the first hard navigation that sets the session cookie, not tied to
+load type.
+
+**Minor:** the root `/` → `/trang-chu` redirect in `+page.server.js` uses `redirect(307, ...)`
+(temporary); since it's permanent by design, `308` would let browsers cache the redirect and skip
+the hop on repeat visits.
+
 ## Known environment issue
 `project.inlang/settings.json` loads Paraglide plugins from `cdn.jsdelivr.net`. Where that host is
 blocked, message compilation silently produces an empty `messages/_index.js` and every `m.*()` is
