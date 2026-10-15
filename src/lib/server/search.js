@@ -15,51 +15,64 @@ import { foldText } from '$lib/text.js';
 
 const MAX_RESULTS = 20;
 
-/** Built from the real folder content, so every result points at something that exists. */
-const INDEX = FOLDERS_DATA.flatMap((folder) => [
-	entry({
-		id: folder.id,
-		kind: 'folder',
-		title: folder.title,
-		desc: folder.summary,
-		category: folder.category,
-		href: folderHref(folder.id)
-	}),
-	...folder.subfolders.flatMap((sub) => [
-		entry({
-			id: `${folder.id}/${sub.id}`,
-			kind: 'section',
-			title: sub.title,
-			desc: sub.desc,
-			category: folder.shortTitle,
-			href: folderHref(folder.id, sub.id)
-		}),
-		...sub.items.map((item) => {
-			const anchor = itemAnchor(sub, item);
-			return entry({
-				id: `${folder.id}/${anchor}`,
-				kind: 'item',
-				title: item.title,
-				desc: item.content,
-				category: `${folder.shortTitle} · ${sub.title}`,
-				href: folderHref(folder.id, anchor)
-			});
-		})
-	])
-]);
+/**
+ * Built from the real step content, so every result points at something that exists. Both the
+ * short and the detailed text are searchable; results inside detailed-only sections link to the
+ * detailed version so the target is on the page.
+ */
+const INDEX = FOLDERS_DATA.flatMap((folder, index) => {
+	const stepLabel = `Bước ${index + 1}`;
+	return [
+		entry(
+			{
+				id: folder.id,
+				kind: 'folder',
+				title: folder.title,
+				desc: folder.summary,
+				category: stepLabel,
+				href: folderHref(folder.id)
+			},
+			`${folder.shortTitle} ${folder.chapter ?? ''}`
+		),
+		...folder.subfolders.flatMap((sub) => [
+			entry({
+				id: `${folder.id}/${sub.id}`,
+				kind: 'section',
+				title: sub.title,
+				desc: sub.desc ?? '',
+				category: `${stepLabel} · ${folder.shortTitle}`,
+				href: folderHref(folder.id, sub.id, sub.detailOnly)
+			}),
+			...sub.items.map((item) => {
+				const anchor = itemAnchor(sub, item);
+				return entry(
+					{
+						id: `${folder.id}/${anchor}`,
+						kind: 'item',
+						title: item.title,
+						desc: item.short ?? item.detail ?? '',
+						category: `${folder.shortTitle} · ${sub.title}`,
+						href: folderHref(folder.id, anchor, sub.detailOnly)
+					},
+					item.detail
+				);
+			})
+		])
+	];
+});
 
-/** @param {SearchResult} result */
-function entry(result) {
+/** @param {SearchResult} result @param {string} [extra] More text to match but not display. */
+function entry(result, extra = '') {
 	return {
 		result,
 		title: foldText(result.title),
-		body: foldText(`${result.desc} ${result.category}`)
+		body: foldText(`${result.desc} ${result.category} ${extra}`)
 	};
 }
 
 /**
  * Diacritic-insensitive search: every word of the query must appear somewhere in the entry.
- * Title hits rank above body hits; whole folders rank above sections above single items.
+ * Title hits rank above body hits; whole steps rank above sections above single items.
  * @param {string} query
  * @returns {SearchResult[]}
  */
@@ -84,7 +97,7 @@ export function search(query) {
 		.map((hit) => hit.result);
 }
 
-/** Quick-pick chips: the real topics, so every suggestion returns results. */
+/** Quick-pick chips: the real journey steps, so every suggestion returns results. */
 export function searchSuggestions() {
-	return FOLDERS_DATA.map((f) => ({ label: f.shortTitle, icon: f.icon }));
+	return FOLDERS_DATA.map((f) => ({ label: f.shortTitle }));
 }

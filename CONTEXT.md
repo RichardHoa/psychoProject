@@ -5,8 +5,19 @@ MÈO is a Vietnamese-language self-help/mental-health resource site (SvelteKit, 
 ## Language
 
 **Landing page**:
-The site's main content hub, at the `trang-chu` route: a hero screen (`#gioi-thieu`) and the 4-topic hub (`#chu-de`) side by side as CSS scroll-snap slides. Each topic has its own URL, `/trang-chu/<folder>`, and every section/item inside it has an anchor (`/trang-chu/<folder>#<section>`), which search results link to. Old `?slide=`/`?folder=`/`?sub=` deep links redirect to these URLs.
+The site's main content hub, at the `trang-chu` route: a hero screen (`#gioi-thieu`) and the **Journey** screen (`#chu-de`) side by side as CSS scroll-snap slides. Each journey step has its own URL, `/trang-chu/<step>`, and every section/item inside it has an anchor (`/trang-chu/<step>#<section>`), which search results link to. Old `?slide=`/`?folder=`/`?sub=` deep links redirect to these URLs.
 _Avoid_: Home page, index
+
+**Journey**:
+The guided path through the content: numbered steps in reading order (you are the client → who can help → what happens in the counselling room → choosing a trustworthy professional → where to start looking), plus "Where are you?" shortcuts that start a visitor part-way along. Each step page shows its position ("Bước 3 / 7") and ends with the next step and why to read it. In code a step is still a `Folder` in `folderData.js`.
+_Avoid_: Folders, topics, 4-topic hub
+
+**Short / detailed version**:
+Every step page reads in a short version (default) or a detailed one (`?che-do=chi-tiet`), switched by plain links so it works without JavaScript; the choice carries over to the previous/next step. Some sections exist only in the detailed version, and the short one says so.
+_Avoid_: Simple mode, expanded view
+
+**Clickable look**:
+A hand-drawn border with an offset shadow (Wired card/button) means "this can be pressed". Content is never boxed; only links and buttons get the sketch frame.
 
 **Cat mascot**:
 A recurring illustrated cat character (static PNG poses: happy, waving, etc., under `src/lib/assets/cat/`) used across pages to give the site a warmer, guiding presence. It is a character, not a generic icon.

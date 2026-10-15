@@ -1,29 +1,31 @@
 import { FOLDERS_DATA } from './folderData.js';
 import { slugify } from '$lib/text.js';
+import { readingHref } from '$lib/reading.js';
 
 /**
  * @typedef {import('./folderData.js').Folder} Folder
  * @typedef {import('./folderData.js').Subfolder} Subfolder
  * @typedef {import('./folderData.js').FolderItem} FolderItem
- * @typedef {Pick<Folder, 'id' | 'title' | 'shortTitle' | 'summary' | 'icon' | 'wide'>} FolderSummary
+ * @typedef {Pick<Folder, 'id' | 'title' | 'shortTitle' | 'summary' | 'chapter' | 'nextReason'> & { step: number }} FolderSummary
  */
 
 export const LANDING_PATH = '/trang-chu';
-/** Fragment of the 4-topic hub screen on the Landing page. */
+/** Fragment of the journey screen on the Landing page. */
 export const HUB_HASH = 'chu-de';
+export const STEP_COUNT = FOLDERS_DATA.length;
 
-/** @param {Folder} folder @returns {FolderSummary} */
-function summarize({ id, title, shortTitle, summary, icon, wide }) {
-	return { id, title, shortTitle, summary, icon, wide };
+/** @param {Folder} folder @param {number} index @returns {FolderSummary} */
+function summarize({ id, title, shortTitle, summary, chapter, nextReason }, index) {
+	return { id, title, shortTitle, summary, chapter, nextReason, step: index + 1 };
 }
 
-/** @returns {FolderSummary[]} */
+/** The journey steps, in reading order. @returns {FolderSummary[]} */
 export function listFolders() {
 	return FOLDERS_DATA.map(summarize);
 }
 
 /**
- * Page-ready folder: every item gets a stable, unique `anchor` so search results and deep links
+ * Page-ready step: every item gets a stable, unique `anchor` so search results and deep links
  * can jump straight to it.
  * @param {string} id
  */
@@ -31,6 +33,7 @@ export function getFolder(id) {
 	const index = FOLDERS_DATA.findIndex((f) => f.id === id);
 	if (index === -1) return null;
 	const folder = FOLDERS_DATA[index];
+	const prev = FOLDERS_DATA[index - 1];
 	const next = FOLDERS_DATA[index + 1];
 
 	return {
@@ -41,7 +44,10 @@ export function getFolder(id) {
 				items: sub.items.map((item) => ({ ...item, anchor: itemAnchor(sub, item) }))
 			}))
 		},
-		nextFolder: next ? summarize(next) : null
+		step: index + 1,
+		stepCount: STEP_COUNT,
+		prevFolder: prev ? summarize(prev, index - 1) : null,
+		nextFolder: next ? summarize(next, index + 1) : null
 	};
 }
 
@@ -53,7 +59,11 @@ export function itemAnchor(subfolder, item) {
 	return `${subfolder.id}--${slugify(item.title)}`;
 }
 
-/** @param {string} folderId @param {string} [hash] */
-export function folderHref(folderId, hash) {
-	return `${LANDING_PATH}/${folderId}${hash ? `#${hash}` : ''}`;
+/**
+ * @param {string} folderId
+ * @param {string} [hash]
+ * @param {boolean} [detailed] Link to the detailed version (needed for `detailOnly` sections).
+ */
+export function folderHref(folderId, hash, detailed = false) {
+	return readingHref(`${LANDING_PATH}/${folderId}`, detailed, hash);
 }

@@ -10,7 +10,7 @@ declare global {
 			search?: {
 				query: string;
 				results: import('$lib/server/search.js').SearchResult[];
-				suggestions: { label: string; icon: string }[];
+				suggestions: { label: string }[];
 			};
 			/** Set when /tho-vuong is shallow-routed as a modal (see the app layout). */
 			breathing?: {
