@@ -10,7 +10,7 @@
 	 * @type {{
 	 *   query: string,
 	 *   results: import('$lib/server/search.js').SearchResult[],
-	 *   suggestions: { label: string, icon: string }[],
+	 *   suggestions: { label: string }[],
 	 *   autofocus?: boolean,
 	 *   onQuery?: (query: string) => unknown
 	 * }}
@@ -218,7 +218,6 @@
 							onclick={(e) => handleLink(e, chip.label)}
 							class="sketch-button inline-flex items-center justify-start gap-2.5 rounded-xl bg-white px-3.5 py-2.5 text-xs font-bold text-text-main transition-all active:scale-95 sm:text-sm"
 						>
-							<RoughIcon name={chip.icon} size={18} stroke="#1F523D" strokeWidth={1.8} />
 							<span class="truncate">{chip.label}</span>
 						</a>
 					{/each}

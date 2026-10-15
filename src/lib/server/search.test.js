@@ -20,6 +20,14 @@ describe('search', () => {
 		).toBe(true);
 	});
 
+	it('searches the detailed text and links detailed-only sections to the detailed version', () => {
+		const results = search('gồng mình');
+		expect(results[0]).toMatchObject({
+			kind: 'item',
+			href: '/trang-chu/than-chu?che-do=chi-tiet#tam-the--cho-phep-minh-chan-that'
+		});
+	});
+
 	it('requires every word to match', () => {
 		expect(search('bảo mật xyzzy')).toEqual([]);
 	});

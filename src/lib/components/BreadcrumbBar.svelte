@@ -3,7 +3,7 @@
 	import { m } from '$lib/paraglide/messages.js';
 
 	/**
-	 * @typedef {{ id: string, label: string, icon?: string, href?: string }} Crumb
+	 * @typedef {{ id: string, label: string, href?: string }} Crumb
 	 */
 
 	/**
@@ -46,9 +46,6 @@
 						aria-current="page"
 						class="sketch-pill inline-flex items-center gap-1 rounded-xl bg-warm-sage px-2.5 py-1 font-bold text-primary"
 					>
-						{#if crumb.icon}
-							<RoughIcon name={crumb.icon} size={15} stroke="#1F523D" strokeWidth={1.8} />
-						{/if}
 						<span class="xs:max-w-[180px] max-w-[140px] truncate sm:max-w-[220px]"
 							>{crumb.label}</span
 						>
@@ -58,9 +55,6 @@
 						href={crumb.href}
 						class="inline-flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-text-main transition-colors hover:bg-surface-container-low hover:text-primary"
 					>
-						{#if crumb.icon}
-							<RoughIcon name={crumb.icon} size={15} stroke="#5A6561" strokeWidth={1.8} />
-						{/if}
 						<span class="xs:max-w-[130px] max-w-[110px] truncate">{crumb.label}</span>
 					</a>
 				{/if}

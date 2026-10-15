@@ -1,7 +1,7 @@
 <script>
 	import SearchBar from '$lib/components/SearchBar.svelte';
 	import ScreenSlider from '$lib/components/ScreenSlider.svelte';
-	import FolderExplorer from '$lib/components/FolderExplorer.svelte';
+	import JourneyPath from '$lib/components/JourneyPath.svelte';
 	import WiredButton from '$lib/components/wired/WiredButton.svelte';
 	import WiredDivider from '$lib/components/wired/WiredDivider.svelte';
 	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
@@ -70,16 +70,16 @@
 
 			<div class="flex w-full justify-center pt-4">
 				<WiredButton href="#chu-de" fill="#EAF2EC" class="px-5 py-2.5 text-sm">
-					<span>{m.home_explore_topics()}</span>
+					<span>{m.home_start_journey()}</span>
 					<RoughIcon name="arrow_forward" size={18} stroke="#1F523D" strokeWidth={1.8} />
 				</WiredButton>
 			</div>
 		</div>
 	</section>
 
-	<!-- SLIDE 1: 4 FOLDERS KNOWLEDGE HUB -->
+	<!-- SLIDE 1: THE GUIDED JOURNEY -->
 	<section id="chu-de" class="slide flex h-full w-full shrink-0 flex-col">
-		<FolderExplorer folders={data.folders} />
+		<JourneyPath folders={data.folders} />
 	</section>
 </ScreenSlider>
 

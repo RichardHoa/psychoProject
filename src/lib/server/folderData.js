@@ -1,197 +1,198 @@
-// Knowledge Folders Hub Data for Mobile-First Hierarchical Visual Infographics Navigation
+// Journey content: each folder is one step of the guided path, in reading order.
 
 /**
+ * Every item has a short version (title, plus `short` when the title alone isn't enough) and a
+ * detailed version (`detail`, falling back to `short`). Readers switch between them.
  * @typedef {Object} FolderItem
  * @property {string} title
- * @property {string} content
- * @property {string} [tag]
- * @property {string} [icon]
+ * @property {string} [short]
+ * @property {string} [detail]
  * @property {boolean} [isAlert]
  * @property {string} [link]
  */
 
 /**
+ * `layout`: plain bullets, numbered steps, or side-by-side pillars. `tone: 'alert'` marks a
+ * section of warnings. `detailOnly` sections are shown in the detailed version only.
  * @typedef {Object} Subfolder
  * @property {string} id
  * @property {string} title
- * @property {string} icon
- * @property {string} desc
+ * @property {string} [desc]
+ * @property {'list' | 'steps' | 'pillars'} [layout]
+ * @property {'alert'} [tone]
+ * @property {boolean} [detailOnly]
  * @property {FolderItem[]} items
  */
 
 /**
+ * `chapter` groups consecutive steps under one heading on the journey. `nextReason` is the
+ * one-line "why read this next" shown on the previous step.
  * @typedef {Object} Folder
  * @property {string} id
  * @property {string} title
  * @property {string} shortTitle
- * @property {string} category
- * @property {string} icon
- * @property {string} colorName
- * @property {string} accentColor
- * @property {string} badgeColor
+ * @property {string} [chapter]
  * @property {string} summary
- * @property {string[]} highlights
- * @property {boolean} [wide]
+ * @property {string} nextReason
  * @property {Subfolder[]} subfolders
  */
+
+const IN_THE_ROOM = 'Điều gì diễn ra trong phòng tham vấn?';
 
 /** @type {Folder[]} */
 export const FOLDERS_DATA = [
 	{
-		id: 'bao-mat',
-		title: 'Phân biệt về bảo mật',
-		shortTitle: 'Bảo mật',
-		category: 'Quyền lợi và Bảo mật thông tin',
-		icon: 'lock',
-		colorName: 'primary',
-		accentColor: 'text-primary bg-primary/10 border-primary/20',
-		badgeColor: 'bg-primary/10 text-primary',
-		summary: 'Nguyên tắc nền tảng & 4 giới hạn an toàn',
-		highlights: ['Riêng tư', '4 ngoại lệ', 'Mã hóa'],
+		id: 'than-chu',
+		title: 'Bạn là thân chủ',
+		shortTitle: 'Bạn là thân chủ',
+		summary: 'Người chủ động trong hành trình thay đổi của mình, không phải một "bệnh nhân".',
+		nextReason: 'Bắt đầu từ bạn: vai trò của bạn khi đi tham vấn.',
 		subfolders: [
 			{
-				id: 'nguyen-tac',
-				title: 'Nguyên tắc nền tảng',
-				icon: 'verified_user',
-				desc: 'Cam kết đạo đức cốt lõi tạo không gian an toàn.',
+				id: 'vai-tro',
+				title: 'Thân chủ là ai?',
+				desc: 'Người sử dụng dịch vụ tham vấn hoặc trị liệu tâm lý.',
 				items: [
 					{
-						title: 'Không gian riêng tư tuyệt đối',
-						content: 'Mọi câu chuyện và cảm xúc trong phòng tham vấn đều được bảo vệ nghiêm ngặt.',
-						tag: 'Riêng tư 100%',
-						icon: 'lock'
+						title: 'Người chủ động, không phải "bệnh nhân"',
+						short: 'Bạn cùng tham gia vào quá trình thay đổi, không chỉ ngồi chờ được chữa.',
+						detail:
+							'Thân chủ (client) là người sử dụng dịch vụ tham vấn hoặc trị liệu và chủ động tham gia vào quá trình thay đổi của chính mình, không chỉ là một "bệnh nhân" thụ động chờ được chữa trị.'
 					},
 					{
-						title: 'Không tiết lộ cho bên thứ ba',
-						content: 'Không chia sẻ cho gia đình, nhà trường hay công ty nếu chưa có đồng thuận văn bản.',
-						tag: 'Bảo vệ danh tính',
-						icon: 'shield'
+						title: 'Người hiểu rõ nhất cuộc đời bạn',
+						short: 'Nhà tham vấn hiểu chuyên môn; bạn hiểu rõ nhất trải nghiệm của mình.',
+						detail:
+							'Hai bên cùng làm việc với nhau: nhà tham vấn mang kiến thức và kỹ năng chuyên môn, còn bạn mang hiểu biết sâu nhất về hoàn cảnh, cảm xúc và mong muốn của chính mình.'
 					},
 					{
-						title: 'Lưu trữ hồ sơ an toàn',
-						content: 'Ghi chép chuyên môn được mã hóa và cất giữ cẩn mật chuẩn y tế & tâm lý.',
-						tag: 'Mã hóa dữ liệu',
-						icon: 'folder_special'
+						title: 'Bình đẳng và không bị phán xét',
+						short: 'Bạn được lắng nghe trọn vẹn, không bị dán nhãn.',
+						detail:
+							'Mối quan hệ tham vấn dựa trên sự tôn trọng. Bạn được lắng nghe trọn vẹn và không bị phán xét hay dán nhãn tiêu cực vì những gì mình chia sẻ.'
 					}
 				]
 			},
 			{
-				id: 'ngoai-le',
-				title: '4 Ngoại lệ cần chia sẻ',
-				icon: 'warning',
-				desc: 'Các tình huống khẩn cấp bắt buộc để bảo toàn sinh mạng.',
+				id: 'khi-nao',
+				title: 'Khi nào bạn có thể tìm đến tham vấn?',
+				desc: 'Không cần đợi đến lúc "đủ nặng" mới được tìm hỗ trợ.',
 				items: [
 					{
-						title: '1. Nguy cơ gây hại bản thân',
-						content: 'Khi có kế hoạch, ý định hoặc hành vi tự hại hoặc tự sát nghiêm trọng.',
-						tag: 'Khẩn cấp',
-						icon: 'person_alert',
-						isAlert: true
+						title: 'Khó khăn về cảm xúc',
+						detail:
+							'Buồn bã, bực bội, trống rỗng kéo dài, hoặc cảm xúc lên xuống khiến bạn khó kiểm soát.'
 					},
 					{
-						title: '2. Nguy cơ gây hại người khác',
-						content: 'Khi có đe dọa trực tiếp đến tính mạng hoặc sự an toàn của người xung quanh.',
-						tag: 'Khẩn cấp',
-						icon: 'group_off',
-						isAlert: true
+						title: 'Mâu thuẫn trong các mối quan hệ',
+						detail: 'Với gia đình, người yêu, bạn bè hay đồng nghiệp.'
 					},
 					{
-						title: '3. Yêu cầu pháp lý từ tòa án',
-						content: 'Khi có lệnh triệu tập hoặc yêu cầu hợp pháp chính thức từ tòa án có thẩm quyền.',
-						tag: 'Pháp lý',
-						icon: 'gavel'
+						title: 'Khủng hoảng trong cuộc sống',
+						detail:
+							'Mất mát, chia tay, mất việc, chuyển nơi ở, hay những biến cố khiến bạn chao đảo.'
 					},
 					{
-						title: '4. Giám sát chuyên môn kín',
-						content: 'Trao đổi với Supervisor để nâng cao chất lượng hỗ trợ (100% ẩn danh thông tin).',
-						tag: 'Ẩn danh',
-						icon: 'supervisor_account'
+						title: 'Trầm cảm, lo âu hoặc sang chấn',
+						detail:
+							'Những trải nghiệm này cần được hỗ trợ chuyên môn, và bạn không phải tự mình vượt qua.'
+					},
+					{
+						title: 'Khó đưa ra quyết định',
+						detail: 'Khi bạn đứng trước một lựa chọn quan trọng và cần một góc nhìn rõ ràng hơn.'
+					},
+					{
+						title: 'Muốn hiểu rõ bản thân hơn',
+						detail: 'Bạn không cần đang "có vấn đề" mới được đi tham vấn.'
+					},
+					{
+						title: 'Muốn cải thiện các mối quan hệ và chất lượng sống',
+						detail: 'Tham vấn cũng là một cách chăm sóc bản thân chủ động.'
 					}
 				]
 			},
 			{
-				id: 'hoi-dap-bao-mat',
-				title: 'Hỏi đáp nhanh về bảo mật',
-				icon: 'help_center',
-				desc: 'Giải đáp thắc mắc phổ biến nhất trước buổi tham vấn.',
+				id: 'tam-the',
+				title: 'Tâm thế khi đi tham vấn',
+				desc: 'Vài gợi ý để bạn chuẩn bị trước buổi hẹn.',
+				detailOnly: true,
 				items: [
 					{
-						title: 'Có nói cho cha mẹ tôi không?',
-						content: 'Nếu bạn từ 18 tuổi trở lên, tuyệt đối KHÔNG chia sẻ trừ khi nguy cấp tính mạng.',
-						tag: 'Từ 18 tuổi',
-						icon: 'family_restroom'
+						title: 'Cho phép mình chân thật',
+						detail: 'Không cần hoàn hảo hay gồng mình. Cứ là chính bạn với mọi cung bậc cảm xúc.'
 					},
 					{
-						title: 'Tôi có được xem hồ sơ không?',
-						content: 'Bạn luôn có quyền xem tóm tắt tiến trình và hồ sơ tham vấn của chính mình.',
-						tag: 'Xem hồ sơ',
-						icon: 'description'
+						title: 'Kiên nhẫn với tiến trình',
+						detail: 'Thay đổi đến từ những bước nhỏ. Hãy bao dung với tốc độ của riêng bạn.'
+					},
+					{
+						title: 'Đặt ranh giới thoải mái',
+						detail:
+							'Bạn luôn có quyền nói "Mình chưa sẵn sàng chia sẻ điều này" vào bất cứ lúc nào.'
 					}
 				]
 			}
 		]
 	},
 	{
-		id: 'than-chu',
-		title: 'Thân chủ – Client',
-		shortTitle: 'Thân chủ',
-		category: 'Các vai trò trong tham vấn và trị liệu',
-		icon: 'person',
-		colorName: 'tertiary',
-		accentColor: 'text-tertiary bg-tertiary/10 border-tertiary/20',
-		badgeColor: 'bg-tertiary/10 text-tertiary',
-		summary: 'Trung tâm tiến trình & chuyên gia cuộc đời mình',
-		highlights: ['Bình đẳng', 'Chủ động', 'Ranh giới'],
+		id: 'ai-giup-ban',
+		title: 'Ai có thể giúp bạn?',
+		shortTitle: 'Ai có thể giúp bạn?',
+		summary: 'Phân biệt nhà tham vấn, nhà trị liệu, nhà tâm lý lâm sàng và bác sĩ tâm thần.',
+		nextReason: 'Biết ai làm gì để tìm đúng người.',
 		subfolders: [
 			{
-				id: 'vai-tro',
-				title: 'Thân chủ là ai?',
-				icon: 'badge',
-				desc: 'Định nghĩa đúng đắn và góc nhìn nhân văn về thân chủ.',
+				id: 'bon-vai-tro',
+				title: '4 vai trò thường gặp',
+				layout: 'pillars',
 				items: [
 					{
-						title: 'Người chủ động đồng hành',
-						content: 'Chủ động tìm kiếm trợ giúp, cùng nhà chuyên môn tạo nên sự thay đổi tích cực.',
-						tag: 'Chủ động',
-						icon: 'explore'
+						title: 'Nhà tham vấn (Counselor)',
+						short: 'Hỗ trợ khó khăn về cảm xúc, các mối quan hệ, sự thích nghi.',
+						detail:
+							'Chuyên viên được đào tạo để hỗ trợ thân chủ gặp khó khăn về mặt cảm xúc, các mối quan hệ, sự thích nghi, v.v. Phạm vi đào tạo và chuyên môn của từng nhà tham vấn có thể khác nhau.'
 					},
 					{
-						title: 'Chuyên gia của cuộc đời bạn',
-						content: 'Nhà tham vấn hiểu chuyên môn, nhưng bạn là người hiểu rõ nhất trải nghiệm bản thân.',
-						tag: 'Chuyên gia',
-						icon: 'lightbulb'
+						title: 'Nhà trị liệu (Therapist)',
+						short: 'Tên gọi chung cho người cung cấp hỗ trợ trị liệu.',
+						detail:
+							'Một thuật ngữ bao quát, dùng để chỉ chuyên gia cung cấp hỗ trợ trị liệu, bao gồm counselor (chuyên viên tham vấn), psychologist (nhà tâm lý học), psychotherapist (nhà trị liệu tâm lý)... Hãy hỏi về nền tảng chuyên môn, quá trình đào tạo và đăng ký hành nghề của người đó để hiểu rõ mình đang làm việc với ai và có thể kỳ vọng điều gì.'
 					},
 					{
-						title: 'Bình đẳng & Không phán xét',
-						content: 'Vị thế bình đẳng, được lắng nghe trọn vẹn và không bị dán nhãn tiêu cực.',
-						tag: 'Không phán xét',
-						icon: 'favorite'
+						title: 'Nhà tâm lý lâm sàng (Clinical Psychologist)',
+						short: 'Đánh giá, chẩn đoán và thực hành trị liệu tâm lý.',
+						detail:
+							'Chuyên viên tâm lý được đào tạo về mặt lâm sàng. Có thể đánh giá, chẩn đoán và thực hành các liệu pháp trị liệu; có thể trị liệu cá nhân, cặp đôi hay hệ thống gia đình.'
+					},
+					{
+						title: 'Bác sĩ tâm thần (Psychiatrist)',
+						short: 'Bác sĩ y khoa, được quyền kê thuốc.',
+						detail:
+							'Bác sĩ y khoa đã được đào tạo chuyên sâu về sức khỏe tâm thần, được quyền kê thuốc để điều trị các bệnh tâm thần. Vai trò của họ là chẩn đoán và quản lý các vấn đề sức khỏe tâm thần dưới góc độ y khoa.'
 					}
 				]
 			},
 			{
-				id: 'tam-the',
-				title: 'Tâm thế khi tham vấn',
-				icon: 'spa',
-				desc: 'Gợi ý chuẩn bị tốt nhất trước khi bước vào buổi hẹn.',
+				id: 'phoi-hop',
+				title: 'Họ làm việc cùng nhau',
 				items: [
 					{
-						title: 'Cho phép mình chân thật',
-						content: 'Không cần hoàn hảo hay gồng mình. Cứ là chính bạn với mọi cung bậc cảm xúc.',
-						tag: 'Chân thật',
-						icon: 'self_improvement'
+						title: 'Một đội ngũ chăm sóc',
+						short: 'Nhà tâm lý, nhà tham vấn và bác sĩ tâm thần có thể cùng hỗ trợ một người.',
+						detail:
+							'Nhà tâm lý lâm sàng và chuyên viên tham vấn có thể phối hợp làm việc cùng bác sĩ tâm thần như một phần của đội ngũ chăm sóc cho người bệnh.'
 					},
 					{
-						title: 'Kiên nhẫn với tiến trình',
-						content: 'Chữa lành là hành trình từng bước nhỏ, hãy bao dung với tốc độ của riêng bạn.',
-						tag: 'Từng bước',
-						icon: 'schedule'
+						title: 'Khi nào cần gặp bác sĩ tâm thần?',
+						short: 'Khi thuốc là một phần quan trọng của việc điều trị.',
+						detail:
+							'Việc gặp bác sĩ tâm thần là cần thiết khi thuốc là một phần quan trọng của quá trình điều trị. Chỉ bác sĩ mới được kê đơn và điều chỉnh thuốc, nên đừng tự ý ngưng thuốc khi chưa trao đổi với bác sĩ.'
 					},
 					{
-						title: 'Đặt ranh giới thoải mái',
-						content: 'Bạn luôn có quyền nói "Tôi chưa sẵn sàng chia sẻ điều này" bất cứ lúc nào.',
-						tag: 'Ranh giới an toàn',
-						icon: 'front_hand'
+						title: 'Tâm lý gia tập sự',
+						short: 'Người đang thực tập, làm việc dưới sự hướng dẫn của người giám sát.',
+						detail:
+							'Tâm lý gia tập sự là người đang trong quá trình đào tạo, thực hành dưới sự hướng dẫn và giám sát của chuyên gia có kinh nghiệm. Bạn có quyền hỏi ai là người giám sát họ.'
 					}
 				]
 			}
@@ -199,172 +200,131 @@ export const FOLDERS_DATA = [
 	},
 	{
 		id: 'nha-tham-van',
-		title: 'Nhà tham vấn làm gì?',
-		shortTitle: 'Nhà tham vấn',
-		category: 'Điều gì diễn ra trong phòng tham vấn?',
-		icon: 'psychology',
-		colorName: 'teal',
-		accentColor: 'text-primary bg-surface-off-white border-primary/20',
-		badgeColor: 'bg-primary/10 text-primary',
-		summary: '9 bước đầu, phương pháp & 8 điều cấm kỵ',
-		highlights: ['9 bước đầu', 'Thấu cảm', '8 điều cấm'],
+		title: 'Nhà tham vấn sẽ làm gì?',
+		shortTitle: 'Nhà tham vấn làm gì?',
+		chapter: IN_THE_ROOM,
+		summary: 'Những buổi đầu tiên, trong mỗi phiên, và những điều nhà tham vấn KHÔNG làm.',
+		nextReason: 'Xem trước điều gì diễn ra trong phòng tham vấn.',
 		subfolders: [
 			{
-				id: '9-buoc-dau',
-				title: '9 Bước trong các buổi đầu',
-				icon: 'format_list_numbered',
-				desc: 'Quy trình chuẩn mực để thiết lập lộ trình hỗ trợ.',
+				id: 'buoi-dau',
+				title: 'Trong những buổi đầu tiên',
+				desc: 'Nhà tham vấn thường trao đổi với bạn về:',
+				layout: 'steps',
 				items: [
 					{
-						title: '1. Giới thiệu khuôn khổ',
-						content: 'Rõ ràng về vai trò, chi phí, thời lượng phiên và phương thức tương tác.',
-						tag: 'Bước 1',
-						icon: 'info'
+						title: 'Khuôn khổ làm việc',
+						short: 'Vai trò của mỗi bên, chi phí, thời lượng và cách làm việc.',
+						detail:
+							'Vai trò của từng bên, chi phí, thời lượng mỗi phiên và cách hai bên sẽ làm việc với nhau.'
 					},
 					{
-						title: '2. Thống nhất bảo mật',
-						content: 'Giải thích chi tiết nguyên tắc bảo mật và các ngoại lệ an toàn bắt buộc.',
-						tag: 'Bước 2',
-						icon: 'lock'
+						title: 'Bảo mật và giới hạn bảo mật',
+						short: 'Điều gì được giữ kín, và khi nào có ngoại lệ.',
+						detail:
+							'Nhà tham vấn giải thích nguyên tắc bảo mật và những giới hạn của bảo mật trong tham vấn tâm lý.'
 					},
 					{
-						title: '3. Lắng nghe lý do đến',
-						content: 'Chia sẻ khó khăn, trăn trở hoặc sự kiện thúc đẩy bạn tìm kiếm hỗ trợ.',
-						tag: 'Bước 3',
-						icon: 'forum'
+						title: 'Lý do bạn đến',
+						short: 'Điều khiến bạn tìm đến, và tình trạng hiện tại của bạn.',
+						detail:
+							'Lý do bạn đến tham vấn, cùng những thông tin liên quan đến sức khỏe của bạn như cảm xúc, suy nghĩ, hành vi, các mối quan hệ và hoàn cảnh sống.'
 					},
 					{
-						title: '4. Khảo sát toàn diện',
-						content: 'Tìm hiểu cảm xúc, suy nghĩ, hành vi, thể chất và môi trường sống.',
-						tag: 'Bước 4',
-						icon: 'psychology'
+						title: 'Mức độ an toàn',
+						short: 'Đánh giá an toàn, đặc biệt khi có nguy cơ tự hại.',
+						detail:
+							'Nhà tham vấn đánh giá mức độ an toàn, đặc biệt khi nhận thấy bạn có nguy cơ tự hại hay tự sát.'
 					},
 					{
-						title: '5. Đánh giá mức độ an toàn',
-						content: 'Kiểm tra mức độ an toàn, tầm soát nguy cơ tự hại hoặc khủng hoảng.',
-						tag: 'Bước 5 • An toàn',
-						icon: 'health_and_safety',
-						isAlert: true
-					},
-					{
-						title: '6. Đồng thuận mục tiêu',
-						content: 'Cùng thảo luận và thống nhất những mục tiêu cụ thể muốn đạt được.',
-						tag: 'Bước 6',
-						icon: 'flag'
-					},
-					{
-						title: '7. Lựa chọn phương pháp',
-						content: 'Áp dụng trường phái trị liệu khoa học phù hợp nhất với tính cách của bạn.',
-						tag: 'Bước 7',
-						icon: 'design_services'
-					},
-					{
-						title: '8. Theo dõi & Điều chỉnh',
-						content: 'Định kỳ đánh giá tiến triển và linh hoạt điều chỉnh kế hoạch.',
-						tag: 'Bước 8',
-						icon: 'tune'
-					},
-					{
-						title: '9. Chuyển tuyến khi cần',
-						content: 'Giới thiệu bác sĩ chuyên khoa khi vấn đề vượt quá phạm vi năng lực.',
-						tag: 'Bước 9',
-						icon: 'transfer_within_a_station'
+						title: 'Mục tiêu và kế hoạch',
+						short: 'Cùng bạn thống nhất mục tiêu và lên kế hoạch.',
+						detail: 'Hai bên cùng thống nhất mục tiêu làm việc và lên kế hoạch để đạt được chúng.'
 					}
 				]
 			},
 			{
-				id: 'phuong-phap',
-				title: 'Phương pháp tiếp cận',
-				icon: 'auto_fix_high',
-				desc: 'Các công cụ khoa học nhà tham vấn sử dụng.',
+				id: 'trong-phien',
+				title: 'Trong mỗi phiên tham vấn',
 				items: [
 					{
-						title: 'Lắng nghe chủ động & Thấu cảm',
-						content: 'Không gian an toàn tuyệt đối để bạn trải lòng mà không sợ bị phán xét.',
-						tag: 'Thấu cảm',
-						icon: 'hearing'
+						title: 'Lắng nghe và đặt câu hỏi',
+						short: 'Giúp bạn làm rõ cảm xúc và nhu cầu của mình.',
+						detail:
+							'Nhà tham vấn lắng nghe bạn, phản hồi hay đặt câu hỏi khi cần thiết để giúp bạn làm rõ cảm xúc và nhu cầu của bản thân, trong một không gian không phán xét.'
 					},
 					{
-						title: 'Nhận diện vòng lặp nhận thức',
-						content: 'Gỡ rối mối liên hệ giữa Suy nghĩ – Cảm xúc – Hành vi.',
-						tag: 'Nhận thức',
-						icon: 'sync'
+						title: 'Xây dựng kỹ năng',
+						short: 'Điều tiết cảm xúc, giao tiếp, nhận diện các vòng lặp.',
+						detail:
+							'Nhà tham vấn có thể giúp bạn xây dựng những kỹ năng như điều tiết cảm xúc, giao tiếp, nhận diện những vòng lặp về suy nghĩ - cảm xúc - hành vi, v.v.'
 					},
 					{
-						title: 'Kỹ năng điều hòa hệ thần kinh',
-						content: 'Bài tập hít thở, thư giãn và kỹ năng giao tiếp lành mạnh.',
-						tag: 'Điều hòa',
-						icon: 'spa'
+						title: 'Bài tập giữa các phiên',
+						short: 'Để bạn tự luyện tập và dần tự chủ hơn.',
+						detail:
+							'Những bài tập thực hành (ví dụ: nhật ký cảm xúc, bài tập hít thở) để bạn tự luyện tập giữa các phiên và dần trở nên tự chủ hơn khi gặp khó khăn trong cuộc sống.'
 					},
 					{
-						title: 'Thực hành giữa các buổi',
-						content: 'Nhật ký cảm xúc hoặc thử thách nhỏ áp dụng vào cuộc sống thực tế.',
-						tag: 'Thực hành',
-						icon: 'edit_note'
+						title: 'Làm việc với gia đình khi cần',
+						short: 'Để bạn được hỗ trợ toàn diện hơn.',
+						detail:
+							'Khi cần thiết, nhà tham vấn có thể làm việc với gia đình và các bên liên quan để bạn nhận được sự hỗ trợ toàn diện hơn bên ngoài phòng tham vấn.'
 					}
 				]
 			},
 			{
-				id: '8-dieu-cam-ky',
-				title: '8 Điều CẤM KỴ nhà tham vấn',
-				icon: 'block',
-				desc: 'Những hành vi vi phạm đạo đức TUYỆT ĐỐI không được làm.',
+				id: 'xuyen-suot',
+				title: 'Xuyên suốt quá trình',
 				items: [
 					{
-						title: '1. Quyết định thay cho bạn',
-						content: 'Không ép buộc thân chủ ly hôn, nghỉ việc hay chọn lựa thay bạn.',
-						tag: 'Vi phạm',
-						icon: 'close',
-						isAlert: true
+						title: 'Theo dõi tiến triển',
+						short: 'Cùng bạn nhìn lại và điều chỉnh kế hoạch khi cần.',
+						detail:
+							'Nhà tham vấn theo dõi tiến triển và trao đổi với bạn để điều chỉnh kế hoạch nếu cần.'
 					},
 					{
-						title: '2. Ép buộc quan điểm cá nhân',
-						content: 'Không áp đặt định kiến tôn giáo, chính trị hay giá trị cá nhân.',
-						tag: 'Vi phạm',
-						icon: 'close',
-						isAlert: true
+						title: 'Chuyển ca khi cần',
+						short: 'Giới thiệu bạn đến người phù hợp hơn khi vượt quá chuyên môn.',
+						detail:
+							'Khi nhận thấy tình trạng của bạn vượt quá năng lực chuyên môn của mình, nhà tham vấn sẽ đề xuất chuyển ca (ví dụ đến bác sĩ tâm thần) nhằm bảo vệ quyền lợi và lợi ích của bạn.'
+					}
+				]
+			},
+			{
+				id: 'khong-lam',
+				title: 'Nhà tham vấn KHÔNG làm gì?',
+				desc: 'Một nhà tham vấn có năng lực chuyên môn và đạo đức sẽ không:',
+				tone: 'alert',
+				items: [
+					{
+						title: 'Quyết định thay cho bạn',
+						detail:
+							'Quyền tự quyết của bạn cần được tôn trọng, trừ khi nhà tham vấn nhận thấy bạn có nguy cơ gây hại cho bản thân hay người khác.'
 					},
 					{
-						title: '3. Hứa chắc chắn chữa khỏi',
-						content: 'Không đưa ra cam kết chữa khỏi 100% không có căn cứ khoa học.',
-						tag: 'Vi phạm',
-						icon: 'close',
-						isAlert: true
+						title: 'Ép bạn làm theo quan điểm cá nhân',
+						detail:
+							'Quan điểm của bạn, kể cả niềm tin tôn giáo và giá trị cá nhân, cần được tôn trọng, ngay cả khi nhà tham vấn không đồng tình.'
 					},
 					{
-						title: '4. Tự ý yêu cầu ngừng thuốc',
-						content: 'Chỉ bác sĩ tâm thần mới có quyền kê đơn hoặc điều chỉnh thuốc.',
-						tag: 'Vi phạm',
-						icon: 'close',
-						isAlert: true
+						title: 'Hứa chắc chắn chữa khỏi',
+						detail:
+							'Nhà tham vấn cần rõ ràng và minh bạch về phác đồ điều trị và mục tiêu làm việc với bạn.'
 					},
 					{
-						title: '5. Chẩn đoán vội vã qua tin nhắn',
-						content: 'Không dán nhãn bệnh lý tâm thần qua loa mà không qua quy trình chuẩn.',
-						tag: 'Vi phạm',
-						icon: 'close',
-						isAlert: true
+						title: 'Xúc phạm, đe dọa hoặc làm nhục bạn',
+						detail: 'Kể cả chế giễu hay thao túng tâm lý (gaslighting).'
 					},
 					{
-						title: '6. Xúc phạm hoặc thao túng',
-						content: 'Không bao giờ đe dọa, chế giễu hay thao túng tâm lý (gaslighting).',
-						tag: 'Vi phạm',
-						icon: 'close',
-						isAlert: true
+						title: 'Có quan hệ tình cảm, tình dục hoặc tài chính với bạn',
+						detail:
+							'Mối quan hệ giữa nhà tham vấn và thân chủ là mối quan hệ trị liệu; nếu xuất hiện thêm một mối quan hệ khác sẽ có nguy cơ ảnh hưởng đến quá trình trị liệu.'
 					},
 					{
-						title: '7. Quan hệ tình cảm & tiền bạc',
-						content: 'Cấm quan hệ tình cảm, tình dục hoặc vay mượn tiền bạc với thân chủ.',
-						tag: 'Vi phạm',
-						icon: 'close',
-						isAlert: true
-					},
-					{
-						title: '8. Dùng chuyện riêng để PR',
-						content: 'Không công khai câu chuyện thân chủ nhằm mục đích thương mại.',
-						tag: 'Vi phạm',
-						icon: 'close',
-						isAlert: true
+						title: 'Dùng câu chuyện của bạn để quảng cáo',
+						detail:
+							'Khi chưa có sự đồng thuận của bạn. Ưu tiên hàng đầu của nhà tham vấn và các dịch vụ tham vấn nói chung là bảo mật thông tin của thân chủ.'
 					}
 				]
 			}
@@ -373,106 +333,84 @@ export const FOLDERS_DATA = [
 	{
 		id: 'quyen-than-chu',
 		title: 'Quyền của thân chủ',
-		shortTitle: 'Quyền thân chủ',
-		category: 'Quyền lợi và Bảo mật thông tin',
-		icon: 'gavel',
-		colorName: 'tertiary',
-		accentColor: 'text-tertiary bg-tertiary/10 border-tertiary/20',
-		badgeColor: 'bg-tertiary/10 text-tertiary',
-		summary: '10 quyền lợi pháp lý & ứng phó vi phạm',
-		highlights: ['10 quyền lợi', 'Minh bạch', 'Ứng phó vi phạm'],
+		shortTitle: 'Quyền của bạn',
+		chapter: IN_THE_ROOM,
+		summary: '10 quyền bạn luôn có, và cách lên tiếng khi quyền bị vi phạm.',
+		nextReason: 'Biết quyền của mình trước khi bắt đầu.',
 		subfolders: [
 			{
-				id: '10-quyen-loi',
-				title: '10 Quyền lợi nền tảng',
-				icon: 'policy',
-				desc: 'Quyền lực thuộc về bạn trong suốt hành trình chăm sóc tâm lý.',
+				id: 'muoi-quyen',
+				title: '10 quyền của thân chủ',
+				desc: 'Khi đi tham vấn, bạn có quyền:',
 				items: [
 					{
-						title: '1. Thông tin minh bạch',
-						content: 'Biết rõ bằng cấp, kinh nghiệm và phương pháp can thiệp của chuyên gia.',
-						tag: 'Minh bạch',
-						icon: 'info'
+						title: 'Được tôn trọng và không bị kỳ thị',
+						detail:
+							'Bất kể bạn là ai: giới tính, xu hướng tính dục, tín ngưỡng, xuất thân hay hoàn cảnh.'
 					},
 					{
-						title: '2. Tôn trọng tuyệt đối',
-						content: 'Tôn trọng giá trị cá nhân, giới tính, tín ngưỡng và xuất thân.',
-						tag: 'Tôn trọng',
-						icon: 'diversity_1'
+						title: 'Được biết bằng cấp, kinh nghiệm của chuyên gia',
+						detail:
+							'Bạn có quyền hỏi về bằng cấp, kinh nghiệm, năng lực chuyên môn và phương pháp mà nhà tham vấn sử dụng.'
 					},
 					{
-						title: '3. Bảo mật thông tin',
-						content: 'Bảo vệ dữ liệu cá nhân và nội dung trò chuyện theo chuẩn đạo đức & pháp luật.',
-						tag: 'Bảo mật',
-						icon: 'lock'
+						title: 'Được giải thích về liệu pháp, chi phí và thời lượng',
+						detail:
+							'Trước khi bắt đầu, kể cả chính sách hủy hoặc dời buổi. Bạn chỉ tham gia khi đã hiểu rõ và tự nguyện đồng ý.'
 					},
 					{
-						title: '4. Tự nguyện & Đồng thuận',
-						content: 'Chỉ tham gia khi bạn tự nguyện hiểu rõ mục đích và phương thức (Informed Consent).',
-						tag: 'Tự nguyện',
-						icon: 'handshake'
+						title: 'Được biết thông tin cá nhân được lưu trữ và bảo mật thế nào',
+						detail: 'Bạn có thể hỏi hồ sơ của mình được lưu ở đâu và ai được tiếp cận.'
 					},
 					{
-						title: '5. Từ chối trả lời',
-						content: 'Bạn hoàn toàn có quyền không trả lời câu hỏi khi chưa thấy thoải mái.',
-						tag: 'Từ chối',
-						icon: 'do_not_disturb_on'
+						title: 'Được biết khi nào bảo mật có thể bị phá vỡ',
+						detail: 'Xem bước "Bảo mật" để biết 4 trường hợp ngoại lệ.'
 					},
 					{
-						title: '6. Tạm dừng hoặc kết thúc',
-						content: 'Bạn có quyền dừng hoặc ngưng quá trình tham vấn bất kỳ lúc nào.',
-						tag: 'Tự do dừng',
-						icon: 'pause_circle'
+						title: 'Được đặt câu hỏi về tiến trình trị liệu',
+						detail: 'Bất cứ lúc nào bạn thấy chưa rõ mình đang ở đâu hay vì sao làm điều gì.'
 					},
 					{
-						title: '7. Phản hồi & Khiếu nại',
-						content: 'Được bày tỏ không hài lòng và khiếu nại nếu chuyên gia vi phạm đạo đức.',
-						tag: 'Khiếu nại',
-						icon: 'campaign'
+						title: 'Được từ chối một liệu pháp, hoạt động hay bài tập',
+						detail: 'Kể cả không trả lời một câu hỏi khi bạn chưa thấy thoải mái.'
 					},
 					{
-						title: '8. Ý kiến thứ hai (Second Opinion)',
-						content: 'Tự do tham khảo thêm chuyên gia khác hoặc yêu cầu đổi người hỗ trợ.',
-						tag: 'Ý kiến thứ 2',
-						icon: 'group_add'
+						title: 'Được xin ý kiến chuyên gia khác',
+						detail: 'Tham khảo thêm một chuyên gia khác (second opinion) là điều bình thường.'
 					},
 					{
-						title: '9. Giải thích rõ chi phí',
-						content: 'Minh bạch về mức phí, thời lượng và chính sách hoàn hủy trước buổi gặp.',
-						tag: 'Minh bạch phí',
-						icon: 'payments'
+						title: 'Được đổi chuyên gia hoặc ngừng trị liệu',
+						detail: 'Vào bất cứ lúc nào, nếu bạn thấy không phù hợp.'
 					},
 					{
-						title: '10. Hỗ trợ khẩn cấp',
-						content: 'Được hướng dẫn cụ thể phương án trợ giúp khi gặp khủng hoảng tinh thần.',
-						tag: 'Cấp cứu 24/7',
-						icon: 'emergency'
+						title: 'Được biết cách phản ánh hoặc khiếu nại',
+						detail: 'Khi bạn không hài lòng hoặc chuyên gia vi phạm đạo đức nghề nghiệp.'
 					}
 				]
 			},
 			{
 				id: 'ung-pho-vi-pham',
-				title: 'Làm gì khi quyền bị vi phạm?',
-				icon: 'report_problem',
-				desc: '3 Bước hành động ngay để bảo vệ bản thân khi có dấu hiệu bất thường.',
+				title: 'Khi quyền của bạn bị vi phạm',
+				desc: 'Ba bước bạn có thể làm để bảo vệ bản thân.',
+				layout: 'steps',
 				items: [
 					{
-						title: 'Bước 1: Phản hồi trực tiếp',
-						content: 'Nói rõ cảm giác khó chịu hoặc ranh giới bị xâm phạm ngay trong phiên.',
-						tag: 'Bước 1 • Phản hồi',
-						icon: 'chat'
+						title: 'Phản hồi trực tiếp',
+						short: 'Nói rõ điều khiến bạn khó chịu.',
+						detail:
+							'Nói rõ cảm giác khó chịu hoặc ranh giới bị xâm phạm ngay trong phiên, nếu bạn thấy an toàn để làm vậy.'
 					},
 					{
-						title: 'Bước 2: Yêu cầu đổi chuyên gia',
-						content: 'Yêu cầu cơ sở/trung tâm chuyển người hỗ trợ phù hợp hơn với nhu cầu.',
-						tag: 'Bước 2 • Đổi người',
-						icon: 'swap_horiz'
+						title: 'Yêu cầu đổi chuyên gia',
+						short: 'Đề nghị nơi tham vấn chuyển người hỗ trợ khác.',
+						detail:
+							'Yêu cầu cơ sở hoặc trung tâm chuyển cho bạn người hỗ trợ phù hợp hơn với nhu cầu.'
 					},
 					{
-						title: 'Bước 3: Rời đi & Báo cáo',
-						content: 'Nếu bị xúc phạm, quấy rối hay đe dọa, lập tức rời phiên và báo cáo cơ quan chức năng.',
-						tag: 'Bước 3 • Khẩn cấp',
-						icon: 'exit_to_app',
+						title: 'Rời đi và báo cáo',
+						short: 'Khi bị xúc phạm, quấy rối hay đe dọa.',
+						detail:
+							'Nếu bị xúc phạm, quấy rối hay đe dọa, bạn có thể rời phiên ngay và báo cáo với cơ sở hoặc cơ quan chức năng.',
 						isAlert: true
 					}
 				]
@@ -480,47 +418,202 @@ export const FOLDERS_DATA = [
 		]
 	},
 	{
+		id: 'bao-mat',
+		title: 'Bảo mật và giới hạn bảo mật',
+		shortTitle: 'Bảo mật',
+		chapter: IN_THE_ROOM,
+		summary: 'Điều bạn chia sẻ được giữ kín, và 4 trường hợp ngoại lệ.',
+		nextReason: 'Điều bạn chia sẻ được giữ kín đến đâu.',
+		subfolders: [
+			{
+				id: 'nguyen-tac',
+				title: 'Nguyên tắc nền tảng',
+				items: [
+					{
+						title: 'Điều bạn chia sẻ được giữ kín',
+						short: 'Chỉ được tiết lộ khi bạn cho phép.',
+						detail:
+							'Bảo mật là một trong những nguyên tắc nền tảng của tham vấn tâm lý. Những thông tin bạn chia sẻ trong quá trình trị liệu sẽ không được tiết lộ, trừ khi có sự cho phép của bạn.'
+					},
+					{
+						title: 'Không tiết lộ cho bên thứ ba',
+						short: 'Gia đình, trường học hay nơi làm việc không được biết nếu bạn chưa đồng ý.',
+						detail:
+							'Nhà tham vấn không chia sẻ thông tin của bạn cho gia đình, nhà trường hay công ty khi chưa có sự đồng thuận của bạn.'
+					},
+					{
+						title: 'Hồ sơ được lưu giữ cẩn thận',
+						short: 'Ghi chép chuyên môn được cất giữ an toàn.',
+						detail:
+							'Ghi chép chuyên môn được lưu giữ an toàn. Bạn có quyền hỏi hồ sơ được lưu ở đâu và ai được tiếp cận.'
+					}
+				]
+			},
+			{
+				id: 'ngoai-le',
+				title: '4 trường hợp ngoại lệ',
+				desc: 'Nhà tham vấn có thể phải chia sẻ thông tin khi:',
+				items: [
+					{
+						title: 'Bạn có nguy cơ gây hại cho bản thân',
+						detail: 'Ví dụ khi có kế hoạch, ý định hoặc hành vi tự hại, tự sát.',
+						isAlert: true
+					},
+					{
+						title: 'Có nguy cơ gây hại cho người khác',
+						detail: 'Khi có đe dọa trực tiếp đến tính mạng hoặc sự an toàn của người xung quanh.',
+						isAlert: true
+					},
+					{
+						title: 'Có yêu cầu hợp pháp từ cơ quan có thẩm quyền',
+						detail: 'Ví dụ lệnh hoặc yêu cầu chính thức của tòa án.'
+					},
+					{
+						title: 'Cần trao đổi với ekip giám sát chuyên môn',
+						detail:
+							'Để đảm bảo chất lượng hỗ trợ. Thông tin nhận dạng của bạn được hạn chế ở mức tối đa.'
+					}
+				]
+			},
+			{
+				id: 'hoi-dap-bao-mat',
+				title: 'Hỏi nhanh về bảo mật',
+				items: [
+					{
+						title: 'Có nói cho cha mẹ tôi không?',
+						short: 'Nếu bạn đã đủ 18 tuổi: không, trừ 4 trường hợp ngoại lệ ở trên.',
+						detail:
+							'Với người đã đủ 18 tuổi, nhà tham vấn không chia sẻ với gia đình khi chưa có sự đồng ý của bạn, trừ 4 trường hợp ngoại lệ ở trên. Nếu bạn chưa đủ 18 tuổi, hãy hỏi nhà tham vấn ngay từ buổi đầu xem cha mẹ hoặc người giám hộ sẽ được biết những gì.'
+					},
+					{
+						title: 'Tôi có được xem hồ sơ không?',
+						short: 'Bạn có thể đề nghị xem tóm tắt tiến trình của mình.',
+						detail:
+							'Bạn có thể đề nghị xem tóm tắt tiến trình và hồ sơ tham vấn của chính mình. Hãy hỏi chính sách cụ thể của nơi bạn tham vấn.'
+					}
+				]
+			}
+		]
+	},
+	{
+		id: 'chon-chuyen-gia',
+		title: 'Cách nhận biết nhà chuyên môn uy tín',
+		shortTitle: 'Chọn chuyên gia uy tín',
+		summary: 'Những điểm nên kiểm tra, câu nên hỏi trước khi bắt đầu, và dấu hiệu cảnh báo.',
+		nextReason: 'Tìm người phù hợp và đáng tin cậy.',
+		subfolders: [
+			{
+				id: 'nen-kiem-tra',
+				title: 'Những điểm nên kiểm tra',
+				items: [
+					{ title: 'Danh tính và cơ sở làm việc rõ ràng' },
+					{ title: 'Bằng cấp có uy tín' },
+					{ title: 'Được đào tạo đúng liệu pháp đang thực hành' },
+					{ title: 'Có kinh nghiệm với vấn đề và nhóm tuổi của bạn' },
+					{
+						title: 'Có giấy phép hoặc đăng ký hành nghề',
+						detail: 'Khi pháp luật yêu cầu.'
+					},
+					{ title: 'Giải thích rõ chi phí, lịch hẹn và chính sách hủy buổi' },
+					{ title: 'Có thỏa thuận bảo mật' },
+					{
+						title: 'Biết giới hạn năng lực và sẵn sàng chuyển ca',
+						detail: 'Họ sẵn lòng giới thiệu bạn đến người phù hợp hơn khi cần.'
+					},
+					{ title: 'Không hứa chữa khỏi chắc chắn' },
+					{ title: 'Theo dõi tiến triển và tiếp nhận phản hồi' },
+					{ title: 'Tôn trọng văn hóa, tôn giáo, giới và xu hướng tính dục' },
+					{
+						title: 'Công khai việc được giám sát trong thực hành',
+						detail: 'Đặc biệt nếu họ đang là tâm lý gia tập sự.'
+					}
+				]
+			},
+			{
+				id: 'cau-hoi',
+				title: 'Những câu nên hỏi trước khi bắt đầu',
+				desc: 'Bạn có thể hỏi thẳng. Một chuyên gia uy tín sẽ sẵn lòng trả lời.',
+				items: [
+					{ title: 'Anh/chị được đào tạo và hành nghề với tư cách nào?' },
+					{ title: 'Anh/chị có kinh nghiệm với vấn đề của tôi không?' },
+					{ title: 'Phương pháp dự kiến là gì?' },
+					{ title: 'Phương pháp này có lợi ích và giới hạn nào?' },
+					{ title: 'Bao lâu sẽ đánh giá lại tiến triển?' },
+					{ title: 'Bảo mật được áp dụng thế nào?' },
+					{ title: 'Trong trường hợp nào thông tin có thể phải được chia sẻ?' },
+					{
+						title: 'Nếu có khủng hoảng ngoài giờ, tôi cần làm gì?',
+						detail:
+							'Bạn có quyền được hướng dẫn cụ thể phương án hỗ trợ khi gặp khủng hoảng tinh thần ngoài giờ làm việc.'
+					},
+					{ title: 'Nếu anh/chị đang thực tập, ai là người giám sát?' }
+				]
+			},
+			{
+				id: 'dau-hieu-canh-bao',
+				title: 'Dấu hiệu cảnh báo',
+				desc: 'Hãy cân nhắc tìm người khác nếu người hành nghề:',
+				tone: 'alert',
+				items: [
+					{ title: 'Hứa chữa khỏi 100%' },
+					{
+						title: 'Chẩn đoán qua vài tin nhắn hoặc bình luận',
+						detail: 'Chẩn đoán cần một quy trình đánh giá đầy đủ.'
+					},
+					{ title: 'Dùng một phương pháp cho tất cả mọi người' },
+					{
+						title: 'Khuyên bạn tự ý ngưng thuốc',
+						detail: 'Chỉ bác sĩ mới được kê đơn hoặc điều chỉnh thuốc.'
+					},
+					{ title: 'Né tránh câu hỏi về bằng cấp' },
+					{ title: 'Không giải thích về bảo mật' },
+					{ title: 'Làm nhục, đe dọa hoặc ép buộc' },
+					{ title: 'Có hành vi tình dục hoặc tài chính với thân chủ' },
+					{ title: 'Ép thân chủ mua sản phẩm' },
+					{ title: 'Yêu cầu giữ bí mật về hành vi của chuyên gia' },
+					{ title: 'Đổ lỗi cho nạn nhân' },
+					{ title: 'Kỳ thị cộng đồng LGBTQIA+ hoặc thực hiện "trị liệu chuyển đổi"' },
+					{ title: 'Không có phương án xử lý tự sát, tự hại hoặc khủng hoảng' }
+				]
+			}
+		]
+	},
+	{
 		id: 'ho-tro-chuyen-nghiep',
 		title: 'Nơi hỗ trợ đáng tin cậy',
-		shortTitle: 'Trung tâm & BV tham vấn',
-		category: 'Kết nối với chuyên gia bên ngoài MÈO',
-		icon: 'connect_without_contact',
-		colorName: 'tertiary',
-		accentColor: 'text-tertiary bg-warm-cream border-tertiary/30',
-		badgeColor: 'bg-tertiary/10 text-tertiary',
-		summary: 'Danh sách trung tâm & bệnh viện tham vấn tâm lý độc lập, được tổng hợp làm điểm khởi đầu — không phải sự bảo chứng hay hợp tác chính thức từ MÈO.',
-		highlights: ['Độc lập', 'Đã kiểm chứng', 'Ngoài MÈO'],
-		wide: true,
+		shortTitle: 'Nơi bắt đầu tìm',
+		summary:
+			'Danh sách trung tâm và bệnh viện tham vấn tâm lý độc lập, được tổng hợp làm điểm khởi đầu, không phải sự bảo chứng hay hợp tác chính thức từ MÈO.',
+		nextReason: 'Một vài nơi để bạn bắt đầu tìm hỗ trợ.',
 		subfolders: [
 			{
 				id: 'trung-tam-tham-van',
 				title: 'Trung tâm tham vấn tâm lý',
-				icon: 'diversity_3',
 				desc: 'Các trung tâm tham vấn tư nhân tại TPHCM.',
 				items: [
 					{
 						title: 'Tâm Lý Lumos',
-						content: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
+						detail: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
 						link: 'https://tamlylumos.com/'
 					},
 					{
 						title: 'Touching Soul',
-						content: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
+						detail: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
 						link: 'https://touchingsoul.art/'
 					},
 					{
 						title: 'Tâm Lý Hoa Sung',
-						content: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
+						detail: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
 						link: 'https://tamlyhoasung.com/'
 					},
 					{
 						title: 'Vietnam Psychology',
-						content: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
+						detail: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
 						link: 'https://www.vietnampsychology.com/'
 					},
 					{
 						title: 'Tâm Lý Việt An',
-						content: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
+						detail: 'Trung tâm tham vấn tâm lý tư nhân tại TPHCM.',
 						link: 'https://tamlyvietan.com/'
 					}
 				]
@@ -528,27 +621,26 @@ export const FOLDERS_DATA = [
 			{
 				id: 'benh-vien-tham-van',
 				title: 'Bệnh viện có dịch vụ tham vấn',
-				icon: 'local_hospital',
 				desc: 'Các bệnh viện lớn có đơn vị tâm lý lâm sàng hoặc dịch vụ tham vấn.',
 				items: [
 					{
 						title: 'BV Đại học Y Dược TPHCM',
-						content: 'Đơn vị Tâm lý lâm sàng.',
+						detail: 'Đơn vị Tâm lý lâm sàng.',
 						link: 'https://www.facebook.com/benhviendaihocyduoc/posts/%C4%91%C6%A1n-v%E1%BB%8B-t%C3%A2m-l%C3%BD-l%C3%A2m-s%C3%A0ng-b%E1%BB%87nh-vi%E1%BB%87n-%C4%91%E1%BA%A1i-h%E1%BB%8Dc-y-d%C6%B0%E1%BB%A3c-tphcm-%C4%91%C6%A1n-v%E1%BB%8B-t%C3%A2m-l%C3%BD-l%C3%A2m-s%C3%A0ng-b%E1%BB%87n/1052576551593330/'
 					},
 					{
 						title: 'Bệnh viện FV',
-						content: 'Chương trình tư vấn, chăm sóc sức khỏe tinh thần.',
+						detail: 'Chương trình tư vấn, chăm sóc sức khỏe tinh thần.',
 						link: 'https://www.fvhospital.com/health-programme/tu-van-cham-soc-suc-khoe-tinh-than/'
 					},
 					{
 						title: 'CarePlus',
-						content: 'Tham vấn tâm lý cá nhân dành cho người lớn.',
+						detail: 'Tham vấn tâm lý cá nhân dành cho người lớn.',
 						link: 'https://www.careplusvn.com/vi/tham-van-tam-ly-ca-nhan-danh-cho-nguoi-lon'
 					},
 					{
 						title: 'Vinmec',
-						content: 'Vinmec Central Park — tham vấn tâm lý.',
+						detail: 'Vinmec Central Park, tham vấn tâm lý.',
 						link: 'https://www.facebook.com/Vinmec/posts/vinmec-central-park-tham-v%E1%BA%A5n-t%C3%A2m-l%C3%BD-c%C3%B3-ph%E1%BA%A3i-ch%E1%BB%89-d%C3%A0nh-cho-ng%C6%B0%E1%BB%9Di-m%E1%BA%AFc-v%E1%BA%A5n-%C4%91%E1%BB%81-v%E1%BB%81-s%E1%BB%A9c/1057520075835336/'
 					}
 				]
@@ -556,12 +648,11 @@ export const FOLDERS_DATA = [
 			{
 				id: 'huong-nghiep',
 				title: 'Trung tâm tư vấn hướng nghiệp',
-				icon: 'work',
 				desc: 'Hỗ trợ định hướng nghề nghiệp.',
 				items: [
 					{
 						title: 'Hướng Nghiệp Sông An',
-						content: 'Trung tâm tư vấn hướng nghiệp.',
+						detail: 'Trung tâm tư vấn hướng nghiệp.',
 						link: 'https://huongnghiepsongan.com/'
 					}
 				]
@@ -569,17 +660,11 @@ export const FOLDERS_DATA = [
 			{
 				id: 'can-thiep-tre',
 				title: 'Trung tâm can thiệp trẻ',
-				icon: 'child_care',
 				desc: 'Can thiệp sớm và giáo dục đặc biệt cho trẻ.',
 				items: [
 					{
-						title: 'Learning Strategies',
-						content: 'Trung tâm can thiệp và giáo dục trẻ.',
-						link: 'https://learning-strategies.org/'
-					},
-					{
 						title: 'SEN Box',
-						content: 'Mạng lưới giáo dục đặc biệt (Special Education Network).',
+						detail: 'Mạng lưới giáo dục đặc biệt (Special Education Network).',
 						link: 'https://www.senbox.org/'
 					}
 				]

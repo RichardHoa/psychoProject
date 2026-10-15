@@ -69,16 +69,42 @@ test('answering "Yes" shows the hotline as a plain link', async ({ page }, testI
 	await expect(page.locator('a[href^="https://duongdaynongngaymai.vn"]')).toBeVisible();
 });
 
-test('landing hub cards link to every topic', async ({ page, context }, testInfo) => {
+test('the journey links to every step, in order', async ({ page, context }, testInfo) => {
 	await passGate(context, testInfo);
 	await page.goto('/trang-chu');
 
-	await click(page.getByRole('link', { name: /Khám phá 4 chủ đề/ }), testInfo);
+	await click(page.getByRole('link', { name: /Bắt đầu hành trình/ }), testInfo);
 	await expect(page).toHaveURL(/#chu-de$/);
 	await expect(page.locator('#chu-de')).toBeInViewport();
 
-	const cards = page.locator('#chu-de a[href^="/trang-chu/"]');
-	await expect(cards).toHaveCount(5);
-	await click(cards.first(), testInfo);
-	await expect(page).toHaveURL(/\/trang-chu\/bao-mat$/);
+	const steps = page.locator('#chu-de ol a[href^="/trang-chu/"]');
+	await expect(steps).toHaveCount(7);
+	await expect(steps.first()).toHaveAttribute('href', '/trang-chu/than-chu');
+
+	// "Where are you?" shortcuts start the visitor part-way along.
+	await click(page.getByRole('link', { name: /Mình đang đi tham vấn/ }), testInfo);
+	await expect(page).toHaveURL(/\/trang-chu\/quyen-than-chu$/);
+});
+
+test('a step switches between its short and detailed version', async ({
+	page,
+	context
+}, testInfo) => {
+	await passGate(context, testInfo);
+	await page.goto('/trang-chu/than-chu');
+	await expect(page.locator('#tam-the')).toHaveCount(0);
+
+	await click(page.getByRole('link', { name: 'Chi tiết', exact: true }), testInfo);
+	await expect(page).toHaveURL(/\/trang-chu\/than-chu\?che-do=chi-tiet$/);
+	await expect(page.locator('#tam-the')).toBeVisible();
+
+	// Moving on keeps the version the visitor chose.
+	const next = page.getByRole('link', { name: 'Bước tiếp theo' });
+	await next.scrollIntoViewIfNeeded();
+	await click(next, testInfo);
+	await expect(page).toHaveURL(/\/trang-chu\/ai-giup-ban\?che-do=chi-tiet$/);
+	await expect(page.getByRole('link', { name: 'Chi tiết', exact: true })).toHaveAttribute(
+		'aria-current',
+		'true'
+	);
 });
