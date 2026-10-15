@@ -6,8 +6,9 @@ import { passGate, watchPage } from './helpers.js';
 const PAGES = [
 	'/kiem-tra-an-toan',
 	'/trang-chu',
-	'/trang-chu/bao-mat',
-	'/trang-chu/bao-mat?che-do=chi-tiet',
+	'/hanh-trinh',
+	'/hanh-trinh/bao-mat',
+	'/hanh-trinh/bao-mat?che-do=chi-tiet',
 	'/tim-kiem',
 	'/tim-kiem?q=bao+mat',
 	'/tho-vuong'

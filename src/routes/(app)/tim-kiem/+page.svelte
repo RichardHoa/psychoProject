@@ -16,7 +16,7 @@
 	<title>{data.query ? `${data.query} · ` : ''}{m.search_title()}</title>
 </svelte:head>
 
-<div class="flex min-h-0 flex-1 flex-col overflow-hidden bg-surface-off-white">
+<div class="flex flex-1 flex-col bg-surface-off-white [--search-bar-top:4rem]">
 	<SearchPanel
 		query={data.query}
 		results={data.results}

@@ -10,12 +10,14 @@
 	import { m } from '$lib/paraglide/messages.js';
 	import { ShellState, setShell } from '$lib/state/shell.svelte.js';
 	import { BREATHING_PATH, breathingHref } from '$lib/breathing.js';
+	import { LANDING_PATH } from '$lib/routes.js';
 
 	let { children } = $props();
 
 	const shell = setShell(new ShellState());
 
-	// The Landing hero and the search page already show a full-size search box.
+	// The Landing hero (while its search box is on screen) and the search page already show a
+	// full-size search box.
 	const showNavSearch = $derived(
 		page.route.id === '/(app)/trang-chu' ? !shell.heroInView : page.route.id !== '/(app)/tim-kiem'
 	);
@@ -33,21 +35,21 @@
 	}
 </script>
 
-<!-- Mobile Viewport Container Shell with Warm Atmosphere -->
-<div
-	class="flex h-[100dvh] w-full items-center justify-center overflow-hidden bg-[#EDE8DF] font-body select-none"
->
+<!-- Mobile-width column with a warm backdrop. The page itself scrolls (not an inner box), so
+     the browser resets scroll on navigation, restores it on back, and anchor jumps can never push
+     the navbar away. -->
+<div class="flex min-h-[100dvh] w-full justify-center bg-[#EDE8DF] font-body select-none">
 	<div
-		class="sm:border-x-1.5 sm:border-sketch-border relative flex h-full w-full max-w-md flex-col overflow-hidden bg-background shadow-2xl sm:max-w-lg md:max-w-xl"
+		class="sm:border-x-1.5 sm:border-sketch-border shell-column relative flex min-h-[100dvh] w-full max-w-md flex-col bg-background shadow-2xl sm:max-w-lg md:max-w-xl"
 	>
-		<!-- Top App Bar / Navbar (Hand-Drawn Sketch Header) -->
+		<!-- Top App Bar / Navbar (Hand-Drawn Sketch Header), always on screen. -->
 		<header
-			class="border-b-1.5 border-sketch-border z-30 flex h-16 shrink-0 items-center justify-between gap-2 bg-surface-off-white px-4 sm:gap-3"
+			class="border-b-1.5 border-sketch-border navbar sticky top-0 z-30 flex h-16 shrink-0 items-center justify-between gap-2 bg-surface-off-white px-4 sm:gap-3"
 		>
 			<CatMascot
 				autoplay={false}
 				clickSequence={[]}
-				href="/trang-chu#gioi-thieu"
+				href={LANDING_PATH}
 				sizeClass="h-11 w-11"
 				sizes="30px"
 				class="shrink-0"
@@ -79,7 +81,7 @@
 			</WiredButton>
 		</header>
 
-		<div class="relative flex min-h-0 flex-1 flex-col overflow-hidden">
+		<div class="relative flex flex-1 flex-col">
 			{@render children()}
 		</div>
 	</div>
@@ -94,3 +96,16 @@
 {#if page.state.breathing}
 	<BreathingDialog doneHref={page.state.breathing.returnTo} />
 {/if}
+
+<style>
+	/* Clip sideways overflow without becoming a scroll container, so the sticky navbar sticks to
+	   the viewport. */
+	.shell-column {
+		overflow-x: clip;
+	}
+
+	/* Stays put while the page beneath it cross-fades or slides (see the root +layout). */
+	.navbar {
+		view-transition-name: navbar;
+	}
+</style>

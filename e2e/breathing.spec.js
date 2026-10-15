@@ -71,7 +71,7 @@ test('with JavaScript the exercise opens over the current page and Escape closes
 }, testInfo) => {
 	test.skip(!jsEnabled(testInfo), 'enhancement only');
 	await passGate(context, testInfo);
-	await page.goto('/trang-chu/than-chu');
+	await page.goto('/hanh-trinh/than-chu');
 	await page.getByRole('link', { name: /Thở 5s/ }).click();
 
 	const dialog = page.getByRole('dialog');
@@ -81,5 +81,5 @@ test('with JavaScript the exercise opens over the current page and Escape closes
 
 	await page.keyboard.press('Escape');
 	await expect(dialog).toHaveCount(0);
-	await expect(page).toHaveURL(/\/trang-chu\/than-chu$/);
+	await expect(page).toHaveURL(/\/hanh-trinh\/than-chu$/);
 });

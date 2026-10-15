@@ -206,6 +206,54 @@ h1, h2, h3, h4, h5, h6, .font-headline {
 	}
 }
 
+/* Landing page ⇄ Journey: the Journey sits to the right of the hero, so going to it slides left
+   and coming back slides right. Set by onNavigate in the root +layout.svelte. */
+:root[data-slide]::view-transition-old(root),
+:root[data-slide]::view-transition-new(root) {
+	animation-duration: 0.35s;
+	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+	animation-fill-mode: both;
+}
+
+:root[data-slide='forward']::view-transition-old(root) {
+	animation-name: slide-out-left;
+}
+:root[data-slide='forward']::view-transition-new(root) {
+	animation-name: slide-in-right;
+}
+:root[data-slide='back']::view-transition-old(root) {
+	animation-name: slide-out-right;
+}
+:root[data-slide='back']::view-transition-new(root) {
+	animation-name: slide-in-left;
+}
+
+@keyframes slide-out-left {
+	to {
+		translate: -100% 0;
+	}
+}
+@keyframes slide-in-right {
+	from {
+		translate: 100% 0;
+	}
+}
+@keyframes slide-out-right {
+	to {
+		translate: 100% 0;
+	}
+}
+@keyframes slide-in-left {
+	from {
+		translate: -100% 0;
+	}
+}
+
+/* Anchor jumps land below the sticky navbar (4rem) and a step page's breadcrumb bar. */
+html {
+	scroll-padding-top: 7rem;
+}
+
 /* Deep-linked section or item (from search results / shared links). */
 .anchor-target {
 	scroll-margin-top: 1rem;

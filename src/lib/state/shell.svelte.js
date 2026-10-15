@@ -6,8 +6,8 @@ import { createContext } from 'svelte';
  */
 export class ShellState {
 	/**
-	 * Whether the Landing page hero (which has its own big search bar) is on screen. Only read on
-	 * the Landing page; starts true because the server always renders the hero first.
+	 * Whether the Landing page hero's own big search bar is on screen. Only read on the Landing
+	 * page; starts true because the server renders the page scrolled to the top.
 	 */
 	heroInView = $state(true);
 }

@@ -3,6 +3,9 @@
  * @property {(direction: 'left' | 'right') => void} onSwipe
  * @property {number} [threshold] - minimum horizontal distance (px) to count as a swipe
  * @property {number} [axisRatio] - how much the horizontal delta must dominate the vertical delta
+ * @property {number} [edgeMargin] - ignore touches starting this close (px) to the left/right
+ *   screen edge, where phones start their own back gesture
+ * @property {() => number} [viewportWidth]
  */
 
 /**
@@ -11,7 +14,13 @@
  *
  * @param {SwipeHandlerOptions} options
  */
-export function createSwipeHandlers({ onSwipe, threshold = 50, axisRatio = 1.3 }) {
+export function createSwipeHandlers({
+	onSwipe,
+	threshold = 50,
+	axisRatio = 1.3,
+	edgeMargin = 0,
+	viewportWidth = () => window.innerWidth
+}) {
 	let startX = 0;
 	let startY = 0;
 	let endX = 0;
@@ -20,7 +29,9 @@ export function createSwipeHandlers({ onSwipe, threshold = 50, axisRatio = 1.3 }
 	/** @param {TouchEvent} e */
 	function handleTouchStart(e) {
 		if (e.touches.length !== 1) return;
-		startX = e.touches[0].clientX;
+		const x = e.touches[0].clientX;
+		if (edgeMargin > 0 && (x < edgeMargin || x > viewportWidth() - edgeMargin)) return;
+		startX = x;
 		startY = e.touches[0].clientY;
 		endX = startX;
 		tracking = true;
