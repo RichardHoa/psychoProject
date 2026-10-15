@@ -16,7 +16,7 @@
 </script>
 
 <div
-	class="border-b-1.5 border-sketch-border sticky top-0 z-30 flex w-full items-center gap-2 bg-surface-off-white px-3.5 py-2 shadow-xs transition-all"
+	class="border-b-1.5 border-sketch-border sticky top-16 z-20 flex w-full items-center gap-2 bg-surface-off-white px-3.5 py-2 shadow-xs transition-all"
 >
 	{#if backHref && crumbs.length > 1}
 		<a

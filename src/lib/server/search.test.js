@@ -6,26 +6,33 @@ describe('search', () => {
 		expect(search('   ')).toEqual([]);
 	});
 
-	it('matches without diacritics and ranks the folder first', () => {
-		const results = search('bao mat');
-		expect(results[0]).toMatchObject({ kind: 'folder', href: '/trang-chu/bao-mat' });
+	it('matches the step title without diacritics', () => {
+		expect(search('bao mat')).toEqual([
+			expect.objectContaining({ id: 'bao-mat', href: '/hanh-trinh/bao-mat' })
+		]);
 	});
 
-	it('links single items straight to their anchor', () => {
-		const results = search('cha mẹ');
-		expect(
-			results.some(
-				(r) => r.href === '/trang-chu/bao-mat#hoi-dap-bao-mat--co-noi-cho-cha-me-toi-khong'
-			)
-		).toBe(true);
+	it('matches case-, diacritic- and punctuation-insensitively', () => {
+		expect(search('BAO MAT').map((r) => r.id)).toEqual(search('Bảo mật?').map((r) => r.id));
 	});
 
-	it('searches the detailed text and links detailed-only sections to the detailed version', () => {
-		const results = search('gồng mình');
-		expect(results[0]).toMatchObject({
-			kind: 'item',
-			href: '/trang-chu/than-chu?che-do=chi-tiet#tam-the--cho-phep-minh-chan-that'
-		});
+	it('searches step titles only, not section or item headings or body text', () => {
+		// An item heading, a section heading, and detailed body text.
+		expect(search('bên thứ ba')).toEqual([]);
+		expect(search('trong những buổi đầu tiên')).toEqual([]);
+		expect(search('gồng mình')).toEqual([]);
+	});
+
+	it('offers exactly the two quick-pick questions', () => {
+		expect(searchSuggestions().map((s) => s.label)).toEqual([
+			'Chuyên gia uy tín',
+			'Nhà tham vấn làm gì?'
+		]);
+	});
+
+	it('finds the matching step for each quick-pick question', () => {
+		expect(search('chuyen gia uy tin')[0]).toMatchObject({ id: 'chon-chuyen-gia' });
+		expect(search('nha tham van lam gi')[0]).toMatchObject({ id: 'nha-tham-van' });
 	});
 
 	it('requires every word to match', () => {

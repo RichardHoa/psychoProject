@@ -1,17 +1,43 @@
 <script>
+	import { onMount } from 'svelte';
+	import { goto } from '$app/navigation';
 	import SearchBar from '$lib/components/SearchBar.svelte';
-	import ScreenSlider from '$lib/components/ScreenSlider.svelte';
-	import JourneyPath from '$lib/components/JourneyPath.svelte';
 	import WiredButton from '$lib/components/wired/WiredButton.svelte';
 	import WiredDivider from '$lib/components/wired/WiredDivider.svelte';
 	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
+	import { swipe } from '$lib/gestures/swipe.js';
 	import { m } from '$lib/paraglide/messages.js';
+	import { JOURNEY_PATH, LEGACY_JOURNEY_HASH } from '$lib/routes.js';
 	import { getShell } from '$lib/state/shell.svelte.js';
 
-	let { data } = $props();
-
 	const shell = getShell();
-	let hintDismissed = $state(false);
+	// The hint is about swiping, which needs JavaScript, so it only appears once hydrated.
+	let showHint = $state(false);
+
+	// `/trang-chu#chu-de` was the journey slide before the Journey got its own page. The fragment
+	// never reaches the server, so the redirect happens here.
+	onMount(() => {
+		if (location.hash === `#${LEGACY_JOURNEY_HASH}`) goto(JOURNEY_PATH, { replaceState: true });
+		showHint = true;
+	});
+
+	/**
+	 * The navbar shows its compact search only once the hero's big search box has scrolled under it.
+	 * @type {import('svelte/attachments').Attachment<HTMLElement>}
+	 */
+	function trackHeroSearch(el) {
+		const observer = new IntersectionObserver(
+			([entry]) => {
+				shell.heroInView = entry.isIntersecting;
+			},
+			{ rootMargin: '-64px 0px 0px 0px' }
+		);
+		observer.observe(el);
+		return () => {
+			observer.disconnect();
+			shell.heroInView = true;
+		};
+	}
 </script>
 
 <svelte:head>
@@ -19,9 +45,9 @@
 </svelte:head>
 
 <!-- Usage hint: fades out on its own via CSS after a few seconds, no timer needed. -->
-{#if !hintDismissed}
+{#if showHint}
 	<div
-		class="usage-hint sketch-card absolute right-4 bottom-4 left-4 z-40 flex items-center justify-between gap-2 rounded-2xl bg-warm-cream px-4 py-2.5 text-text-main"
+		class="usage-hint sketch-card fixed right-4 bottom-4 left-4 z-40 mx-auto flex max-w-md items-center justify-between gap-2 rounded-2xl bg-warm-cream px-4 py-2.5 text-text-main"
 	>
 		<div class="flex items-center gap-2 text-xs">
 			<RoughIcon name="swipe" size={16} stroke="#1F523D" strokeWidth={1.8} />
@@ -29,7 +55,7 @@
 		</div>
 		<button
 			type="button"
-			onclick={() => (hintDismissed = true)}
+			onclick={() => (showHint = false)}
 			class="cursor-pointer rounded-full p-1 text-text-subtle hover:text-text-main"
 			aria-label={m.usage_hint_close()}
 		>
@@ -38,50 +64,45 @@
 	</div>
 {/if}
 
-<ScreenSlider
-	label={m.slides_label()}
-	slideCount={2}
-	onActiveChange={(index) => {
-		shell.heroInView = index === 0;
-		if (index > 0) hintDismissed = true;
-	}}
+<!-- Swiping left opens the Journey with a sideways slide (JavaScript enhancement; the
+     "start the journey" link works without it). Swipes starting at the screen edge are left to
+     the phone's own back gesture. -->
+<section
+	class="flex min-h-[calc(100dvh-4rem)] w-full flex-col items-center space-y-6 px-5 py-10 pb-20 text-center"
+	{@attach swipe({
+		threshold: 75,
+		axisRatio: 1.5,
+		edgeMargin: 24,
+		onSwipe: (direction) => {
+			if (direction === 'left') goto(JOURNEY_PATH);
+		}
+	})}
 >
-	<!-- SLIDE 0: HAND-DRAWN WARM HERO (LANDING) -->
-	<section
-		id="gioi-thieu"
-		class="slide flex h-full w-full shrink-0 flex-col items-center space-y-6 overflow-y-auto px-5 py-10 pb-20 text-center"
-	>
-		<div class="flex w-full max-w-sm flex-col items-center space-y-4 pt-10 sm:pt-6">
-			<h1 class="text-2xl leading-tight font-black tracking-tight text-text-main sm:text-3xl">
-				{m.home_hero_title()}
-			</h1>
+	<div class="flex w-full max-w-sm flex-col items-center space-y-4 pt-10 sm:pt-6">
+		<h1 class="text-2xl leading-tight font-black tracking-tight text-text-main sm:text-3xl">
+			{m.home_hero_title()}
+		</h1>
 
-			<div class="mx-auto max-w-[140px]">
-				<WiredDivider stroke="#1F523D" strokeWidth={1.6} roughness={1.4} />
-			</div>
-
-			<p class="px-2 text-xs leading-relaxed text-text-subtle sm:text-sm">
-				{m.home_hero_desc()}
-			</p>
-
-			<div class="w-full pt-2">
-				<SearchBar />
-			</div>
-
-			<div class="flex w-full justify-center pt-4">
-				<WiredButton href="#chu-de" fill="#EAF2EC" class="px-5 py-2.5 text-sm">
-					<span>{m.home_start_journey()}</span>
-					<RoughIcon name="arrow_forward" size={18} stroke="#1F523D" strokeWidth={1.8} />
-				</WiredButton>
-			</div>
+		<div class="mx-auto max-w-[140px]">
+			<WiredDivider stroke="#1F523D" strokeWidth={1.6} roughness={1.4} />
 		</div>
-	</section>
 
-	<!-- SLIDE 1: THE GUIDED JOURNEY -->
-	<section id="chu-de" class="slide flex h-full w-full shrink-0 flex-col">
-		<JourneyPath folders={data.folders} />
-	</section>
-</ScreenSlider>
+		<p class="px-2 text-xs leading-relaxed text-text-subtle sm:text-sm">
+			{m.home_hero_desc()}
+		</p>
+
+		<div class="w-full pt-2" {@attach trackHeroSearch}>
+			<SearchBar />
+		</div>
+
+		<div class="flex w-full justify-center pt-4">
+			<WiredButton href={JOURNEY_PATH} fill="#EAF2EC" class="px-5 py-2.5 text-sm">
+				<span>{m.home_start_journey()}</span>
+				<RoughIcon name="arrow_forward" size={18} stroke="#1F523D" strokeWidth={1.8} />
+			</WiredButton>
+		</div>
+	</div>
+</section>
 
 <style>
 	.usage-hint {

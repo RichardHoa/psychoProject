@@ -68,8 +68,9 @@
 	}
 
 	// ---- Voice search (JavaScript-only enhancement, shown only where the browser supports it) ----
-	/** @type {any} */
-	let SpeechRecognition = $state(null);
+	// Vietnamese only. Interim results are on because some engines (Safari) never deliver a final
+	// result otherwise; the latest transcript is applied live and committed when listening ends.
+	let voiceSupported = $state(false);
 	let isListening = $state(false);
 	let voiceError = $state('');
 	/** @type {any} */
@@ -77,54 +78,69 @@
 
 	onMount(() => {
 		// @ts-ignore - vendor-prefixed, not in lib.dom
-		SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition || null;
+		voiceSupported = Boolean(window.SpeechRecognition || window.webkitSpeechRecognition);
 		return () => {
 			clearTimeout(typingTimer);
-			recognition?.stop();
+			recognition?.abort();
 		};
 	});
 
+	/** @param {string} code SpeechRecognitionErrorEvent.error */
+	function voiceErrorMessage(code) {
+		if (code === 'not-allowed' || code === 'service-not-allowed') return m.search_voice_denied();
+		if (code === 'no-speech') return m.search_voice_no_speech();
+		if (code === 'network') return m.search_voice_network();
+		return m.search_voice_error();
+	}
+
 	function toggleVoiceSearch() {
-		if (isListening && recognition) {
+		if (recognition) {
 			recognition.stop();
-			isListening = false;
 			return;
 		}
 
+		// @ts-ignore - vendor-prefixed, not in lib.dom
+		const Recognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+		const current = new Recognition();
+		current.lang = 'vi-VN';
+		current.continuous = false;
+		current.interimResults = true;
+		current.maxAlternatives = 1;
+
+		let transcript = '';
+
+		/** @param {any} event */
+		current.onresult = (event) => {
+			transcript = Array.from(event.results, (/** @type {any} */ r) => r[0].transcript).join('');
+			clearTimeout(typingTimer);
+			value = transcript;
+		};
+		/** @param {any} event */
+		current.onerror = (event) => {
+			if (event.error !== 'aborted') voiceError = voiceErrorMessage(event.error);
+		};
+		current.onend = () => {
+			isListening = false;
+			recognition = null;
+			if (transcript.trim()) runNow(transcript);
+		};
+
+		voiceError = '';
 		try {
-			recognition = new SpeechRecognition();
-			recognition.lang = 'vi-VN';
-			recognition.continuous = false;
-			recognition.interimResults = false;
-
-			recognition.onstart = () => {
-				isListening = true;
-				voiceError = '';
-			};
-			/** @param {any} event */
-			recognition.onresult = (event) => {
-				runNow(event.results[0][0].transcript);
-				isListening = false;
-			};
-			recognition.onerror = () => {
-				voiceError = m.search_voice_error();
-				isListening = false;
-			};
-			recognition.onend = () => {
-				isListening = false;
-			};
-
-			recognition.start();
+			current.start();
+			recognition = current;
+			isListening = true;
 		} catch {
 			voiceError = m.search_voice_error();
-			isListening = false;
 		}
 	}
 </script>
 
 <div class="flex min-h-0 flex-1 flex-col">
-	<!-- Top Bar / Input -->
-	<div class="border-b-1.5 border-sketch-border sticky top-0 z-20 bg-surface-off-white p-4 sm:p-5">
+	<!-- Top Bar / Input. Pages under the sticky navbar set --search-bar-top to sit below it. -->
+	<div
+		class="border-b-1.5 border-sketch-border sticky top-[var(--search-bar-top,0px)] z-20 bg-surface-off-white p-4 sm:p-5"
+	>
 		<form
 			method="GET"
 			action="/tim-kiem"
@@ -163,7 +179,7 @@
 					</a>
 				{/if}
 
-				{#if SpeechRecognition}
+				{#if voiceSupported}
 					<button
 						type="button"
 						onclick={toggleVoiceSearch}
@@ -211,17 +227,20 @@
 					<span class="text-[11px] text-text-subtle">{m.search_suggestions_hint()}</span>
 				</div>
 
-				<div class="grid grid-cols-2 gap-2.5">
+				<ul class="space-y-2.5">
 					{#each suggestions as chip (chip.label)}
-						<a
-							href="/tim-kiem?q={encodeURIComponent(chip.label)}"
-							onclick={(e) => handleLink(e, chip.label)}
-							class="sketch-button inline-flex items-center justify-start gap-2.5 rounded-xl bg-white px-3.5 py-2.5 text-xs font-bold text-text-main transition-all active:scale-95 sm:text-sm"
-						>
-							<span class="truncate">{chip.label}</span>
-						</a>
+						<li>
+							<a
+								href="/tim-kiem?q={encodeURIComponent(chip.label)}"
+								onclick={(e) => handleLink(e, chip.label)}
+								class="sketch-card group flex items-center justify-between gap-3 rounded-2xl bg-white p-3.5 text-left text-sm font-bold text-text-main transition-all active:scale-[0.98]"
+							>
+								<span class="transition-colors group-hover:text-primary">{chip.label}</span>
+								<RoughIcon name="arrow_forward" size={14} stroke="#5A6561" strokeWidth={1.8} />
+							</a>
+						</li>
 					{/each}
-				</div>
+				</ul>
 			</div>
 		{:else if results.length === 0}
 			<div class="fade-in space-y-2 py-10 text-center text-text-subtle">

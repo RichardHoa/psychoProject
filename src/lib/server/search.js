@@ -1,11 +1,10 @@
 import { FOLDERS_DATA } from './folderData.js';
-import { folderHref, itemAnchor } from './content.js';
+import { folderHref } from './content.js';
 import { foldText } from '$lib/text.js';
 
 /**
  * @typedef {{
  *   id: string,
- *   kind: 'folder' | 'section' | 'item',
  *   title: string,
  *   desc: string,
  *   category: string,
@@ -13,91 +12,57 @@ import { foldText } from '$lib/text.js';
  * }} SearchResult
  */
 
-const MAX_RESULTS = 20;
-
 /**
- * Built from the real step content, so every result points at something that exists. Both the
- * short and the detailed text are searchable; results inside detailed-only sections link to the
- * detailed version so the target is on the page.
+ * One entry per journey step, matched on the step's big title only (or its short name, the same
+ * title as shown in the breadcrumb). Section and item headings and body text are not searched.
  */
-const INDEX = FOLDERS_DATA.flatMap((folder, index) => {
-	const stepLabel = `Bước ${index + 1}`;
-	return [
-		entry(
-			{
-				id: folder.id,
-				kind: 'folder',
-				title: folder.title,
-				desc: folder.summary,
-				category: stepLabel,
-				href: folderHref(folder.id)
-			},
-			`${folder.shortTitle} ${folder.chapter ?? ''}`
-		),
-		...folder.subfolders.flatMap((sub) => [
-			entry({
-				id: `${folder.id}/${sub.id}`,
-				kind: 'section',
-				title: sub.title,
-				desc: sub.desc ?? '',
-				category: `${stepLabel} · ${folder.shortTitle}`,
-				href: folderHref(folder.id, sub.id, sub.detailOnly)
-			}),
-			...sub.items.map((item) => {
-				const anchor = itemAnchor(sub, item);
-				return entry(
-					{
-						id: `${folder.id}/${anchor}`,
-						kind: 'item',
-						title: item.title,
-						desc: item.short ?? item.detail ?? '',
-						category: `${folder.shortTitle} · ${sub.title}`,
-						href: folderHref(folder.id, anchor, sub.detailOnly)
-					},
-					item.detail
-				);
-			})
-		])
-	];
-});
+const INDEX = FOLDERS_DATA.map((folder, index) =>
+	entry(
+		{
+			id: folder.id,
+			title: folder.title,
+			desc: folder.summary,
+			category: `Bước ${index + 1}`,
+			href: folderHref(folder.id)
+		},
+		folder.shortTitle
+	)
+);
 
-/** @param {SearchResult} result @param {string} [extra] More text to match but not display. */
-function entry(result, extra = '') {
-	return {
-		result,
-		title: foldText(result.title),
-		body: foldText(`${result.desc} ${result.category} ${extra}`)
-	};
+/** @param {SearchResult} result @param {string} [altTitle] Another title to match but not display. */
+function entry(result, altTitle = '') {
+	return { result, title: normalize(`${result.title} ${altTitle}`) };
 }
 
 /**
- * Diacritic-insensitive search: every word of the query must appear somewhere in the entry.
- * Title hits rank above body hits; whole steps rank above sections above single items.
+ * Case- and diacritic-insensitive, punctuation dropped: "Bảo Mật?" and "bao mat" are the same text.
+ * @param {string} text
+ */
+function normalize(text) {
+	return foldText(text)
+		.replace(/[^a-z0-9]+/g, ' ')
+		.trim();
+}
+
+/**
+ * Every word of the query must appear in the step title; titles containing the whole query as a
+ * phrase rank first, otherwise journey order is kept.
  * @param {string} query
  * @returns {SearchResult[]}
  */
 export function search(query) {
-	const terms = foldText(query).split(/\s+/).filter(Boolean);
+	const phrase = normalize(query);
+	const terms = phrase.split(' ').filter(Boolean);
 	if (terms.length === 0) return [];
 
-	const kindWeight = { folder: 2, section: 1, item: 0 };
-
-	return INDEX.map((e) => {
-		let score = 0;
-		for (const term of terms) {
-			if (e.title.includes(term)) score += 10;
-			else if (e.body.includes(term)) score += 3;
-			else return null;
-		}
-		return { result: e.result, score: score + kindWeight[e.result.kind] };
-	})
-		.filter((hit) => hit !== null)
-		.sort((a, b) => b.score - a.score)
-		.slice(0, MAX_RESULTS)
-		.map((hit) => hit.result);
+	const hits = INDEX.filter((e) => terms.every((term) => e.title.includes(term)));
+	return [
+		...hits.filter((e) => e.title.includes(phrase)),
+		...hits.filter((e) => !e.title.includes(phrase))
+	].map((e) => e.result);
 }
 
-/** Quick-pick chips: the real journey steps, so every suggestion returns results. */
+/** Quick-pick questions; the test suite checks each one returns results. */
 export function searchSuggestions() {
-	return FOLDERS_DATA.map((f) => ({ label: f.shortTitle }));
+	return [{ label: 'Chuyên gia uy tín' }, { label: 'Nhà tham vấn làm gì?' }];
 }

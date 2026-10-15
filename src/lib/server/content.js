@@ -1,6 +1,7 @@
 import { FOLDERS_DATA } from './folderData.js';
 import { slugify } from '$lib/text.js';
 import { readingHref } from '$lib/reading.js';
+import { stepPath } from '$lib/routes.js';
 
 /**
  * @typedef {import('./folderData.js').Folder} Folder
@@ -9,9 +10,6 @@ import { readingHref } from '$lib/reading.js';
  * @typedef {Pick<Folder, 'id' | 'title' | 'shortTitle' | 'summary' | 'chapter' | 'nextReason'> & { step: number }} FolderSummary
  */
 
-export const LANDING_PATH = '/trang-chu';
-/** Fragment of the journey screen on the Landing page. */
-export const HUB_HASH = 'chu-de';
 export const STEP_COUNT = FOLDERS_DATA.length;
 
 /** @param {Folder} folder @param {number} index @returns {FolderSummary} */
@@ -65,5 +63,5 @@ export function itemAnchor(subfolder, item) {
  * @param {boolean} [detailed] Link to the detailed version (needed for `detailOnly` sections).
  */
 export function folderHref(folderId, hash, detailed = false) {
-	return readingHref(`${LANDING_PATH}/${folderId}`, detailed, hash);
+	return readingHref(stepPath(folderId), detailed, hash);
 }
