@@ -1,10 +1,19 @@
 <script>
+	import CatMascot from '$lib/components/CatMascot.svelte';
 	import WiredButton from '$lib/components/wired/WiredButton.svelte';
 	import WiredDivider from '$lib/components/wired/WiredDivider.svelte';
 	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
 	import { readingHref } from '$lib/reading.js';
 	import { stepPath } from '$lib/routes.js';
 	import { m } from '$lib/paraglide/messages.js';
+	import {
+		happy,
+		happyAlt,
+		happyDifferent,
+		happyOpenEyes,
+		happyOpenEyesWaving,
+		happyWaving
+	} from '$lib/assets/cat/index.js';
 
 	/**
 	 * @typedef {NonNullable<ReturnType<typeof import('$lib/server/content.js').getFolder>>} StepPage
@@ -20,19 +29,26 @@
 	 *   folder: StepPage['folder'],
 	 *   step: number,
 	 *   stepCount: number,
+	 *   minutes: StepPage['minutes'],
 	 *   prevFolder: StepPage['prevFolder'],
 	 *   nextFolder: StepPage['nextFolder'],
 	 *   backHref: string,
 	 *   detailed: boolean
 	 * }}
 	 */
-	let { folder, step, stepCount, prevFolder, nextFolder, backHref, detailed } = $props();
+	let { folder, step, stepCount, minutes, prevFolder, nextFolder, backHref, detailed } = $props();
 
 	const sections = $derived(
 		detailed ? folder.subfolders : folder.subfolders.filter((s) => !s.detailOnly)
 	);
 	const detailOnlySections = $derived(
 		detailed ? [] : folder.subfolders.filter((s) => s.detailOnly)
+	);
+
+	// A different cat greets the end of each step; the last one waves goodbye.
+	const STEP_END_POSES = [happy, happyOpenEyes, happyAlt, happyDifferent, happyWaving];
+	const endPose = $derived(
+		nextFolder ? STEP_END_POSES[(step - 1) % STEP_END_POSES.length] : happyOpenEyesWaving
 	);
 
 	/** @param {Item} item */
@@ -44,19 +60,25 @@
 <div class="step-enter w-full bg-background px-5 pt-5 pb-24 font-body text-text-main">
 	<!-- 1. WHERE YOU ARE + THE SHORT / DETAILED SWITCH -->
 	<header class="space-y-3">
-		<div class="flex items-center gap-3">
+		<!-- On step 1 the bar would mostly show how far there is to go, so it appears from step 2. -->
+		<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
 			<p class="text-xs font-black text-primary">
-				{m.journey_step_of({ step, total: stepCount })}
+				{step > 1 ? m.journey_step_of({ step, total: stepCount }) : m.journey_step({ step })}
 			</p>
-			<span class="flex gap-1" aria-hidden="true">
-				{#each { length: stepCount }, i (i)}
-					<span
-						class="h-1.5 w-4 rounded-full {i < step
-							? 'bg-primary'
-							: 'bg-surface-container-highest'}"
-					></span>
-				{/each}
-			</span>
+			{#if step > 1}
+				<span class="flex gap-1" aria-hidden="true">
+					{#each { length: stepCount }, i (i)}
+						<span
+							class="h-1.5 w-4 rounded-full {i < step
+								? 'bg-primary'
+								: 'bg-surface-container-highest'}"
+						></span>
+					{/each}
+				</span>
+			{/if}
+			<p class="text-xs text-text-subtle">
+				{m.reader_minutes({ minutes: detailed ? minutes.detailed : minutes.short })}
+			</p>
 		</div>
 
 		{#if folder.chapter}
@@ -223,6 +245,14 @@
 			<WiredDivider stroke="#1F523D" strokeWidth={1.4} roughness={1.4} />
 		</div>
 
+		<CatMascot
+			autoplay={false}
+			restImg={endPose}
+			sizeClass="h-24 w-24"
+			sizes="64px"
+			class="mx-auto w-fit"
+		/>
+
 		<div class="space-y-1 text-center">
 			{#if nextFolder}
 				<p class="text-[11px] font-bold tracking-wider text-text-subtle uppercase">
@@ -286,10 +316,6 @@
 				{m.reader_back_to_journey()}
 			</a>
 		{/if}
-
-		<p class="pt-2 text-center text-xs leading-relaxed text-text-subtle">
-			{m.reader_disclaimer()}
-		</p>
 	</footer>
 </div>
 

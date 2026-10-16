@@ -71,13 +71,12 @@
 			<WiredButton
 				href={breathingLink}
 				onclick={openBreathing}
-				fill="#FDF0EE"
-				stroke="#D24D48"
+				fill="#EAF2EC"
 				title={m.breathing_btn_title()}
 				class="shrink-0"
 			>
-				<RoughIcon name="spa" size={18} stroke="#D24D48" strokeWidth={1.8} />
-				<span class="font-black tracking-tight text-emergency-red">{m.breathing_btn()}</span>
+				<RoughIcon name="spa" size={18} stroke="#1F523D" strokeWidth={1.8} />
+				<span class="font-black tracking-tight text-primary">{m.breathing_btn()}</span>
 			</WiredButton>
 		</header>
 

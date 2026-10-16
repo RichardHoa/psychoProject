@@ -21,6 +21,8 @@
 		{ label: m.journey_entry_finding(), stepId: 'ai-giup-ban' },
 		{ label: m.journey_entry_in_therapy(), stepId: 'quyen-than-chu' }
 	];
+
+	const totalMinutes = $derived(folders.reduce((sum, folder) => sum + folder.minutes, 0));
 </script>
 
 <div class="fade-in w-full bg-background px-5 pt-6 pb-20 font-body text-text-main select-none">
@@ -32,6 +34,9 @@
 			<WiredDivider stroke="#1F523D" strokeWidth={1.5} roughness={1.5} />
 		</div>
 		<p class="text-sm leading-relaxed text-text-subtle">{m.journey_desc()}</p>
+		<p class="text-xs font-bold text-primary">
+			{m.journey_total_time({ count: folders.length, minutes: totalMinutes })}
+		</p>
 	</header>
 
 	<!-- 1. WHERE ARE YOU? -->
@@ -99,6 +104,9 @@
 									<span class="mt-0.5 line-clamp-2 block text-sm leading-snug text-text-subtle">
 										{folder.summary}
 									</span>
+									<span class="mt-1 block text-xs font-bold text-primary/80">
+										{m.journey_step_minutes({ minutes: folder.minutes })}
+									</span>
 								</span>
 								<RoughIcon name="arrow_forward" size={16} stroke="#5A6561" strokeWidth={1.8} />
 							</span>
@@ -108,4 +116,9 @@
 			{/each}
 		</ol>
 	</section>
+
+	<!-- Said once here rather than at the end of every step. -->
+	<p class="mt-10 text-center text-xs leading-relaxed text-text-subtle">
+		{m.reader_disclaimer()}
+	</p>
 </div>
