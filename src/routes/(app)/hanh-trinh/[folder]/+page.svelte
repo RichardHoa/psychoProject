@@ -28,6 +28,7 @@
 			folder={data.folder}
 			step={data.step}
 			stepCount={data.stepCount}
+			minutes={data.minutes}
 			prevFolder={data.prevFolder}
 			nextFolder={data.nextFolder}
 			backHref={JOURNEY_PATH}
