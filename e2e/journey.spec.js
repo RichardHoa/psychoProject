@@ -84,6 +84,38 @@ test('the journey links to every step, in order', async ({ page, context }, test
 	await expect(page).toHaveURL(/\/hanh-trinh\/quyen-than-chu$/);
 });
 
+// The Landing picker: who you are → what worries you → an answer straight away, then a short
+// Trail through the steps that "next" follows (instead of the Journey's order) to its end.
+test('the Landing picker leads a parent along their Trail', async ({ page, context }, testInfo) => {
+	await passGate(context, testInfo);
+	await page.goto('/trang-chu');
+
+	await click(page.getByRole('link', { name: /Mình là phụ huynh/ }), testInfo);
+	await expect(page).toHaveURL(/\/trang-chu\?ban-la=phu-huynh#ban-la-ai$/);
+	await click(page.getByRole('link', { name: /Con có dấu hiệu khác lạ/ }), testInfo);
+	await expect(page.getByText('Những điều bố mẹ có thể làm ngay hôm nay')).toBeVisible();
+
+	await click(page.getByRole('link', { name: /Bắt đầu lộ trình/ }), testInfo);
+	await expect(page).toHaveURL(/\/hanh-trinh\/ai-giup-ban\?lo-trinh=phu-huynh\.con-khac-la$/);
+	await expect(page.getByText('Lộ trình của bạn · Phần 1 / 3')).toBeVisible();
+	await expect(page.getByText(/Bước \d+ \/ \d+/)).toHaveCount(0);
+
+	// The detailed version stays on the Trail.
+	await click(page.getByRole('link', { name: 'Chi tiết', exact: true }), testInfo);
+	await expect(page).toHaveURL(/che-do=chi-tiet&lo-trinh=phu-huynh\.con-khac-la$/);
+
+	await click(page.getByRole('link', { name: 'Phần tiếp' }), testInfo);
+	await expect(page).toHaveURL(/\/hanh-trinh\/chon-chuyen-gia\?/);
+	await click(page.getByRole('link', { name: 'Phần tiếp' }), testInfo);
+	await expect(page).toHaveURL(/\/hanh-trinh\/ho-tro-chuyen-nghiep\?/);
+	await expect(page.getByText('Bạn đã đi hết lộ trình của mình')).toBeVisible();
+
+	// Leaving the Trail keeps the step, back in the Journey's own order.
+	await click(page.getByRole('link', { name: 'Thoát lộ trình' }), testInfo);
+	await expect(page).toHaveURL(/\/hanh-trinh\/ho-tro-chuyen-nghiep\?che-do=chi-tiet$/);
+	await expect(page.getByText(/Bước 7/).first()).toBeVisible();
+});
+
 test('old step and journey URLs redirect to the Journey page', async ({
 	page,
 	context

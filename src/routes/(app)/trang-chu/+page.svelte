@@ -1,14 +1,16 @@
 <script>
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
+	import ConcernPicker from '$lib/components/ConcernPicker.svelte';
 	import SearchBar from '$lib/components/SearchBar.svelte';
-	import WiredButton from '$lib/components/wired/WiredButton.svelte';
 	import WiredDivider from '$lib/components/wired/WiredDivider.svelte';
 	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
 	import { swipe } from '$lib/gestures/swipe.js';
 	import { m } from '$lib/paraglide/messages.js';
 	import { JOURNEY_PATH, LEGACY_JOURNEY_HASH } from '$lib/routes.js';
 	import { getShell } from '$lib/state/shell.svelte.js';
+
+	let { data } = $props();
 
 	const shell = getShell();
 	// The hint is about swiping, which needs JavaScript, so it only appears once hydrated.
@@ -68,7 +70,7 @@
      "start the journey" link works without it). Swipes starting at the screen edge are left to
      the phone's own back gesture. -->
 <section
-	class="flex min-h-[calc(100dvh-4rem)] w-full flex-col items-center space-y-6 px-5 py-10 pb-20 text-center"
+	class="flex w-full flex-col items-center space-y-6 px-5 py-10 pb-20 text-center"
 	{@attach swipe({
 		threshold: 75,
 		axisRatio: 1.5,
@@ -95,11 +97,8 @@
 			<SearchBar />
 		</div>
 
-		<div class="flex w-full justify-center pt-4">
-			<WiredButton href={JOURNEY_PATH} fill="#EAF2EC" class="px-5 py-2.5 text-sm">
-				<span>{m.home_start_journey()}</span>
-				<RoughIcon name="arrow_forward" size={18} stroke="#1F523D" strokeWidth={1.8} />
-			</WiredButton>
+		<div class="w-full pt-4">
+			<ConcernPicker picker={data.picker} />
 		</div>
 	</div>
 </section>

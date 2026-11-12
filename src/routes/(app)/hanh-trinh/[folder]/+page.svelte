@@ -33,6 +33,7 @@
 			nextFolder={data.nextFolder}
 			backHref={JOURNEY_PATH}
 			detailed={data.detailed}
+			trail={data.trail}
 		/>
 	{/key}
 </div>

@@ -1,6 +1,8 @@
 import { redirect } from '@sveltejs/kit';
 import { folderHref } from '$lib/server/content.js';
 import { JOURNEY_PATH } from '$lib/routes.js';
+import { getPicker } from '$lib/server/trail.js';
+import { CONCERN_PARAM, PERSONA_PARAM } from '$lib/trail.js';
 
 /** @type {import('./$types').PageServerLoad} */
 export function load({ url }) {
@@ -8,4 +10,8 @@ export function load({ url }) {
 	const folder = url.searchParams.get('folder');
 	if (folder) redirect(302, folderHref(folder, url.searchParams.get('sub') ?? undefined));
 	if (url.searchParams.get('slide') === '1') redirect(302, JOURNEY_PATH);
+
+	return {
+		picker: getPicker(url.searchParams.get(PERSONA_PARAM), url.searchParams.get(CONCERN_PARAM))
+	};
 }

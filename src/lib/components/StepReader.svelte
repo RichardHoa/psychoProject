@@ -6,6 +6,9 @@
 	import { readingHref } from '$lib/reading.js';
 	import { stepPath } from '$lib/routes.js';
 	import { m } from '$lib/paraglide/messages.js';
+	import { trailHref } from '$lib/trail.js';
+	import TrailHeader from '$lib/components/TrailHeader.svelte';
+	import TrailFooter from '$lib/components/TrailFooter.svelte';
 	import {
 		happy,
 		happyAlt,
@@ -25,6 +28,8 @@
 	 * content is typography, so nothing that can't be pressed looks pressable.
 	 * Sections and items carry `id`s, so `/hanh-trinh/<step>#<section>` or `#<item anchor>`
 	 * (used by search results) scrolls straight to them and highlights them via `:target`.
+	 * With a `trail`, the page shows the visitor's place on their Trail instead of the Journey's
+	 * order, and "next" follows the Trail.
 	 * @type {{
 	 *   folder: StepPage['folder'],
 	 *   step: number,
@@ -33,10 +38,26 @@
 	 *   prevFolder: StepPage['prevFolder'],
 	 *   nextFolder: StepPage['nextFolder'],
 	 *   backHref: string,
-	 *   detailed: boolean
+	 *   detailed: boolean,
+	 *   trail?: ReturnType<typeof import('$lib/server/trail.js').getTrailPosition>
 	 * }}
 	 */
-	let { folder, step, stepCount, minutes, prevFolder, nextFolder, backHref, detailed } = $props();
+	let {
+		folder,
+		step,
+		stepCount,
+		minutes,
+		prevFolder,
+		nextFolder,
+		backHref,
+		detailed,
+		trail = null
+	} = $props();
+
+	/** This step in the short or detailed version, staying on the Trail if there is one. @param {boolean} d */
+	function modeHref(d) {
+		return trail ? trailHref(folder.id, trail.key, d) : readingHref(stepPath(folder.id), d);
+	}
 
 	const sections = $derived(
 		detailed ? folder.subfolders : folder.subfolders.filter((s) => !s.detailOnly)
@@ -60,12 +81,18 @@
 <div class="step-enter w-full bg-background px-5 pt-5 pb-24 font-body text-text-main">
 	<!-- 1. WHERE YOU ARE + THE SHORT / DETAILED SWITCH -->
 	<header class="space-y-3">
-		<!-- On step 1 the bar would mostly show how far there is to go, so it appears from step 2. -->
+		{#if trail}
+			<TrailHeader {trail} stepId={folder.id} {detailed} />
+		{/if}
+		<!-- On step 1 the bar would mostly show how far there is to go, so it appears from step 2.
+		     On a Trail the Journey's position would only confuse, so just the reading time shows. -->
 		<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-			<p class="text-xs font-black text-primary">
-				{step > 1 ? m.journey_step_of({ step, total: stepCount }) : m.journey_step({ step })}
-			</p>
-			{#if step > 1}
+			{#if !trail}
+				<p class="text-xs font-black text-primary">
+					{step > 1 ? m.journey_step_of({ step, total: stepCount }) : m.journey_step({ step })}
+				</p>
+			{/if}
+			{#if step > 1 && !trail}
 				<span class="flex gap-1" aria-hidden="true">
 					{#each { length: stepCount }, i (i)}
 						<span
@@ -102,7 +129,7 @@
 				{#each [false, true] as isDetailedLink (isDetailedLink)}
 					{@const active = detailed === isDetailedLink}
 					<a
-						href={readingHref(stepPath(folder.id), isDetailedLink)}
+						href={modeHref(isDetailedLink)}
 						aria-current={active ? 'true' : undefined}
 						data-sveltekit-noscroll
 						data-sveltekit-replacestate
@@ -229,7 +256,7 @@
 				})}
 			</p>
 			<a
-				href={readingHref(stepPath(folder.id), true, detailOnlySections[0].id)}
+				href="{modeHref(true)}#{detailOnlySections[0].id}"
 				data-sveltekit-replacestate
 				class="mt-1.5 inline-flex min-h-9 items-center gap-1 text-sm font-black text-primary underline underline-offset-4"
 			>
@@ -253,68 +280,72 @@
 			class="mx-auto w-fit"
 		/>
 
-		<div class="space-y-1 text-center">
-			{#if nextFolder}
-				<p class="text-[11px] font-bold tracking-wider text-text-subtle uppercase">
-					{m.reader_up_next({ step: nextFolder.step })}
-				</p>
-				<p class="text-base font-black text-text-main">{nextFolder.shortTitle}</p>
-				<p class="text-sm text-text-subtle">{nextFolder.nextReason}</p>
-			{:else}
-				<p class="text-base font-black text-text-main">{m.reader_finished_title()}</p>
-				<p class="text-sm text-text-subtle">{m.reader_finished_desc()}</p>
-			{/if}
-		</div>
+		{#if trail}
+			<TrailFooter {trail} {detailed} {nextFolder} />
+		{:else}
+			<div class="space-y-1 text-center">
+				{#if nextFolder}
+					<p class="text-[11px] font-bold tracking-wider text-text-subtle uppercase">
+						{m.reader_up_next({ step: nextFolder.step })}
+					</p>
+					<p class="text-base font-black text-text-main">{nextFolder.shortTitle}</p>
+					<p class="text-sm text-text-subtle">{nextFolder.nextReason}</p>
+				{:else}
+					<p class="text-base font-black text-text-main">{m.reader_finished_title()}</p>
+					<p class="text-sm text-text-subtle">{m.reader_finished_desc()}</p>
+				{/if}
+			</div>
 
-		<div class="flex gap-3">
-			<!-- Moving between steps replaces the history entry, so the phone's back gesture from any
+			<div class="flex gap-3">
+				<!-- Moving between steps replaces the history entry, so the phone's back gesture from any
 			     step returns to where the visitor entered the steps (usually the Journey). -->
-			{#if prevFolder}
-				<div class="contents" data-sveltekit-replacestate>
+				{#if prevFolder}
+					<div class="contents" data-sveltekit-replacestate>
+						<WiredButton
+							href={readingHref(stepPath(prevFolder.id), detailed)}
+							shape="bar"
+							fill="#FFFFFF"
+							class="min-h-11 flex-1 py-2.5"
+						>
+							<RoughIcon name="arrow_back" size={16} stroke="#242B28" strokeWidth={1.8} />
+							<span class="text-sm">{m.reader_prev()}</span>
+						</WiredButton>
+					</div>
+				{/if}
+				{#if nextFolder}
+					<div class="contents" data-sveltekit-replacestate>
+						<WiredButton
+							href={readingHref(stepPath(nextFolder.id), detailed)}
+							shape="bar"
+							seed={2}
+							fill="#EAF2EC"
+							class="min-h-11 flex-1 py-2.5"
+						>
+							<span class="text-sm font-black text-primary">{m.reader_next()}</span>
+							<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
+						</WiredButton>
+					</div>
+				{:else}
 					<WiredButton
-						href={readingHref(stepPath(prevFolder.id), detailed)}
-						shape="bar"
-						fill="#FFFFFF"
-						class="min-h-11 flex-1 py-2.5"
-					>
-						<RoughIcon name="arrow_back" size={16} stroke="#242B28" strokeWidth={1.8} />
-						<span class="text-sm">{m.reader_prev()}</span>
-					</WiredButton>
-				</div>
-			{/if}
-			{#if nextFolder}
-				<div class="contents" data-sveltekit-replacestate>
-					<WiredButton
-						href={readingHref(stepPath(nextFolder.id), detailed)}
+						href={backHref}
 						shape="bar"
 						seed={2}
 						fill="#EAF2EC"
 						class="min-h-11 flex-1 py-2.5"
 					>
-						<span class="text-sm font-black text-primary">{m.reader_next()}</span>
-						<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
+						<span class="text-sm font-black text-primary">{m.reader_back_to_journey()}</span>
 					</WiredButton>
-				</div>
-			{:else}
-				<WiredButton
-					href={backHref}
-					shape="bar"
-					seed={2}
-					fill="#EAF2EC"
-					class="min-h-11 flex-1 py-2.5"
-				>
-					<span class="text-sm font-black text-primary">{m.reader_back_to_journey()}</span>
-				</WiredButton>
-			{/if}
-		</div>
+				{/if}
+			</div>
 
-		{#if nextFolder}
-			<a
-				href={backHref}
-				class="mx-auto flex min-h-10 w-fit items-center text-sm font-bold text-primary underline underline-offset-4"
-			>
-				{m.reader_back_to_journey()}
-			</a>
+			{#if nextFolder}
+				<a
+					href={backHref}
+					class="mx-auto flex min-h-10 w-fit items-center text-sm font-bold text-primary underline underline-offset-4"
+				>
+					{m.reader_back_to_journey()}
+				</a>
+			{/if}
 		{/if}
 	</footer>
 </div>
