@@ -1,4 +1,4 @@
-import { LANDING_PATH } from '$lib/routes.js';
+import { LANDING_PATH } from '$lib/shared/routes.js';
 
 /**
  * One stop on a Trail: a journey step, why it's worth reading, and the section to read first.

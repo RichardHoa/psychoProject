@@ -1,12 +1,12 @@
 <script>
 	import { m } from '$lib/paraglide/messages.js';
-	import { stepHref } from '$lib/reading.js';
+	import { stepHref } from '$lib/journey/reading.js';
 
 	/**
 	 * Top of a step page while following a Trail: where this step sits on the visitor's own Trail
 	 * (instead of "Bước 5 / 7"), the other stops, and the section worth reading first.
 	 * @type {{
-	 *   trail: import('$lib/trail.js').TrailPosition,
+	 *   trail: import('$lib/trail/trail.js').TrailPosition,
 	 *   stepId: string,
 	 *   detailed: boolean
 	 * }}

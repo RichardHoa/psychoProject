@@ -1,8 +1,8 @@
 <script>
-	import BreadcrumbBar from '$lib/components/BreadcrumbBar.svelte';
-	import StepReader from '$lib/components/StepReader.svelte';
+	import BreadcrumbBar from '$lib/ui/BreadcrumbBar.svelte';
+	import StepReader from '$lib/journey/StepReader.svelte';
 	import { m } from '$lib/paraglide/messages.js';
-	import { JOURNEY_PATH } from '$lib/routes.js';
+	import { JOURNEY_PATH } from '$lib/shared/routes.js';
 
 	let { data } = $props();
 

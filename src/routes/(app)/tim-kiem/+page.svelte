@@ -1,6 +1,6 @@
 <script>
 	import { goto } from '$app/navigation';
-	import SearchPanel from '$lib/components/SearchPanel.svelte';
+	import SearchPanel from '$lib/search/SearchPanel.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
 	let { data } = $props();

@@ -1,4 +1,4 @@
-import { breathingReturnPath } from '$lib/breathing.js';
+import { breathingReturnPath } from '$lib/breathing/breathing.js';
 
 /** @type {import('./$types').PageServerLoad} */
 export function load({ url }) {

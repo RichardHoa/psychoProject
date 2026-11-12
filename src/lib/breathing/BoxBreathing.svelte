@@ -1,7 +1,5 @@
 <script>
-	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
-	import RoughRect from '$lib/components/wired/RoughRect.svelte';
-	import WiredButton from '$lib/components/wired/WiredButton.svelte';
+	import { RoughIcon, RoughRect, WiredButton } from '$lib/ui/wired';
 	import { m } from '$lib/paraglide/messages.js';
 
 	/**

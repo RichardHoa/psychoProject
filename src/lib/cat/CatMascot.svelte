@@ -8,7 +8,7 @@
 		happyDifferent,
 		happyWaving,
 		happyOpenEyesWaving
-	} from '$lib/assets/cat/index.js';
+	} from '$lib/cat/index.js';
 
 	/** @typedef {import('vite-imagetools').Picture} Pose */
 

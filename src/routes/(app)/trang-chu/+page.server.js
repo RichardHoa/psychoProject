@@ -1,8 +1,8 @@
 import { redirect } from '@sveltejs/kit';
-import { stepHref } from '$lib/reading.js';
-import { JOURNEY_PATH } from '$lib/routes.js';
+import { stepHref } from '$lib/journey/reading.js';
+import { JOURNEY_PATH } from '$lib/shared/routes.js';
 import { getPicker } from '$lib/server/trail.js';
-import { CONCERN_PARAM, PERSONA_PARAM } from '$lib/trail.js';
+import { CONCERN_PARAM, PERSONA_PARAM } from '$lib/trail/trail.js';
 
 /** @type {import('./$types').PageServerLoad} */
 export function load({ url }) {

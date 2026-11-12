@@ -1,5 +1,5 @@
-import { stepPath } from '$lib/routes.js';
-import { TRAIL_PARAM } from '$lib/trail.js';
+import { stepPath } from '$lib/shared/routes.js';
+import { TRAIL_PARAM } from '$lib/trail/trail.js';
 
 /** Query parameter that switches a step page to its detailed version: `?che-do=chi-tiet`. */
 export const DETAIL_PARAM = 'che-do';

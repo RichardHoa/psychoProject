@@ -1,11 +1,11 @@
 <script>
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
-	import ConcernPicker from '$lib/components/ConcernPicker.svelte';
-	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
+	import ConcernPicker from '$lib/trail/ConcernPicker.svelte';
+	import { RoughIcon } from '$lib/ui/wired';
 	import { swipe } from '$lib/gestures/swipe.js';
 	import { m } from '$lib/paraglide/messages.js';
-	import { JOURNEY_PATH, LEGACY_JOURNEY_HASH } from '$lib/routes.js';
+	import { JOURNEY_PATH, LEGACY_JOURNEY_HASH } from '$lib/shared/routes.js';
 
 	let { data } = $props();
 

@@ -1,21 +1,20 @@
 <script>
 	import { page } from '$app/state';
-	import CatMascot from '$lib/components/CatMascot.svelte';
-	import WiredButton from '$lib/components/wired/WiredButton.svelte';
-	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
-	import { happyWaving } from '$lib/assets/cat/index.js';
-	import { breathingHref } from '$lib/breathing.js';
+	import CatMascot from '$lib/cat/CatMascot.svelte';
+	import { RoughIcon, WiredButton } from '$lib/ui/wired';
+	import { happyWaving } from '$lib/cat/index.js';
+	import { breathingHref } from '$lib/breathing/breathing.js';
 	import { m } from '$lib/paraglide/messages.js';
-	import { stepHref } from '$lib/reading.js';
-	import { JOURNEY_PATH } from '$lib/routes.js';
-	import { PICKER_ANCHOR, pickerHref } from '$lib/trail.js';
+	import { stepHref } from '$lib/journey/reading.js';
+	import { JOURNEY_PATH } from '$lib/shared/routes.js';
+	import { PICKER_ANCHOR, pickerHref } from '$lib/trail/trail.js';
 
 	/**
 	 * The Landing picker: who are you → what's worrying you → a short answer straight away and the
 	 * Trail worth reading next. One question at a time, each answer a plain link (so it works
 	 * without JavaScript and the back gesture steps back a question). The whole Journey is always
 	 * one tap away.
-	 * @type {{ picker: import('$lib/trail.js').Picker }}
+	 * @type {{ picker: import('$lib/trail/trail.js').Picker }}
 	 */
 	let { picker } = $props();
 </script>

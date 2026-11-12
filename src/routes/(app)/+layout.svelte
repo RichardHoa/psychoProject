@@ -1,15 +1,14 @@
 <script>
 	import { page } from '$app/state';
 	import { pushState } from '$app/navigation';
-	import SearchBar from '$lib/components/SearchBar.svelte';
-	import SearchModal from '$lib/components/SearchModal.svelte';
-	import BreathingDialog from '$lib/components/BreathingDialog.svelte';
-	import WiredButton from '$lib/components/wired/WiredButton.svelte';
-	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
-	import CatMascot from '$lib/components/CatMascot.svelte';
+	import SearchBar from '$lib/search/SearchBar.svelte';
+	import SearchModal from '$lib/search/SearchModal.svelte';
+	import BreathingDialog from '$lib/breathing/BreathingDialog.svelte';
+	import { RoughIcon, WiredButton } from '$lib/ui/wired';
+	import CatMascot from '$lib/cat/CatMascot.svelte';
 	import { m } from '$lib/paraglide/messages.js';
-	import { BREATHING_PATH, breathingHref } from '$lib/breathing.js';
-	import { LANDING_PATH } from '$lib/routes.js';
+	import { BREATHING_PATH, breathingHref } from '$lib/breathing/breathing.js';
+	import { LANDING_PATH } from '$lib/shared/routes.js';
 
 	let { children } = $props();
 

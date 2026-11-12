@@ -1,8 +1,8 @@
 <script>
 	import { page } from '$app/state';
-	import CatMascot from '$lib/components/CatMascot.svelte';
+	import CatMascot from '$lib/cat/CatMascot.svelte';
 	import { m } from '$lib/paraglide/messages.js';
-	import { happyAlt } from '$lib/assets/cat/index.js';
+	import { happyAlt } from '$lib/cat/index.js';
 </script>
 
 <svelte:head>

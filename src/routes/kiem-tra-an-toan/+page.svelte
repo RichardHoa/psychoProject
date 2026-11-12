@@ -2,11 +2,11 @@
 	import { onDestroy } from 'svelte';
 	import { enhance } from '$app/forms';
 	import { goto } from '$app/navigation';
-	import CatMascot from '$lib/components/CatMascot.svelte';
-	import WiredButton from '$lib/components/wired/WiredButton.svelte';
+	import CatMascot from '$lib/cat/CatMascot.svelte';
+	import { WiredButton } from '$lib/ui/wired';
 	import { m } from '$lib/paraglide/messages.js';
 	import { HOTLINE_URL } from '$lib/safety/hotlineStatus.js';
-	import { happyAlt, happyDifferent, happyOpenEyes, happyWaving } from '$lib/assets/cat/index.js';
+	import { happyAlt, happyDifferent, happyOpenEyes, happyWaving } from '$lib/cat/index.js';
 
 	let { data, form } = $props();
 

@@ -1,8 +1,8 @@
 import { FOLDERS_DATA } from './folderData.js';
-import { slugify } from '$lib/text.js';
-import { stepHref } from '$lib/reading.js';
-import { JOURNEY_PATH, LANDING_PATH } from '$lib/routes.js';
-import { PICKER_ANCHOR } from '$lib/trail.js';
+import { slugify } from '$lib/shared/text.js';
+import { stepHref } from '$lib/journey/reading.js';
+import { JOURNEY_PATH, LANDING_PATH } from '$lib/shared/routes.js';
+import { PICKER_ANCHOR } from '$lib/trail/trail.js';
 import { m } from '$lib/paraglide/messages.js';
 
 /**
@@ -109,7 +109,7 @@ export function itemAnchor(subfolder, item) {
  * Where a step page sits and where it leads: the Journey's order, or the visitor's Trail when they
  * follow one. Every step link keeps the short/detailed version (and the Trail while on it).
  * @param {StepPage} page
- * @param {import('$lib/trail.js').TrailPosition | null} trail
+ * @param {import('$lib/trail/trail.js').TrailPosition | null} trail
  * @param {boolean} detailed
  * @returns {StepNav}
  */
@@ -159,7 +159,7 @@ function journeyNav({ step, stepCount, prevFolder, nextFolder }, detailed) {
 /**
  * On a Trail the Journey's position is hidden and "next" follows the Trail; the Journey's own next
  * step stays one (subtle) tap away.
- * @param {import('$lib/trail.js').TrailPosition} trail
+ * @param {import('$lib/trail/trail.js').TrailPosition} trail
  * @param {FolderSummary | null} nextFolder
  * @param {boolean} detailed
  */

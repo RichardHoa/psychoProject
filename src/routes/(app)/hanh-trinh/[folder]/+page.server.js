@@ -1,8 +1,8 @@
 import { error } from '@sveltejs/kit';
 import { getFolder, stepNav } from '$lib/server/content.js';
 import { getTrailPosition } from '$lib/server/trail.js';
-import { isDetailed } from '$lib/reading.js';
-import { TRAIL_PARAM } from '$lib/trail.js';
+import { isDetailed } from '$lib/journey/reading.js';
+import { TRAIL_PARAM } from '$lib/trail/trail.js';
 
 /** @type {import('./$types').PageServerLoad} */
 export function load({ params, url }) {

@@ -1,9 +1,9 @@
 <script>
 	import { goto } from '$app/navigation';
-	import JourneyPath from '$lib/components/JourneyPath.svelte';
+	import JourneyPath from '$lib/journey/JourneyPath.svelte';
 	import { swipe } from '$lib/gestures/swipe.js';
 	import { m } from '$lib/paraglide/messages.js';
-	import { LANDING_PATH } from '$lib/routes.js';
+	import { LANDING_PATH } from '$lib/shared/routes.js';
 
 	let { data } = $props();
 </script>

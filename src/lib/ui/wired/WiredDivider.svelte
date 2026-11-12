@@ -1,5 +1,5 @@
 <script>
-	import { roughLine } from '$lib/wired/rough.js';
+	import { roughLine } from './rough.js';
 
 	/**
 	 * @type {{

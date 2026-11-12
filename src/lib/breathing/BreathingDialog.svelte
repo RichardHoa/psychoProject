@@ -1,6 +1,6 @@
 <script>
-	import BoxBreathing from '$lib/components/BoxBreathing.svelte';
-	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
+	import BoxBreathing from '$lib/breathing/BoxBreathing.svelte';
+	import { RoughIcon } from '$lib/ui/wired';
 	import { m } from '$lib/paraglide/messages.js';
 
 	/**

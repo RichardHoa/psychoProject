@@ -1,14 +1,14 @@
 import { FOLDERS_DATA } from './folderData.js';
 import { PERSONAS } from './trailData.js';
 import { readingMinutes } from './content.js';
-import { pickerHref } from '$lib/trail.js';
+import { pickerHref } from '$lib/trail/trail.js';
 
 /**
  * @typedef {import('./trailData.js').TrailStop} StopData
- * @typedef {import('$lib/trail.js').Trail} Trail
- * @typedef {import('$lib/trail.js').TrailStop} TrailStop
- * @typedef {import('$lib/trail.js').TrailPosition} TrailPosition
- * @typedef {import('$lib/trail.js').Picker} Picker
+ * @typedef {import('$lib/trail/trail.js').Trail} Trail
+ * @typedef {import('$lib/trail/trail.js').TrailStop} TrailStop
+ * @typedef {import('$lib/trail/trail.js').TrailPosition} TrailPosition
+ * @typedef {import('$lib/trail/trail.js').Picker} Picker
  */
 
 /** @param {string} personaId @param {string} concernId */

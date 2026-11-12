@@ -1,5 +1,5 @@
 <script>
-	import BoxBreathing from '$lib/components/BoxBreathing.svelte';
+	import BoxBreathing from '$lib/breathing/BoxBreathing.svelte';
 	import { m } from '$lib/paraglide/messages.js';
 
 	let { data } = $props();

@@ -1,5 +1,5 @@
 <script>
-	import { roughRect } from '$lib/wired/rough.js';
+	import { roughRect } from './rough.js';
 
 	/**
 	 * The hand-drawn border + offset shadow behind a Wired* element, rendered as static SVG so it

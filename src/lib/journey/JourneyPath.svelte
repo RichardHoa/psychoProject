@@ -1,12 +1,9 @@
 <script>
-	import CatMascot from '$lib/components/CatMascot.svelte';
-	import WiredCard from '$lib/components/wired/WiredCard.svelte';
-	import WiredButton from '$lib/components/wired/WiredButton.svelte';
-	import WiredDivider from '$lib/components/wired/WiredDivider.svelte';
-	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
-	import { happyWaving } from '$lib/assets/cat/index.js';
+	import CatMascot from '$lib/cat/CatMascot.svelte';
+	import { RoughIcon, WiredButton, WiredCard, WiredDivider } from '$lib/ui/wired';
+	import { happyWaving } from '$lib/cat/index.js';
 	import { m } from '$lib/paraglide/messages.js';
-	import { stepPath } from '$lib/routes.js';
+	import { stepPath } from '$lib/shared/routes.js';
 
 	/**
 	 * The guided journey: "where are you?" shortcuts, then every step in reading order. Each step

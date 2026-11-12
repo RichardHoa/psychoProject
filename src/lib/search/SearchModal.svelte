@@ -1,7 +1,7 @@
 <script>
 	import { preloadData, replaceState } from '$app/navigation';
-	import SearchPanel from '$lib/components/SearchPanel.svelte';
-	import WiredButton from '$lib/components/wired/WiredButton.svelte';
+	import SearchPanel from '$lib/search/SearchPanel.svelte';
+	import { WiredButton } from '$lib/ui/wired';
 	import { m } from '$lib/paraglide/messages.js';
 
 	/**

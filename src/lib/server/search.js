@@ -1,6 +1,6 @@
 import { FOLDERS_DATA } from './folderData.js';
-import { stepHref } from '$lib/reading.js';
-import { foldText } from '$lib/text.js';
+import { stepHref } from '$lib/journey/reading.js';
+import { foldText } from '$lib/shared/text.js';
 
 /**
  * @typedef {{

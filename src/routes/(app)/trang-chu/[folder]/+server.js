@@ -1,5 +1,5 @@
 import { redirect } from '@sveltejs/kit';
-import { stepPath } from '$lib/routes.js';
+import { stepPath } from '$lib/shared/routes.js';
 
 // Step pages used to live under the Landing page. Browsers keep the `#section` across the redirect.
 /** @type {import('./$types').RequestHandler} */

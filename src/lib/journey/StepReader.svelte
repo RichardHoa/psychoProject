@@ -1,10 +1,8 @@
 <script>
-	import CatMascot from '$lib/components/CatMascot.svelte';
-	import WiredButton from '$lib/components/wired/WiredButton.svelte';
-	import WiredDivider from '$lib/components/wired/WiredDivider.svelte';
-	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
+	import CatMascot from '$lib/cat/CatMascot.svelte';
+	import { RoughIcon, WiredButton, WiredDivider } from '$lib/ui/wired';
 	import { m } from '$lib/paraglide/messages.js';
-	import TrailHeader from '$lib/components/TrailHeader.svelte';
+	import TrailHeader from '$lib/trail/TrailHeader.svelte';
 	import {
 		happy,
 		happyAlt,
@@ -12,7 +10,7 @@
 		happyOpenEyes,
 		happyOpenEyesWaving,
 		happyWaving
-	} from '$lib/assets/cat/index.js';
+	} from '$lib/cat/index.js';
 
 	/**
 	 * @typedef {import('$lib/server/content.js').StepPage} StepPage
@@ -32,7 +30,7 @@
 	 *   stepCount: number,
 	 *   minutes: StepPage['minutes'],
 	 *   detailed: boolean,
-	 *   trail: import('$lib/trail.js').TrailPosition | null,
+	 *   trail: import('$lib/trail/trail.js').TrailPosition | null,
 	 *   nav: import('$lib/server/content.js').StepNav
 	 * }}
 	 */

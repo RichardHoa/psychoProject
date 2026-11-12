@@ -9,7 +9,7 @@
 	import '@fontsource/be-vietnam-pro/900.css';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
-	import { slideDirection } from '$lib/transitions.js';
+	import { slideDirection } from '$lib/shared/transitions.js';
 
 	let { children } = $props();
 

@@ -1,7 +1,7 @@
 <script>
 	import { page } from '$app/state';
 	import { preloadData, pushState } from '$app/navigation';
-	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
+	import { RoughIcon } from '$lib/ui/wired';
 	import { m } from '$lib/paraglide/messages.js';
 
 	/** @type {{ placeholder?: string, isCompact?: boolean }} */

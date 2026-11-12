@@ -14,7 +14,7 @@
 	 *   strokeWidth?: number,
 	 *   roughness?: number,
 	 *   bowing?: number,
-	 *   shape?: import('$lib/wired/rough.js').Shape,
+	 *   shape?: import('./rough.js').Shape,
 	 *   seed?: number,
 	 *   class?: string,
 	 *   contentClass?: string,

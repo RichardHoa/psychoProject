@@ -28,7 +28,7 @@ _Avoid_: Simple mode, expanded view
 A hand-drawn border with an offset shadow (Wired card/button) means "this can be pressed". Content is never boxed; only links and buttons get the sketch frame.
 
 **Cat mascot**:
-A recurring illustrated cat character (static PNG poses: happy, waving, etc., under `src/lib/assets/cat/`) used across pages to give the site a warmer, guiding presence. It is a character, not a generic icon.
+A recurring illustrated cat character (static PNG poses: happy, waving, etc., under `src/lib/cat/`) used across pages to give the site a warmer, guiding presence. It is a character, not a generic icon.
 _Avoid_: Cat icon, logo
 
 **Safety check-in gate**:
