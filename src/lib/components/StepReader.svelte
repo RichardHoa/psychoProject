@@ -3,12 +3,8 @@
 	import WiredButton from '$lib/components/wired/WiredButton.svelte';
 	import WiredDivider from '$lib/components/wired/WiredDivider.svelte';
 	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
-	import { readingHref } from '$lib/reading.js';
-	import { stepPath } from '$lib/routes.js';
 	import { m } from '$lib/paraglide/messages.js';
-	import { trailHref } from '$lib/trail.js';
 	import TrailHeader from '$lib/components/TrailHeader.svelte';
-	import TrailFooter from '$lib/components/TrailFooter.svelte';
 	import {
 		happy,
 		happyAlt,
@@ -19,7 +15,7 @@
 	} from '$lib/assets/cat/index.js';
 
 	/**
-	 * @typedef {NonNullable<ReturnType<typeof import('$lib/server/content.js').getFolder>>} StepPage
+	 * @typedef {import('$lib/server/content.js').StepPage} StepPage
 	 * @typedef {StepPage['folder']['subfolders'][number]['items'][number]} Item
 	 */
 
@@ -28,36 +24,19 @@
 	 * content is typography, so nothing that can't be pressed looks pressable.
 	 * Sections and items carry `id`s, so `/hanh-trinh/<step>#<section>` or `#<item anchor>`
 	 * (used by search results) scrolls straight to them and highlights them via `:target`.
-	 * With a `trail`, the page shows the visitor's place on their Trail instead of the Journey's
-	 * order, and "next" follows the Trail.
+	 * Where the step sits and where it leads (the Journey's order or the visitor's Trail) all come
+	 * from `nav`; with a `trail`, the Trail header shows above.
 	 * @type {{
 	 *   folder: StepPage['folder'],
 	 *   step: number,
 	 *   stepCount: number,
 	 *   minutes: StepPage['minutes'],
-	 *   prevFolder: StepPage['prevFolder'],
-	 *   nextFolder: StepPage['nextFolder'],
-	 *   backHref: string,
 	 *   detailed: boolean,
-	 *   trail?: ReturnType<typeof import('$lib/server/trail.js').getTrailPosition>
+	 *   trail: import('$lib/trail.js').TrailPosition | null,
+	 *   nav: import('$lib/server/content.js').StepNav
 	 * }}
 	 */
-	let {
-		folder,
-		step,
-		stepCount,
-		minutes,
-		prevFolder,
-		nextFolder,
-		backHref,
-		detailed,
-		trail = null
-	} = $props();
-
-	/** This step in the short or detailed version, staying on the Trail if there is one. @param {boolean} d */
-	function modeHref(d) {
-		return trail ? trailHref(folder.id, trail.key, d) : readingHref(stepPath(folder.id), d);
-	}
+	let { folder, step, stepCount, minutes, detailed, trail, nav } = $props();
 
 	const sections = $derived(
 		detailed ? folder.subfolders : folder.subfolders.filter((s) => !s.detailOnly)
@@ -69,7 +48,7 @@
 	// A different cat greets the end of each step; the last one waves goodbye.
 	const STEP_END_POSES = [happy, happyOpenEyes, happyAlt, happyDifferent, happyWaving];
 	const endPose = $derived(
-		nextFolder ? STEP_END_POSES[(step - 1) % STEP_END_POSES.length] : happyOpenEyesWaving
+		step < stepCount ? STEP_END_POSES[(step - 1) % STEP_END_POSES.length] : happyOpenEyesWaving
 	);
 
 	/** @param {Item} item */
@@ -87,21 +66,22 @@
 		<!-- On step 1 the bar would mostly show how far there is to go, so it appears from step 2.
 		     On a Trail the Journey's position would only confuse, so just the reading time shows. -->
 		<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-			{#if !trail}
+			{#if nav.position}
+				{@const { step: at, total } = nav.position}
 				<p class="text-xs font-black text-primary">
-					{step > 1 ? m.journey_step_of({ step, total: stepCount }) : m.journey_step({ step })}
+					{at > 1 ? m.journey_step_of({ step: at, total }) : m.journey_step({ step: at })}
 				</p>
-			{/if}
-			{#if step > 1 && !trail}
-				<span class="flex gap-1" aria-hidden="true">
-					{#each { length: stepCount }, i (i)}
-						<span
-							class="h-1.5 w-4 rounded-full {i < step
-								? 'bg-primary'
-								: 'bg-surface-container-highest'}"
-						></span>
-					{/each}
-				</span>
+				{#if at > 1}
+					<span class="flex gap-1" aria-hidden="true">
+						{#each { length: total }, i (i)}
+							<span
+								class="h-1.5 w-4 rounded-full {i < at
+									? 'bg-primary'
+									: 'bg-surface-container-highest'}"
+							></span>
+						{/each}
+					</span>
+				{/if}
 			{/if}
 			<p class="text-xs text-text-subtle">
 				{m.reader_minutes({ minutes: detailed ? minutes.detailed : minutes.short })}
@@ -129,7 +109,7 @@
 				{#each [false, true] as isDetailedLink (isDetailedLink)}
 					{@const active = detailed === isDetailedLink}
 					<a
-						href={modeHref(isDetailedLink)}
+						href={isDetailedLink ? nav.versionHrefs.detailed : nav.versionHrefs.short}
 						aria-current={active ? 'true' : undefined}
 						data-sveltekit-noscroll
 						data-sveltekit-replacestate
@@ -248,7 +228,7 @@
 	{/each}
 
 	<!-- In the short version, say what the detailed one adds instead of hiding it silently. -->
-	{#if detailOnlySections.length > 0}
+	{#if nav.detailOnlyHref}
 		<aside class="mt-10 rounded-2xl bg-warm-cream px-4 py-3.5">
 			<p class="text-sm leading-relaxed text-text-main">
 				{m.reader_more_in_detailed({
@@ -256,7 +236,7 @@
 				})}
 			</p>
 			<a
-				href="{modeHref(true)}#{detailOnlySections[0].id}"
+				href={nav.detailOnlyHref}
 				data-sveltekit-replacestate
 				class="mt-1.5 inline-flex min-h-9 items-center gap-1 text-sm font-black text-primary underline underline-offset-4"
 			>
@@ -280,72 +260,74 @@
 			class="mx-auto w-fit"
 		/>
 
-		{#if trail}
-			<TrailFooter {trail} {detailed} {nextFolder} />
-		{:else}
-			<div class="space-y-1 text-center">
-				{#if nextFolder}
-					<p class="text-[11px] font-bold tracking-wider text-text-subtle uppercase">
-						{m.reader_up_next({ step: nextFolder.step })}
-					</p>
-					<p class="text-base font-black text-text-main">{nextFolder.shortTitle}</p>
-					<p class="text-sm text-text-subtle">{nextFolder.nextReason}</p>
-				{:else}
-					<p class="text-base font-black text-text-main">{m.reader_finished_title()}</p>
-					<p class="text-sm text-text-subtle">{m.reader_finished_desc()}</p>
-				{/if}
-			</div>
+		<div class="space-y-1 text-center">
+			{#if nav.upNext}
+				<p class="text-[11px] font-bold tracking-wider text-text-subtle uppercase">
+					{nav.upNext.caption}
+				</p>
+				<p class="text-base font-black text-text-main">{nav.upNext.title}</p>
+				<p class="text-sm text-text-subtle">{nav.upNext.reason}</p>
+			{:else if nav.finished}
+				<p class="text-base font-black text-text-main">{nav.finished.title}</p>
+				<p class="text-sm text-text-subtle">{nav.finished.description}</p>
+			{/if}
+		</div>
 
-			<div class="flex gap-3">
-				<!-- Moving between steps replaces the history entry, so the phone's back gesture from any
+		<div class="flex gap-3">
+			<!-- Moving between steps replaces the history entry, so the phone's back gesture from any
 			     step returns to where the visitor entered the steps (usually the Journey). -->
-				{#if prevFolder}
-					<div class="contents" data-sveltekit-replacestate>
-						<WiredButton
-							href={readingHref(stepPath(prevFolder.id), detailed)}
-							shape="bar"
-							fill="#FFFFFF"
-							class="min-h-11 flex-1 py-2.5"
-						>
-							<RoughIcon name="arrow_back" size={16} stroke="#242B28" strokeWidth={1.8} />
-							<span class="text-sm">{m.reader_prev()}</span>
-						</WiredButton>
-					</div>
-				{/if}
-				{#if nextFolder}
-					<div class="contents" data-sveltekit-replacestate>
-						<WiredButton
-							href={readingHref(stepPath(nextFolder.id), detailed)}
-							shape="bar"
-							seed={2}
-							fill="#EAF2EC"
-							class="min-h-11 flex-1 py-2.5"
-						>
-							<span class="text-sm font-black text-primary">{m.reader_next()}</span>
-							<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
-						</WiredButton>
-					</div>
-				{:else}
+			{#if nav.prev}
+				<div class="contents" data-sveltekit-replacestate>
 					<WiredButton
-						href={backHref}
+						href={nav.prev.href}
+						shape="bar"
+						fill="#FFFFFF"
+						class="min-h-11 flex-1 py-2.5"
+					>
+						<RoughIcon name="arrow_back" size={16} stroke="#242B28" strokeWidth={1.8} />
+						<span class="text-sm">{nav.prev.label}</span>
+					</WiredButton>
+				</div>
+			{/if}
+			{#if nav.next}
+				<div class="contents" data-sveltekit-replacestate>
+					<WiredButton
+						href={nav.next.href}
 						shape="bar"
 						seed={2}
 						fill="#EAF2EC"
 						class="min-h-11 flex-1 py-2.5"
 					>
-						<span class="text-sm font-black text-primary">{m.reader_back_to_journey()}</span>
+						<span class="text-sm font-black text-primary">{nav.next.label}</span>
+						<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
 					</WiredButton>
-				{/if}
-			</div>
-
-			{#if nextFolder}
-				<a
-					href={backHref}
-					class="mx-auto flex min-h-10 w-fit items-center text-sm font-bold text-primary underline underline-offset-4"
+				</div>
+			{:else}
+				<WiredButton
+					href={nav.end.href}
+					shape="bar"
+					seed={2}
+					fill="#EAF2EC"
+					class="min-h-11 flex-1 py-2.5"
 				>
-					{m.reader_back_to_journey()}
-				</a>
+					<span class="text-sm font-black text-primary">{nav.end.label}</span>
+				</WiredButton>
 			{/if}
+		</div>
+
+		{#if nav.links.length > 0}
+			<div class="space-y-1 text-center">
+				{#each nav.links as link (link.href)}
+					<a
+						href={link.href}
+						class="mx-auto flex min-h-10 w-fit items-center underline underline-offset-4 {link.prominent
+							? 'text-sm font-bold text-primary'
+							: 'text-xs text-text-subtle hover:text-primary'}"
+					>
+						{link.label}
+					</a>
+				{/each}
+			</div>
 		{/if}
 	</footer>
 </div>

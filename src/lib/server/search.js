@@ -1,5 +1,5 @@
 import { FOLDERS_DATA } from './folderData.js';
-import { folderHref } from './content.js';
+import { stepHref } from '$lib/reading.js';
 import { foldText } from '$lib/text.js';
 
 /**
@@ -23,7 +23,7 @@ const INDEX = FOLDERS_DATA.map((folder, index) =>
 			title: folder.title,
 			desc: folder.summary,
 			category: `Bước ${index + 1}`,
-			href: folderHref(folder.id)
+			href: stepHref(folder.id)
 		},
 		folder.shortTitle
 	)

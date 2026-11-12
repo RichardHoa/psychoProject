@@ -29,11 +29,9 @@
 			step={data.step}
 			stepCount={data.stepCount}
 			minutes={data.minutes}
-			prevFolder={data.prevFolder}
-			nextFolder={data.nextFolder}
-			backHref={JOURNEY_PATH}
 			detailed={data.detailed}
 			trail={data.trail}
+			nav={data.nav}
 		/>
 	{/key}
 </div>

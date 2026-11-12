@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it, vi } from 'vitest';
 import { FOLDERS_DATA } from './folderData.js';
 import { PERSONAS } from './trailData.js';
 import { getPicker, getTrailPosition } from './trail.js';
@@ -33,34 +33,84 @@ describe('trail content', () => {
 	});
 });
 
+describe('loading the Trails', () => {
+	afterEach(() => {
+		vi.doUnmock('./trailData.js');
+		vi.resetModules();
+	});
+
+	/** @param {{ step: string, section?: string }} stop */
+	async function loadWithStop(stop) {
+		vi.resetModules();
+		vi.doMock('./trailData.js', () => ({
+			PERSONAS: [
+				{
+					id: 'p',
+					label: '',
+					hint: '',
+					concernPrompt: '',
+					concerns: [
+						{
+							id: 'c',
+							label: '',
+							question: '',
+							takeaway: { title: '', points: [] },
+							stops: [{ ...stop, title: '', why: '' }]
+						}
+					]
+				}
+			]
+		}));
+		return import('./trail.js');
+	}
+
+	it('throws when a stop names an unknown step', async () => {
+		await expect(loadWithStop({ step: 'nowhere' })).rejects.toThrow(/nowhere/);
+	});
+
+	it('throws when a stop names an unknown section', async () => {
+		await expect(loadWithStop({ step: 'bao-mat', section: 'nowhere' })).rejects.toThrow(/nowhere/);
+	});
+});
+
 describe('getPicker', () => {
 	it('starts by asking who the visitor is', () => {
 		const picker = getPicker(null, null);
+		expect(picker.stage).toBe('persona');
+		if (picker.stage !== 'persona') return;
 		expect(picker.personas.map((p) => p.id)).toEqual(['hoc-sinh', 'phu-huynh', 'da-biet']);
-		expect(picker.persona).toBeNull();
-		expect(picker.concern).toBeNull();
+		expect(picker).not.toHaveProperty('backHref');
 	});
 
-	it('then lists that persona’s concerns', () => {
+	it('then lists that persona’s concerns, going back to the first question', () => {
 		const picker = getPicker('phu-huynh', null);
-		expect(picker.persona?.concerns.map((c) => c.id)).toContain('con-khac-la');
-		expect(picker.concern).toBeNull();
+		expect(picker.stage).toBe('concern');
+		if (picker.stage !== 'concern') return;
+		expect(picker.persona.id).toBe('phu-huynh');
+		expect(picker.concerns.map((c) => c.id)).toContain('con-khac-la');
+		expect(picker.backHref).toBe('/trang-chu#ban-la-ai');
 	});
 
-	it('then gives the answer and the Trail, with section titles and reading time filled in', () => {
-		const { concern } = getPicker('phu-huynh', 'con-khac-la');
-		expect(concern?.trail.key).toBe('phu-huynh.con-khac-la');
-		expect(concern?.trail.stops[0]).toMatchObject({
+	it('then gives the answer and the Trail, going back to the persona’s concerns', () => {
+		const picker = getPicker('phu-huynh', 'con-khac-la');
+		expect(picker.stage).toBe('answer');
+		if (picker.stage !== 'answer') return;
+		expect(picker.backHref).toBe('/trang-chu?ban-la=phu-huynh#ban-la-ai');
+		expect(picker.trail.key).toBe('phu-huynh.con-khac-la');
+		expect(picker.trail.stops[0]).toMatchObject({
 			step: 'ai-giup-ban',
-			sectionTitle: '4 vai trò thường gặp'
+			section: { id: 'bon-vai-tro', title: '4 vai trò thường gặp' }
 		});
-		const minutes = concern?.trail.stops.reduce((sum, s) => sum + s.minutes, 0);
-		expect(concern?.trail.minutes).toBe(minutes);
+		const minutes = picker.trail.stops.reduce((sum, s) => sum + s.minutes, 0);
+		expect(picker.trail.minutes).toBe(minutes);
 	});
 
-	it('ignores unknown or mismatched ids', () => {
-		expect(getPicker('nobody', 'con-khac-la').persona).toBeNull();
-		expect(getPicker('hoc-sinh', 'con-khac-la').concern).toBeNull();
+	it('falls back to the earliest valid stage for unknown or mismatched ids', () => {
+		expect(getPicker('nobody', 'con-khac-la').stage).toBe('persona');
+		const mismatched = getPicker('hoc-sinh', 'con-khac-la');
+		expect(mismatched.stage).toBe('concern');
+		if (mismatched.stage !== 'concern') return;
+		expect(mismatched.persona.id).toBe('hoc-sinh');
 	});
 });
 

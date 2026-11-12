@@ -1,14 +1,12 @@
 <script>
 	import { m } from '$lib/paraglide/messages.js';
-	import { readingHref } from '$lib/reading.js';
-	import { stepPath } from '$lib/routes.js';
-	import { trailHref } from '$lib/trail.js';
+	import { stepHref } from '$lib/reading.js';
 
 	/**
 	 * Top of a step page while following a Trail: where this step sits on the visitor's own Trail
 	 * (instead of "Bước 5 / 7"), the other stops, and the section worth reading first.
 	 * @type {{
-	 *   trail: NonNullable<ReturnType<typeof import('$lib/server/trail.js').getTrailPosition>>,
+	 *   trail: import('$lib/trail.js').TrailPosition,
 	 *   stepId: string,
 	 *   detailed: boolean
 	 * }}
@@ -25,7 +23,7 @@
 		</p>
 		<!-- Leaving keeps the visitor on this step, just back in the Journey's own order. -->
 		<a
-			href={readingHref(stepPath(stepId), detailed)}
+			href={stepHref(stepId, { detailed })}
 			class="shrink-0 text-xs text-text-subtle underline underline-offset-4 hover:text-primary"
 		>
 			{m.trail_leave()}
@@ -50,7 +48,7 @@
 					<span class="font-black" aria-current="step">{s.title}</span>
 				{:else}
 					<a
-						href={trailHref(s.step, trail.key, detailed)}
+						href={stepHref(s.step, { detailed, trail: trail.key })}
 						data-sveltekit-replacestate
 						class="text-text-subtle underline underline-offset-4 hover:text-primary">{s.title}</a
 					>
@@ -59,12 +57,12 @@
 		{/each}
 	</ol>
 
-	{#if stop.section && stop.sectionTitle}
+	{#if stop.section}
 		<a
-			href="#{stop.section}"
+			href="#{stop.section.id}"
 			class="inline-flex min-h-10 items-center text-sm font-bold text-primary underline underline-offset-4"
 		>
-			{m.trail_read_section({ section: stop.sectionTitle })} ↓
+			{m.trail_read_section({ section: stop.section.title })} ↓
 		</a>
 	{/if}
 </div>

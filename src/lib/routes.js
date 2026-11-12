@@ -1,4 +1,4 @@
-/** The Landing page: the hero, where the navbar's cat mascot always leads. */
+/** The Landing page: the Landing picker, where the navbar's cat mascot always leads. */
 export const LANDING_PATH = '/trang-chu';
 /** The Journey page, listing every step; each step page sits under it. */
 export const JOURNEY_PATH = '/hanh-trinh';

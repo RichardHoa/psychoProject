@@ -106,6 +106,15 @@ test('the Landing picker leads a parent along their Trail', async ({ page, conte
 
 	await click(page.getByRole('link', { name: 'Phần tiếp' }), testInfo);
 	await expect(page).toHaveURL(/\/hanh-trinh\/chon-chuyen-gia\?/);
+	// "Back" follows the Trail too; the Journey's own next step stays one tap away.
+	await expect(page.getByRole('link', { name: 'Phần trước' })).toHaveAttribute(
+		'href',
+		'/hanh-trinh/ai-giup-ban?che-do=chi-tiet&lo-trinh=phu-huynh.con-khac-la'
+	);
+	await expect(page.getByRole('link', { name: /Hoặc đọc theo thứ tự: Bước 7/ })).toHaveAttribute(
+		'href',
+		'/hanh-trinh/ho-tro-chuyen-nghiep?che-do=chi-tiet'
+	);
 	await click(page.getByRole('link', { name: 'Phần tiếp' }), testInfo);
 	await expect(page).toHaveURL(/\/hanh-trinh\/ho-tro-chuyen-nghiep\?/);
 	await expect(page.getByText('Bạn đã đi hết lộ trình của mình')).toBeVisible();

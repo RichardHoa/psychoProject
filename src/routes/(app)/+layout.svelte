@@ -60,9 +60,7 @@
 
 				<div class="xs:max-w-[180px] max-w-[150px] flex-1 sm:max-w-[220px]">
 					{#if showNavSearch}
-						<div class="fade-in">
-							<SearchBar isCompact={true} placeholder={m.nav_search_placeholder()} />
-						</div>
+						<SearchBar isCompact={true} placeholder={m.nav_search_placeholder()} />
 					{/if}
 				</div>
 

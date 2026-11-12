@@ -6,32 +6,53 @@
 	import { happyWaving } from '$lib/assets/cat/index.js';
 	import { breathingHref } from '$lib/breathing.js';
 	import { m } from '$lib/paraglide/messages.js';
-	import { JOURNEY_PATH, LANDING_PATH } from '$lib/routes.js';
-	import { CONCERN_PARAM, PERSONA_PARAM, PICKER_ANCHOR, trailHref } from '$lib/trail.js';
+	import { stepHref } from '$lib/reading.js';
+	import { JOURNEY_PATH } from '$lib/routes.js';
+	import { PICKER_ANCHOR, pickerHref } from '$lib/trail.js';
 
 	/**
 	 * The Landing picker: who are you → what's worrying you → a short answer straight away and the
 	 * Trail worth reading next. One question at a time, each answer a plain link (so it works
 	 * without JavaScript and the back gesture steps back a question). The whole Journey is always
 	 * one tap away.
-	 * @type {{ picker: ReturnType<typeof import('$lib/server/trail.js').getPicker> }}
+	 * @type {{ picker: import('$lib/trail.js').Picker }}
 	 */
 	let { picker } = $props();
-
-	/** @param {string} [personaId] @param {string} [concernId] */
-	function pickerHref(personaId, concernId) {
-		const params = new URLSearchParams();
-		if (personaId) params.set(PERSONA_PARAM, personaId);
-		if (concernId) params.set(CONCERN_PARAM, concernId);
-		const query = params.size ? `?${params}` : '';
-		return `${LANDING_PATH}${query}#${PICKER_ANCHOR}`;
-	}
 </script>
 
+<!-- One answer to the current question; the seed keeps each row's hand-drawn shape. -->
+{#snippet choiceRow(
+	/** @type {string} */ href,
+	/** @type {number} */ seed,
+	/** @type {string} */ label,
+	/** @type {string | undefined} */ hint = undefined
+)}
+	<li>
+		<WiredButton
+			{href}
+			shape="bar"
+			fill="#FFFFFF"
+			{seed}
+			class="min-h-14 w-full px-5 py-3"
+			contentClass="w-full"
+		>
+			{#if hint}
+				<span class="min-w-0 flex-1 text-left">
+					<span class="block text-base font-bold">{label}</span>
+					<span class="block text-xs font-medium text-text-subtle">{hint}</span>
+				</span>
+			{:else}
+				<span class="min-w-0 flex-1 text-left text-sm font-bold">{label}</span>
+			{/if}
+			<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
+		</WiredButton>
+	</li>
+{/snippet}
+
 <section id={PICKER_ANCHOR} class="w-full scroll-mt-4 space-y-4 text-left" aria-live="polite">
-	{#if picker.persona}
+	{#if picker.stage !== 'persona'}
 		<a
-			href={pickerHref(picker.concern ? picker.persona.id : undefined)}
+			href={picker.backHref}
 			class="inline-flex min-h-10 items-center gap-1 text-sm font-bold text-text-subtle hover:text-primary"
 		>
 			<RoughIcon name="arrow_back" size={16} stroke="#5A6561" strokeWidth={1.8} />
@@ -39,7 +60,7 @@
 		</a>
 	{/if}
 
-	{#if !picker.persona}
+	{#if picker.stage === 'persona'}
 		<div class="flex flex-col items-center pb-2 text-center">
 			<CatMascot autoplay={false} restImg={happyWaving} sizeClass="h-24 w-24" sizes="72px" />
 			<h1 class="text-3xl leading-tight font-black tracking-tight">{m.picker_title()}</h1>
@@ -47,45 +68,18 @@
 		</div>
 		<ul class="space-y-3">
 			{#each picker.personas as persona, i (persona.id)}
-				<li>
-					<WiredButton
-						href={pickerHref(persona.id)}
-						shape="bar"
-						fill="#FFFFFF"
-						seed={i + 5}
-						class="min-h-14 w-full px-5 py-3"
-						contentClass="w-full"
-					>
-						<span class="min-w-0 flex-1 text-left">
-							<span class="block text-base font-bold">{persona.label}</span>
-							<span class="block text-xs font-medium text-text-subtle">{persona.hint}</span>
-						</span>
-						<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
-					</WiredButton>
-				</li>
+				{@render choiceRow(pickerHref(persona.id), i + 5, persona.label, persona.hint)}
 			{/each}
 		</ul>
-	{:else if !picker.concern}
+	{:else if picker.stage === 'concern'}
 		<h2 class="text-xl font-black">{picker.persona.concernPrompt}</h2>
 		<ul class="space-y-3">
-			{#each picker.persona.concerns as concern, i (concern.id)}
-				<li>
-					<WiredButton
-						href={pickerHref(picker.persona.id, concern.id)}
-						shape="bar"
-						fill="#FFFFFF"
-						seed={i + 8}
-						class="min-h-14 w-full px-5 py-3"
-						contentClass="w-full"
-					>
-						<span class="min-w-0 flex-1 text-left text-sm font-bold">{concern.label}</span>
-						<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
-					</WiredButton>
-				</li>
+			{#each picker.concerns as concern, i (concern.id)}
+				{@render choiceRow(pickerHref(picker.persona.id, concern.id), i + 8, concern.label)}
 			{/each}
 		</ul>
 	{:else}
-		{@const { takeaway, trail, breathing } = picker.concern}
+		{@const { takeaway, trail, breathing } = picker}
 		<div>
 			<h2 class="text-lg leading-snug font-black text-balance">{takeaway.title}</h2>
 			<ul class="mt-2 space-y-1.5 text-sm leading-relaxed">
@@ -126,7 +120,7 @@
 		</div>
 
 		<WiredButton
-			href={trailHref(trail.stops[0].step, trail.key, false)}
+			href={stepHref(trail.stops[0].step, { trail: trail.key })}
 			fill="#EAF2EC"
 			class="w-full px-5 py-2.5 text-sm"
 		>
