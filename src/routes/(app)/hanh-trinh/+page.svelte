@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import JourneyPath from '$lib/journey/JourneyPath.svelte';
 	import { swipe } from '$lib/gestures/swipe.js';
@@ -21,7 +22,7 @@
 		axisRatio: 1.5,
 		edgeMargin: 24,
 		onSwipe: (direction) => {
-			if (direction === 'right') goto(LANDING_PATH);
+			if (direction === 'right') goto(resolve(LANDING_PATH));
 		}
 	})}
 >

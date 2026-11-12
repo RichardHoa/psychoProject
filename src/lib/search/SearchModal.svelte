@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import { preloadData, replaceState } from '$app/navigation';
 	import SearchPanel from '$lib/search/SearchPanel.svelte';
 	import { WiredButton } from '$lib/ui/wired';
@@ -16,7 +17,7 @@
 	/** @param {string} query */
 	async function runQuery(query) {
 		const request = ++latestRequest;
-		const url = query ? `/tim-kiem?q=${encodeURIComponent(query)}` : '/tim-kiem';
+		const url = query ? resolve(`/tim-kiem?q=${encodeURIComponent(query)}`) : resolve('/tim-kiem');
 		let result;
 		try {
 			result = await preloadData(url);
@@ -69,11 +70,11 @@
 		/>
 
 		<div
-			class="border-t-1.5 border-sketch-border flex items-center justify-between bg-surface-container-low p-3 px-4 text-xs text-text-subtle"
+			class="flex items-center justify-between border-t-[1.5px] border-sketch-border bg-surface-container-low p-3 px-4 text-xs text-text-subtle"
 		>
 			<span>
 				<kbd
-					class="border-sketch-border rounded-md border bg-white px-1.5 py-0.5 font-mono text-[10px] font-bold"
+					class="rounded-md border border-sketch-border bg-white px-1.5 py-0.5 font-mono text-[0.625rem] font-bold"
 					>ESC</kbd
 				>
 				{m.search_esc_hint()}

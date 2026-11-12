@@ -17,6 +17,7 @@ export function isDetailed(url) {
  * without JavaScript.
  * @param {string} stepId
  * @param {{ detailed?: boolean, trail?: string, hash?: string }} [options]
+ * @returns {import('$lib/shared/routes.js').AppPath}
  */
 export function stepHref(stepId, { detailed = false, trail, hash } = {}) {
 	const params = new URLSearchParams();

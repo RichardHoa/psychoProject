@@ -1,17 +1,25 @@
+@layer theme, base, components, utilities;
+
 @import 'tailwindcss';
 
 @theme {
-	--font-body: 'Be Vietnam Pro', sans-serif;
-	--font-headline: 'Be Vietnam Pro', sans-serif;
-	--font-sans: 'Be Vietnam Pro', sans-serif;
+	--font-body:
+		'Be Vietnam Pro', 'Be Vietnam Pro Fallback', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+		Roboto, sans-serif;
+	--font-headline: var(--font-body);
+	--font-sans: var(--font-body);
+
+	/* Narrow phones stay on the base styles; most current phones (≥ 400px) get `xs:`. */
+	--breakpoint-xs: 25rem;
 
 	/* Warm Hand-Drawn Paper Palette */
+	--color-backdrop: #ede8df;
 	--color-background: #faf8f5;
 	--color-background-soft: #f4efea;
 	--color-primary: #1f523d;
 	--color-primary-light: #2d6e54;
 	--color-primary-container: #e4efe8;
-	--color-surface: #ffffff;
+	--color-surface: #faf8f5;
 	--color-surface-variant: #e6dfd5;
 	--color-surface-off-white: #fcfbf9;
 	--color-surface-container-low: #f7f4ef;
@@ -21,7 +29,8 @@
 	--color-warm-sage: #e8f0ea;
 	--color-warm-terracotta: #faece9;
 	--color-warm-amber: #fef6e4;
-	--color-emergency-red: #d24d48;
+	/* Darkest light surface it sits on is #fce8e6: 4.65:1, and white text on it is 5.48:1. */
+	--color-emergency-red: #b8403b;
 	--color-text-main: #242b28;
 	--color-text-subtle: #5c6662;
 	--color-on-primary-container: #123627;
@@ -33,6 +42,8 @@
 	--color-tertiary-container: #f6e2dc;
 	--color-outline: #7d8884;
 	--color-outline-sketch: #242b28;
+	--color-sketch-border: #242b28;
+	--color-scrollbar-thumb: #d5ccc0;
 	--color-secondary-container: #e5ebe6;
 
 	--spacing-gutter: 24px;
@@ -40,105 +51,187 @@
 	--spacing-container-max: 1200px;
 }
 
-:root {
-	--color-primary: #1f523d;
-	--color-primary-light: #2d6e54;
-	--color-surface: #faf8f5;
-	--color-surface-low: #f4efea;
-	--color-surface-variant: #e6dfd5;
-	--color-surface-off-white: #fcfbf9;
-	--color-warm-cream: #faf4e8;
-	--color-emergency-red: #d24d48;
-	--color-text-main: #242b28;
-	--color-text-subtle: #5c6662;
-	--sketch-border: #242b28;
+/* Arial resized to Be Vietnam Pro's metrics (frequency-weighted glyph width and ascent/descent
+   from the 400 latin file), so the swap to the web font barely shifts the layout. */
+@font-face {
+	font-family: 'Be Vietnam Pro Fallback';
+	src: local('Arial'), local('ArialMT');
+	size-adjust: 110.29%;
+	ascent-override: 90.67%;
+	descent-override: 24.03%;
+	line-gap-override: 0%;
 }
 
-html {
-	font-size: 16px;
-	background-color: #ede8df;
-}
+@layer base {
+	:root {
+		color-scheme: light;
+	}
 
-body {
-	font-size: 1rem;
-	font-family:
-		'Be Vietnam Pro',
-		-apple-system,
-		BlinkMacSystemFont,
-		'Segoe UI',
-		Roboto,
-		sans-serif;
-	background-color: var(--color-surface);
-	color: var(--color-text-main);
-	overflow-x: hidden;
-}
+	html {
+		background-color: var(--color-backdrop);
+		/* Anchor jumps land below the sticky navbar (4rem) and a step page's breadcrumb bar. */
+		scroll-padding-block-start: 7rem;
+	}
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
-.font-headline {
-	font-family:
-		'Be Vietnam Pro',
-		-apple-system,
-		BlinkMacSystemFont,
-		sans-serif;
-	letter-spacing: -0.015em;
+	body {
+		font-size: 1rem;
+		font-family: var(--font-body);
+		background-color: var(--color-surface);
+		color: var(--color-text-main);
+		overflow-x: hidden;
+	}
+
+	h1,
+	h2,
+	h3,
+	h4,
+	h5,
+	h6 {
+		font-family: var(--font-headline);
+		letter-spacing: -0.015em;
+	}
+
+	/* One focus ring for everything interactive; zero specificity, so a component can restyle it. */
+	:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+		outline: 2px solid var(--color-primary);
+		outline-offset: 2px;
+	}
+
+	/* Custom Scrollbar */
+	::-webkit-scrollbar {
+		width: 6px;
+		height: 6px;
+	}
+	::-webkit-scrollbar-track {
+		background: var(--color-warm-cream);
+		border-radius: 4px;
+	}
+	::-webkit-scrollbar-thumb {
+		background: var(--color-scrollbar-thumb);
+		border-radius: 4px;
+		border: 1px solid var(--color-sketch-border);
+	}
+	::-webkit-scrollbar-thumb:hover {
+		background: var(--color-primary);
+	}
 }
 
 /* Wired.js / Hand-Drawn Sketch Utility Styles */
 @layer components {
 	.sketch-card {
+		--sketch-shadow: color-mix(in srgb, var(--color-sketch-border) 90%, transparent);
 		position: relative;
-		background-color: #ffffff;
-		border: 1.5px solid var(--sketch-border);
-		box-shadow: 2px 3px 0px rgba(36, 43, 40, 0.9);
-		transition: all 0.15s ease-out;
+		background-color: var(--color-white, #fff);
+		border: 1.5px solid var(--color-sketch-border);
+		box-shadow: 2px 3px 0px var(--sketch-shadow);
+		transition:
+			transform 0.15s ease-out,
+			box-shadow 0.15s ease-out;
 	}
 
 	.sketch-card:hover {
 		transform: translate(-1px, -1px);
-		box-shadow: 3px 4px 0px rgba(36, 43, 40, 0.9);
+		box-shadow: 3px 4px 0px var(--sketch-shadow);
 	}
 
 	.sketch-card:active {
 		transform: translate(1px, 1px);
-		box-shadow: 1px 1px 0px rgba(36, 43, 40, 0.9);
+		box-shadow: 1px 1px 0px var(--sketch-shadow);
 	}
 
 	.sketch-button {
+		--sketch-shadow: color-mix(in srgb, var(--color-sketch-border) 90%, transparent);
 		position: relative;
-		border: 1.5px solid var(--sketch-border);
-		box-shadow: 2px 2px 0px rgba(36, 43, 40, 0.9);
-		transition: all 0.12s ease-out;
+		border: 1.5px solid var(--color-sketch-border);
+		box-shadow: 2px 2px 0px var(--sketch-shadow);
+		transition:
+			transform 0.12s ease-out,
+			box-shadow 0.12s ease-out;
 		cursor: pointer;
 	}
 
 	.sketch-button:hover {
 		transform: translate(-1px, -1px);
-		box-shadow: 3px 3px 0px rgba(36, 43, 40, 0.9);
+		box-shadow: 3px 3px 0px var(--sketch-shadow);
 	}
 
 	.sketch-button:active {
 		transform: translate(1.5px, 1.5px);
-		box-shadow: 0.5px 0.5px 0px rgba(36, 43, 40, 0.9);
+		box-shadow: 0.5px 0.5px 0px var(--sketch-shadow);
 	}
 
 	.sketch-pill {
-		border: 1.5px solid var(--sketch-border);
-		box-shadow: 1.5px 1.5px 0px rgba(36, 43, 40, 0.85);
+		border: 1.5px solid var(--color-sketch-border);
+		box-shadow: 1.5px 1.5px 0px color-mix(in srgb, var(--color-sketch-border) 85%, transparent);
 	}
-}
 
-/* Animations */
-.fade-in {
-	animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-}
+	/* Animations */
+	.fade-in {
+		animation: fadeIn 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	}
 
-.slide-up {
-	animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	.slide-up {
+		animation: slideUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+	}
+
+	/* Hand-drawn Wired* borders: static SVG from the server (see $lib/ui/wired/rough.js), stretched
+	   over the element. Hover/press only nudge the shadow layer, so no redraw is ever needed. */
+	.wired-shadow,
+	.wired-box {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		overflow: visible;
+		pointer-events: none;
+	}
+
+	.wired-shadow {
+		translate: 2px 2px;
+		transition: translate 0.12s ease-out;
+	}
+
+	.wired-card > .wired-shadow {
+		translate: 3px 3px;
+	}
+
+	@media (hover: hover) {
+		.wired-button:hover > .wired-shadow {
+			translate: 3px 3px;
+		}
+	}
+
+	.wired-button:active > .wired-shadow {
+		translate: 1px 1px;
+	}
+
+	.wired-button:active > .wired-content {
+		translate: 1px 1px;
+	}
+
+	/* Modal Overlay */
+	.modal-backdrop {
+		background-color: color-mix(in srgb, var(--color-sketch-border) 60%, transparent);
+		backdrop-filter: blur(4px);
+	}
+
+	/* Deep-linked section or item (from search results / shared links). */
+	.anchor-target {
+		scroll-margin-block-start: 1rem;
+	}
+
+	.anchor-target:target {
+		outline: 2.5px dashed var(--color-primary);
+		outline-offset: 4px;
+		border-radius: 1rem;
+	}
+
+	/* The hover/press nudges stay (1–2px feedback); the travelling entrance becomes a fade. */
+	@media (prefers-reduced-motion: reduce) {
+		.slide-up {
+			animation-name: fadeIn;
+		}
+	}
 }
 
 @keyframes fadeIn {
@@ -161,65 +254,6 @@ h6,
 	}
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-	width: 6px;
-	height: 6px;
-}
-::-webkit-scrollbar-track {
-	background: #faf4e8;
-	border-radius: 4px;
-}
-::-webkit-scrollbar-thumb {
-	background: #d5ccc0;
-	border-radius: 4px;
-	border: 1px solid #242b28;
-}
-::-webkit-scrollbar-thumb:hover {
-	background: #1f523d;
-}
-
-/* Hand-drawn Wired* borders: static SVG from the server (see $lib/ui/wired/rough.js), stretched over
-   the element. Hover/press only nudge the shadow layer, so no redraw is ever needed. */
-.wired-shadow,
-.wired-box {
-	position: absolute;
-	inset: 0;
-	width: 100%;
-	height: 100%;
-	overflow: visible;
-	pointer-events: none;
-}
-
-.wired-shadow {
-	translate: 2px 2px;
-	transition: translate 0.12s ease-out;
-}
-
-.wired-card > .wired-shadow {
-	translate: 3px 3px;
-}
-
-@media (hover: hover) {
-	.wired-button:hover > .wired-shadow {
-		translate: 3px 3px;
-	}
-}
-
-.wired-button:active > .wired-shadow {
-	translate: 1px 1px;
-}
-
-.wired-button:active > .wired-content {
-	translate: 1px 1px;
-}
-
-/* Modal Overlay */
-.modal-backdrop {
-	background-color: rgba(36, 43, 40, 0.6);
-	backdrop-filter: blur(4px);
-}
-
 /* Cross-document view transitions: full page loads (including with JavaScript off) cross-fade
    in supporting browsers. Client-side navigations use onNavigate in +layout.svelte. */
 @view-transition {
@@ -233,25 +267,28 @@ h6,
 }
 
 /* Landing page ⇄ Journey: the Journey sits to the right of the hero, so going to it slides left
-   and coming back slides right. Set by onNavigate in the root +layout.svelte. */
-:root[data-slide]::view-transition-old(root),
-:root[data-slide]::view-transition-new(root) {
-	animation-duration: 0.35s;
-	animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
-	animation-fill-mode: both;
-}
+   and coming back slides right. Set by onNavigate in the root +layout.svelte, which skips it
+   under reduced motion. */
+@layer components {
+	:root[data-slide]::view-transition-old(root),
+	:root[data-slide]::view-transition-new(root) {
+		animation-duration: 0.35s;
+		animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+		animation-fill-mode: both;
+	}
 
-:root[data-slide='forward']::view-transition-old(root) {
-	animation-name: slide-out-left;
-}
-:root[data-slide='forward']::view-transition-new(root) {
-	animation-name: slide-in-right;
-}
-:root[data-slide='back']::view-transition-old(root) {
-	animation-name: slide-out-right;
-}
-:root[data-slide='back']::view-transition-new(root) {
-	animation-name: slide-in-left;
+	:root[data-slide='forward']::view-transition-old(root) {
+		animation-name: slide-out-left;
+	}
+	:root[data-slide='forward']::view-transition-new(root) {
+		animation-name: slide-in-right;
+	}
+	:root[data-slide='back']::view-transition-old(root) {
+		animation-name: slide-out-right;
+	}
+	:root[data-slide='back']::view-transition-new(root) {
+		animation-name: slide-in-left;
+	}
 }
 
 @keyframes slide-out-left {
@@ -273,20 +310,4 @@ h6,
 	from {
 		translate: -100% 0;
 	}
-}
-
-/* Anchor jumps land below the sticky navbar (4rem) and a step page's breadcrumb bar. */
-html {
-	scroll-padding-top: 7rem;
-}
-
-/* Deep-linked section or item (from search results / shared links). */
-.anchor-target {
-	scroll-margin-top: 1rem;
-}
-
-.anchor-target:target {
-	outline: 2.5px dashed var(--color-primary);
-	outline-offset: 4px;
-	border-radius: 1rem;
 }

@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import CatMascot from '$lib/cat/CatMascot.svelte';
 	import { RoughIcon, WiredButton, WiredDivider } from '$lib/ui/wired';
 	import { m } from '$lib/paraglide/messages.js';
@@ -87,7 +88,7 @@
 		</div>
 
 		{#if folder.chapter}
-			<p class="text-[11px] font-bold tracking-wider text-tertiary uppercase">
+			<p class="text-[0.6875rem] font-bold tracking-wider text-tertiary uppercase">
 				{folder.chapter}
 			</p>
 		{/if}
@@ -107,7 +108,7 @@
 				{#each [false, true] as isDetailedLink (isDetailedLink)}
 					{@const active = detailed === isDetailedLink}
 					<a
-						href={isDetailedLink ? nav.versionHrefs.detailed : nav.versionHrefs.short}
+						href={resolve(isDetailedLink ? nav.versionHrefs.detailed : nav.versionHrefs.short)}
 						aria-current={active ? 'true' : undefined}
 						data-sveltekit-noscroll
 						data-sveltekit-replacestate
@@ -136,7 +137,7 @@
 						: 'text-text-main'}"
 				>
 					{#if alert}
-						<RoughIcon name="warning" size={20} stroke="#D24D48" strokeWidth={1.8} />
+						<RoughIcon name="warning" size={20} class="text-emergency-red" strokeWidth={1.8} />
 					{/if}
 					<span>{subfolder.title}</span>
 				</h2>
@@ -145,8 +146,13 @@
 				{/if}
 			</div>
 
-			<div class="max-w-[80px]">
-				<WiredDivider stroke={alert ? '#D24D48' : '#1F523D'} strokeWidth={1.2} roughness={1.0} />
+			<div class="max-w-20">
+				<WiredDivider
+					stroke="currentColor"
+					class={alert ? 'text-emergency-red' : 'text-primary'}
+					strokeWidth={1.2}
+					roughness={1.0}
+				/>
 			</div>
 
 			{#if subfolder.layout === 'pillars'}
@@ -154,8 +160,14 @@
 					{#each subfolder.items as item, i (item.anchor)}
 						{@const text = itemText(item)}
 						<li id={item.anchor} class="anchor-target space-y-1.5">
-							<div class="max-w-[44px]">
-								<WiredDivider stroke="#1F523D" strokeWidth={2.4} roughness={1.4} seed={i + 3} />
+							<div class="max-w-11">
+								<WiredDivider
+									stroke="currentColor"
+									class="text-primary"
+									strokeWidth={2.4}
+									roughness={1.4}
+									seed={i + 3}
+								/>
 							</div>
 							<p class="text-base leading-snug">{item.title}</p>
 							{#if text}
@@ -190,7 +202,7 @@
 
 							<div class="min-w-0 flex-1 space-y-1">
 								<p
-									class="text-[15px] leading-snug sm:text-base {item.isAlert
+									class="text-[0.9375rem] leading-snug sm:text-base {item.isAlert
 										? 'text-emergency-red'
 										: 'text-text-main'}"
 								>
@@ -234,20 +246,20 @@
 				})}
 			</p>
 			<a
-				href={nav.detailOnlyHref}
+				href={resolve(nav.detailOnlyHref)}
 				data-sveltekit-replacestate
 				class="mt-1.5 inline-flex min-h-9 items-center gap-1 text-sm font-black text-primary underline underline-offset-4"
 			>
 				{m.reader_open_detailed()}
-				<RoughIcon name="arrow_forward" size={15} stroke="#1F523D" strokeWidth={1.8} />
+				<RoughIcon name="arrow_forward" size={15} class="text-primary" strokeWidth={1.8} />
 			</a>
 		</aside>
 	{/if}
 
 	<!-- 3. WHAT'S NEXT ON THE JOURNEY -->
 	<footer class="mt-12 space-y-5">
-		<div class="mx-auto max-w-[140px]">
-			<WiredDivider stroke="#1F523D" strokeWidth={1.4} roughness={1.4} />
+		<div class="mx-auto max-w-35">
+			<WiredDivider stroke="currentColor" class="text-primary" strokeWidth={1.4} roughness={1.4} />
 		</div>
 
 		<CatMascot
@@ -260,7 +272,7 @@
 
 		<div class="space-y-1 text-center">
 			{#if nav.upNext}
-				<p class="text-[11px] font-bold tracking-wider text-text-subtle uppercase">
+				<p class="text-[0.6875rem] font-bold tracking-wider text-text-subtle uppercase">
 					{nav.upNext.caption}
 				</p>
 				<p class="text-base font-black text-text-main">{nav.upNext.title}</p>
@@ -277,7 +289,7 @@
 			{#if nav.prev}
 				<div class="contents" data-sveltekit-replacestate>
 					<WiredButton
-						href={nav.prev.href}
+						href={resolve(nav.prev.href)}
 						shape="bar"
 						fill="#FFFFFF"
 						class="min-h-11 flex-1 py-2.5"
@@ -290,19 +302,19 @@
 			{#if nav.next}
 				<div class="contents" data-sveltekit-replacestate>
 					<WiredButton
-						href={nav.next.href}
+						href={resolve(nav.next.href)}
 						shape="bar"
 						seed={2}
 						fill="#EAF2EC"
 						class="min-h-11 flex-1 py-2.5"
 					>
 						<span class="text-sm font-black text-primary">{nav.next.label}</span>
-						<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
+						<RoughIcon name="arrow_forward" size={16} class="text-primary" strokeWidth={1.8} />
 					</WiredButton>
 				</div>
 			{:else}
 				<WiredButton
-					href={nav.end.href}
+					href={resolve(nav.end.href)}
 					shape="bar"
 					seed={2}
 					fill="#EAF2EC"
@@ -317,7 +329,7 @@
 			<div class="space-y-1 text-center">
 				{#each nav.links as link (link.href)}
 					<a
-						href={link.href}
+						href={resolve(link.href)}
 						class="mx-auto flex min-h-10 w-fit items-center underline underline-offset-4 {link.prominent
 							? 'text-sm font-bold text-primary'
 							: 'text-xs text-text-subtle hover:text-primary'}"

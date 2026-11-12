@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import { m } from '$lib/paraglide/messages.js';
 	import { stepHref } from '$lib/journey/reading.js';
 
@@ -23,7 +24,7 @@
 		</p>
 		<!-- Leaving keeps the visitor on this step, just back in the Journey's own order. -->
 		<a
-			href={stepHref(stepId, { detailed })}
+			href={resolve(stepHref(stepId, { detailed }))}
 			class="shrink-0 text-xs text-text-subtle underline underline-offset-4 hover:text-primary"
 		>
 			{m.trail_leave()}
@@ -37,7 +38,7 @@
 			{@const current = i === trail.index}
 			<li class="flex min-h-7 items-center gap-2 text-sm">
 				<span
-					class="flex size-5 shrink-0 items-center justify-center rounded-full text-[11px] font-black {done
+					class="flex size-5 shrink-0 items-center justify-center rounded-full text-[0.6875rem] font-black {done
 						? 'bg-primary text-white'
 						: current
 							? 'bg-background text-primary ring-2 ring-primary'
@@ -48,7 +49,7 @@
 					<span class="font-black" aria-current="step">{s.title}</span>
 				{:else}
 					<a
-						href={stepHref(s.step, { detailed, trail: trail.key })}
+						href={resolve(stepHref(s.step, { detailed, trail: trail.key }))}
 						data-sveltekit-replacestate
 						class="text-text-subtle underline underline-offset-4 hover:text-primary">{s.title}</a
 					>

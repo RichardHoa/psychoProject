@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import CatMascot from '$lib/cat/CatMascot.svelte';
 	import { m } from '$lib/paraglide/messages.js';
@@ -18,7 +19,7 @@
 	</h1>
 	<p class="max-w-sm text-sm text-text-subtle">{m.error_desc()}</p>
 	<a
-		href="/trang-chu"
+		href={resolve('/trang-chu')}
 		class="sketch-button rounded-xl bg-warm-sage px-4 py-2 text-sm font-bold text-primary"
 	>
 		{m.error_back_home()}

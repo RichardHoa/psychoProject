@@ -16,7 +16,7 @@
 </script>
 
 <div
-	class="border-b-1.5 border-sketch-border sticky top-16 z-20 flex w-full items-center gap-2 bg-surface-off-white px-3.5 py-2 shadow-xs transition-all"
+	class="sticky top-16 z-20 flex w-full items-center gap-2 border-b-[1.5px] border-sketch-border bg-surface-off-white px-3.5 py-2 shadow-xs transition-all"
 >
 	{#if backHref && crumbs.length > 1}
 		<a
@@ -25,7 +25,7 @@
 			aria-label={m.btn_back()}
 			title={m.btn_back()}
 		>
-			<RoughIcon name="arrow_back" size={16} stroke="#1F523D" strokeWidth={1.8} />
+			<RoughIcon name="arrow_back" size={16} class="text-primary" strokeWidth={1.8} />
 		</a>
 	{/if}
 
@@ -46,16 +46,14 @@
 						aria-current="page"
 						class="sketch-pill inline-flex items-center gap-1 rounded-xl bg-warm-sage px-2.5 py-1 font-bold text-primary"
 					>
-						<span class="xs:max-w-[180px] max-w-[140px] truncate sm:max-w-[220px]"
-							>{crumb.label}</span
-						>
+						<span class="max-w-35 truncate xs:max-w-45 sm:max-w-55">{crumb.label}</span>
 					</span>
 				{:else}
 					<a
 						href={crumb.href}
 						class="inline-flex items-center gap-1 rounded-lg px-2 py-1 font-semibold text-text-main transition-colors hover:bg-surface-container-low hover:text-primary"
 					>
-						<span class="xs:max-w-[130px] max-w-[110px] truncate">{crumb.label}</span>
+						<span class="max-w-27.5 truncate xs:max-w-32.5">{crumb.label}</span>
 					</a>
 				{/if}
 			</div>

@@ -76,17 +76,17 @@
 	{/if}
 </svelte:head>
 
-<div class="flex h-[100dvh] w-full items-center justify-center bg-[#EDE8DF] font-body select-none">
+<div class="flex h-[100dvh] w-full items-center justify-center bg-backdrop font-body select-none">
 	<div
-		class="sm:border-x-1.5 sm:border-sketch-border relative flex h-full w-full max-w-md flex-col overflow-hidden bg-background shadow-2xl sm:max-w-lg"
+		class="relative flex h-full w-full max-w-md flex-col overflow-hidden bg-background shadow-2xl sm:max-w-lg sm:border-x-[1.5px] sm:border-sketch-border"
 	>
 		<header
-			class="border-b-1.5 border-sketch-border flex h-16 shrink-0 items-center gap-3 bg-surface-off-white px-4"
+			class="flex h-16 shrink-0 items-center gap-3 border-b-[1.5px] border-sketch-border bg-surface-off-white px-4"
 		>
 			<CatMascot autoplay={false} sizeClass="h-11 w-11" sizes="30px" class="shrink-0" />
 			<div>
 				<p class="text-sm font-black tracking-tight text-primary">{m.brand_name()}</p>
-				<p class="text-[11px] text-text-subtle">{m.safety_title()}</p>
+				<p class="text-[0.6875rem] text-text-subtle">{m.safety_title()}</p>
 			</div>
 		</header>
 
@@ -136,7 +136,8 @@
 								formaction="?/yes&dest={encodeURIComponent(data.destination)}"
 								disabled={submitting}
 								fill="#FDF0EE"
-								stroke="#D24D48"
+								stroke="currentColor"
+								class="text-emergency-red"
 							>
 								{m.safety_btn_yes()}
 							</WiredButton>
@@ -208,7 +209,8 @@
 									target="_blank"
 									rel="noopener noreferrer"
 									fill="#FDF0EE"
-									stroke="#D24D48"
+									stroke="currentColor"
+									class="text-emergency-red"
 								>
 									{m.safety_redirect_btn()}
 								</WiredButton>
@@ -224,14 +226,15 @@
 									target="_blank"
 									rel="noopener noreferrer"
 									fill="#FDF0EE"
-									stroke="#D24D48"
+									stroke="currentColor"
+									class="text-emergency-red"
 								>
 									{m.safety_go_anyway()}
 								</WiredButton>
 							</div>
 						{/if}
 
-						<p class="text-[11px] text-text-subtle">{m.safety_disclaimer()}</p>
+						<p class="text-[0.6875rem] text-text-subtle">{m.safety_disclaimer()}</p>
 					</div>
 				</div>
 			{/if}

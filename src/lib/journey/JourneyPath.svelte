@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import CatMascot from '$lib/cat/CatMascot.svelte';
 	import { RoughIcon, WiredButton, WiredCard, WiredDivider } from '$lib/ui/wired';
 	import { happyWaving } from '$lib/cat/index.js';
@@ -27,8 +28,8 @@
 		<h1 class="text-xl font-black tracking-tight text-balance sm:text-2xl">
 			{m.journey_title()}
 		</h1>
-		<div class="mx-auto max-w-[120px]">
-			<WiredDivider stroke="#1F523D" strokeWidth={1.5} roughness={1.5} />
+		<div class="mx-auto max-w-30">
+			<WiredDivider stroke="currentColor" class="text-primary" strokeWidth={1.5} roughness={1.5} />
 		</div>
 		<p class="text-sm leading-relaxed text-text-subtle">{m.journey_desc()}</p>
 		<p class="text-xs font-bold text-primary">
@@ -46,14 +47,14 @@
 			{#each ENTRIES as entry, i (entry.stepId)}
 				<li>
 					<WiredButton
-						href={stepPath(entry.stepId)}
+						href={resolve(stepPath(entry.stepId))}
 						shape="bar"
 						fill="#FFFFFF"
 						seed={i + 5}
 						class="min-h-11 w-full px-4 py-2.5"
 					>
 						<span class="text-sm">{entry.label}</span>
-						<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
+						<RoughIcon name="arrow_forward" size={16} class="text-primary" strokeWidth={1.8} />
 					</WiredButton>
 				</li>
 			{/each}
@@ -75,7 +76,9 @@
 				{@const chapterStart = folder.chapter && folder.chapter !== folders[idx - 1]?.chapter}
 				<li class="relative">
 					{#if chapterStart}
-						<p class="mb-2 ml-14 text-[11px] font-black tracking-wider text-tertiary uppercase">
+						<p
+							class="mb-2 ml-14 text-[0.6875rem] font-black tracking-wider text-tertiary uppercase"
+						>
 							{folder.chapter}
 						</p>
 					{/if}
@@ -86,7 +89,7 @@
 						>
 						<WiredCard
 							as="a"
-							href={stepPath(folder.id)}
+							href={resolve(stepPath(folder.id))}
 							fill={folder.chapter ? '#FEF7E6' : '#FFFFFF'}
 							roughness={1.1}
 							seed={folder.step}

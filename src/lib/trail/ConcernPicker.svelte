@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import CatMascot from '$lib/cat/CatMascot.svelte';
 	import { RoughIcon, WiredButton } from '$lib/ui/wired';
@@ -43,7 +44,7 @@
 			{:else}
 				<span class="min-w-0 flex-1 text-left text-sm font-bold">{label}</span>
 			{/if}
-			<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
+			<RoughIcon name="arrow_forward" size={16} class="text-primary" strokeWidth={1.8} />
 		</WiredButton>
 	</li>
 {/snippet}
@@ -51,7 +52,7 @@
 <section id={PICKER_ANCHOR} class="w-full scroll-mt-4 space-y-4 text-left" aria-live="polite">
 	{#if picker.stage !== 'persona'}
 		<a
-			href={picker.backHref}
+			href={resolve(picker.backHref)}
 			class="inline-flex min-h-10 items-center gap-1 text-sm font-bold text-text-subtle hover:text-primary"
 		>
 			<RoughIcon name="arrow_back" size={16} stroke="#5A6561" strokeWidth={1.8} />
@@ -67,14 +68,18 @@
 		</div>
 		<ul class="space-y-3">
 			{#each picker.personas as persona, i (persona.id)}
-				{@render choiceRow(pickerHref(persona.id), i + 5, persona.label, persona.hint)}
+				{@render choiceRow(resolve(pickerHref(persona.id)), i + 5, persona.label, persona.hint)}
 			{/each}
 		</ul>
 	{:else if picker.stage === 'concern'}
 		<h2 class="text-xl font-black">{picker.persona.concernPrompt}</h2>
 		<ul class="space-y-3">
 			{#each picker.concerns as concern, i (concern.id)}
-				{@render choiceRow(pickerHref(picker.persona.id, concern.id), i + 8, concern.label)}
+				{@render choiceRow(
+					resolve(pickerHref(picker.persona.id, concern.id)),
+					i + 8,
+					concern.label
+				)}
 			{/each}
 		</ul>
 	{:else}
@@ -92,7 +97,7 @@
 
 		{#if breathing}
 			<a
-				href={breathingHref(page.url)}
+				href={resolve(breathingHref(page.url))}
 				class="inline-flex min-h-10 items-center text-sm font-bold text-primary underline underline-offset-4"
 			>
 				{m.picker_breathing()}
@@ -100,7 +105,7 @@
 		{/if}
 
 		<div>
-			<p class="text-[11px] font-bold tracking-wider text-text-subtle uppercase">
+			<p class="text-[0.6875rem] font-bold tracking-wider text-text-subtle uppercase">
 				{m.picker_trail_label({ count: trail.stops.length, minutes: trail.minutes })}
 			</p>
 			<ol class="mt-2 space-y-2">
@@ -119,17 +124,17 @@
 		</div>
 
 		<WiredButton
-			href={stepHref(trail.stops[0].step, { trail: trail.key })}
+			href={resolve(stepHref(trail.stops[0].step, { trail: trail.key }))}
 			fill="#EAF2EC"
 			class="w-full px-5 py-2.5 text-sm"
 		>
 			<span class="font-black text-primary">{m.picker_start_trail()}</span>
-			<RoughIcon name="arrow_forward" size={18} stroke="#1F523D" strokeWidth={1.8} />
+			<RoughIcon name="arrow_forward" size={18} class="text-primary" strokeWidth={1.8} />
 		</WiredButton>
 	{/if}
 
 	<a
-		href={JOURNEY_PATH}
+		href={resolve(JOURNEY_PATH)}
 		class="mx-auto flex min-h-10 w-fit items-center text-sm font-bold text-primary underline underline-offset-4"
 	>
 		{m.home_start_journey()}

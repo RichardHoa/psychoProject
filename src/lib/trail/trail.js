@@ -26,14 +26,14 @@ import { LANDING_PATH } from '$lib/shared/routes.js';
  * The second question: what worries the chosen persona.
  * @typedef {object} ConcernStage
  * @property {'concern'} stage
- * @property {string} backHref Back to the first question.
+ * @property {import('$lib/shared/routes.js').AppPath} backHref Back to the first question.
  * @property {{ id: string, concernPrompt: string }} persona
  * @property {{ id: string, label: string }[]} concerns
  *
  * The answer to the chosen worry, and the Trail behind it.
  * @typedef {object} AnswerStage
  * @property {'answer'} stage
- * @property {string} backHref Back to the persona's worries.
+ * @property {import('$lib/shared/routes.js').AppPath} backHref Back to the persona's worries.
  * @property {{ title: string, points: string[] }} takeaway
  * @property {boolean} breathing Offer the breathing exercise next to the answer.
  * @property {Trail} trail
@@ -54,11 +54,13 @@ export const PICKER_ANCHOR = 'ban-la-ai';
  * Link to the Landing picker at the question after the given answers (none: who are you).
  * @param {string} [personaId]
  * @param {string} [concernId]
+ * @returns {import('$lib/shared/routes.js').AppPath}
  */
 export function pickerHref(personaId, concernId) {
 	const params = new URLSearchParams();
 	if (personaId) params.set(PERSONA_PARAM, personaId);
 	if (concernId) params.set(CONCERN_PARAM, concernId);
-	const query = params.size ? `?${params}` : '';
-	return `${LANDING_PATH}${query}#${PICKER_ANCHOR}`;
+	return params.size
+		? `${LANDING_PATH}?${params}#${PICKER_ANCHOR}`
+		: `${LANDING_PATH}#${PICKER_ANCHOR}`;
 }

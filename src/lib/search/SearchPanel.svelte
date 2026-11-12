@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import { onMount, untrack } from 'svelte';
 	import { RoughIcon } from '$lib/ui/wired';
 	import { m } from '$lib/paraglide/messages.js';
@@ -139,7 +140,7 @@
 <div class="flex min-h-0 flex-1 flex-col">
 	<!-- Top Bar / Input. Pages under the sticky navbar set --search-bar-top to sit below it. -->
 	<div
-		class="border-b-1.5 border-sketch-border sticky top-[var(--search-bar-top,0px)] z-20 bg-surface-off-white p-4 sm:p-5"
+		class="sticky top-[var(--search-bar-top,0px)] z-20 border-b-[1.5px] border-sketch-border bg-surface-off-white p-4 sm:p-5"
 	>
 		<form
 			method="GET"
@@ -149,7 +150,7 @@
 			class="relative flex items-center"
 		>
 			<div class="pointer-events-none absolute left-4 flex items-center">
-				<RoughIcon name="search" size={22} stroke="#1F523D" strokeWidth={1.8} />
+				<RoughIcon name="search" size={22} class="text-primary" strokeWidth={1.8} />
 			</div>
 
 			<input
@@ -162,14 +163,14 @@
 				enterkeyhint="search"
 				aria-label={m.search_open()}
 				placeholder={m.home_search_placeholder()}
-				class="border-1.5 border-sketch-border h-13 w-full rounded-2xl bg-white pr-24 pl-12 text-sm font-bold text-text-main shadow-xs outline-hidden transition-all placeholder:text-text-subtle/70 sm:text-base [&::-webkit-search-cancel-button]:hidden"
+				class="h-13 w-full rounded-2xl border-[1.5px] border-sketch-border bg-white pr-24 pl-12 text-sm font-bold text-text-main shadow-xs transition-shadow placeholder:text-text-subtle/70 sm:text-base [&::-webkit-search-cancel-button]:hidden"
 				{@attach focusOnMount}
 			/>
 
 			<div class="absolute right-2.5 flex items-center gap-1.5">
 				{#if value}
 					<a
-						href="/tim-kiem"
+						href={resolve('/tim-kiem')}
 						onclick={(e) => handleLink(e, '')}
 						class="rounded-full p-1.5 text-text-subtle hover:text-text-main"
 						title={m.search_clear()}
@@ -187,7 +188,7 @@
 						aria-label={m.search_voice()}
 						aria-pressed={isListening}
 						class="sketch-button flex items-center justify-center rounded-xl p-2 transition-all {isListening
-							? 'animate-pulse bg-emergency-red text-white'
+							? 'bg-emergency-red text-white motion-safe:animate-pulse'
 							: 'bg-warm-sage text-primary'}"
 					>
 						<RoughIcon name="mic" size={18} stroke="currentColor" strokeWidth={1.8} />
@@ -224,14 +225,14 @@
 					<span class="text-xs font-bold tracking-wider text-text-subtle uppercase">
 						{m.search_suggestions()}
 					</span>
-					<span class="text-[11px] text-text-subtle">{m.search_suggestions_hint()}</span>
+					<span class="text-[0.6875rem] text-text-subtle">{m.search_suggestions_hint()}</span>
 				</div>
 
 				<ul class="space-y-2.5">
 					{#each suggestions as chip (chip.label)}
 						<li>
 							<a
-								href="/tim-kiem?q={encodeURIComponent(chip.label)}"
+								href={resolve(`/tim-kiem?q=${encodeURIComponent(chip.label)}`)}
 								onclick={(e) => handleLink(e, chip.label)}
 								class="sketch-card group flex items-center justify-between gap-3 rounded-2xl bg-white p-3.5 text-left text-sm font-bold text-text-main transition-all active:scale-[0.98]"
 							>
@@ -257,12 +258,12 @@
 					{#each results as item (item.id)}
 						<li>
 							<a
-								href={item.href}
+								href={resolve(item.href)}
 								class="sketch-card group block rounded-2xl bg-white p-3.5 text-left transition-all"
 							>
 								<span class="mb-1 flex items-center justify-between gap-2">
 									<span
-										class="sketch-pill truncate rounded-md bg-warm-sage px-2 py-0.5 text-[10px] font-bold text-primary"
+										class="sketch-pill truncate rounded-md bg-warm-sage px-2 py-0.5 text-[0.625rem] font-bold text-primary"
 									>
 										{item.category}
 									</span>

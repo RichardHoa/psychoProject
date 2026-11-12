@@ -135,7 +135,7 @@
 		onclick={handleClick}
 		aria-label={ariaLabel}
 		data-testid="cat-mascot"
-		class="group flex shrink-0 cursor-pointer items-center gap-0.5 text-left select-none focus:outline-hidden {className}"
+		class="group flex shrink-0 cursor-pointer items-center gap-0.5 text-left select-none {className}"
 	>
 		{@render stack()}
 		{@render children?.()}

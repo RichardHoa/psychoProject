@@ -7,9 +7,12 @@ export const RETURN_PARAM = 'quay-lai';
 /**
  * Link to the breathing exercise that remembers where the visitor came from.
  * @param {URL} from
+ * @returns {import('$lib/shared/routes.js').AppPath}
  */
 export function breathingHref(from) {
-	if (from.pathname === BREATHING_PATH) return `${from.pathname}${from.search}`;
+	if (from.pathname === BREATHING_PATH) {
+		return from.search ? `${BREATHING_PATH}?${from.search.slice(1)}` : BREATHING_PATH;
+	}
 	return `${BREATHING_PATH}?${RETURN_PARAM}=${encodeURIComponent(from.pathname + from.search)}`;
 }
 

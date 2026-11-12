@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import ConcernPicker from '$lib/trail/ConcernPicker.svelte';
@@ -15,7 +16,8 @@
 	// `/trang-chu#chu-de` was the journey slide before the Journey got its own page. The fragment
 	// never reaches the server, so the redirect happens here.
 	onMount(() => {
-		if (location.hash === `#${LEGACY_JOURNEY_HASH}`) goto(JOURNEY_PATH, { replaceState: true });
+		if (location.hash === `#${LEGACY_JOURNEY_HASH}`)
+			goto(resolve(JOURNEY_PATH), { replaceState: true });
 		showHint = true;
 	});
 </script>
@@ -30,7 +32,7 @@
 		class="usage-hint sketch-card fixed right-4 bottom-4 left-4 z-40 mx-auto flex max-w-md items-center justify-between gap-2 rounded-2xl bg-warm-cream px-4 py-2.5 text-text-main"
 	>
 		<div class="flex items-center gap-2 text-xs">
-			<RoughIcon name="swipe" size={16} stroke="#1F523D" strokeWidth={1.8} />
+			<RoughIcon name="swipe" size={16} class="text-primary" strokeWidth={1.8} />
 			<span><strong>{m.usage_hint_label()}</strong> {m.usage_hint()}</span>
 		</div>
 		<button
@@ -54,7 +56,7 @@
 		axisRatio: 1.5,
 		edgeMargin: 24,
 		onSwipe: (direction) => {
-			if (direction === 'left') goto(JOURNEY_PATH);
+			if (direction === 'left') goto(resolve(JOURNEY_PATH));
 		}
 	})}
 >

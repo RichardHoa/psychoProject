@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import { goto } from '$app/navigation';
 	import SearchPanel from '$lib/search/SearchPanel.svelte';
 	import { m } from '$lib/paraglide/messages.js';
@@ -7,7 +8,7 @@
 
 	/** @param {string} query */
 	function runQuery(query) {
-		const url = query ? `/tim-kiem?q=${encodeURIComponent(query)}` : '/tim-kiem';
+		const url = query ? resolve(`/tim-kiem?q=${encodeURIComponent(query)}`) : resolve('/tim-kiem');
 		return goto(url, { keepFocus: true, replaceState: true, noScroll: true });
 	}
 </script>

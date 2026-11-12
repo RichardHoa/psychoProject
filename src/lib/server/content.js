@@ -1,8 +1,8 @@
 import { FOLDERS_DATA } from './folderData.js';
 import { slugify } from '$lib/shared/text.js';
 import { stepHref } from '$lib/journey/reading.js';
-import { JOURNEY_PATH, LANDING_PATH } from '$lib/shared/routes.js';
-import { PICKER_ANCHOR } from '$lib/trail/trail.js';
+import { JOURNEY_PATH } from '$lib/shared/routes.js';
+import { pickerHref } from '$lib/trail/trail.js';
 import { m } from '$lib/paraglide/messages.js';
 
 /**
@@ -11,11 +11,12 @@ import { m } from '$lib/paraglide/messages.js';
  * @typedef {import('./folderData.js').FolderItem} FolderItem
  * @typedef {Pick<Folder, 'id' | 'title' | 'shortTitle' | 'summary' | 'chapter' | 'nextReason'> & { step: number, minutes: number }} FolderSummary
  * @typedef {NonNullable<ReturnType<typeof getFolder>>} StepPage
- * @typedef {{ href: string, label: string }} NavLink
+ * @typedef {import('$lib/shared/routes.js').AppPath} AppPath
+ * @typedef {{ href: AppPath, label: string }} NavLink
  * @typedef {{
  *   position: { step: number, total: number } | null,
- *   versionHrefs: { short: string, detailed: string },
- *   detailOnlyHref: string | null,
+ *   versionHrefs: { short: AppPath, detailed: AppPath },
+ *   detailOnlyHref: AppPath | null,
  *   upNext: { caption: string, title: string, reason: string } | null,
  *   finished: { title: string, description: string } | null,
  *   prev: NavLink | null,
@@ -129,7 +130,11 @@ export function stepNav(page, trail, detailed) {
 	};
 }
 
-/** @param {StepPage} page @param {boolean} detailed */
+/**
+ * @param {StepPage} page
+ * @param {boolean} detailed
+ * @returns {Omit<StepNav, 'versionHrefs' | 'detailOnlyHref'>}
+ */
 function journeyNav({ step, stepCount, prevFolder, nextFolder }, detailed) {
 	return {
 		position: { step, total: stepCount },
@@ -162,6 +167,7 @@ function journeyNav({ step, stepCount, prevFolder, nextFolder }, detailed) {
  * @param {import('$lib/trail/trail.js').TrailPosition} trail
  * @param {FolderSummary | null} nextFolder
  * @param {boolean} detailed
+ * @returns {Omit<StepNav, 'versionHrefs' | 'detailOnlyHref'>}
  */
 function trailNav(trail, nextFolder, detailed) {
 	const { key, index, stops } = trail;
@@ -198,7 +204,7 @@ function trailNav(trail, nextFolder, detailed) {
 		next: next
 			? { href: stepHref(next.step, { detailed, trail: key }), label: m.trail_next() }
 			: null,
-		end: { href: `${LANDING_PATH}#${PICKER_ANCHOR}`, label: m.trail_ask_again() },
+		end: { href: pickerHref(), label: m.trail_ask_again() },
 		links
 	};
 }

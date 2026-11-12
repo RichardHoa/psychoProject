@@ -8,7 +8,7 @@ import { foldText } from '$lib/shared/text.js';
  *   title: string,
  *   desc: string,
  *   category: string,
- *   href: string
+ *   href: import('$lib/shared/routes.js').AppPath
  * }} SearchResult
  */
 

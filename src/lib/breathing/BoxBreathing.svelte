@@ -25,7 +25,7 @@
 <div class="box-breathing flex flex-col items-center space-y-5 text-center">
 	<div class="space-y-1 pt-1">
 		<span
-			class="sketch-pill inline-flex items-center gap-1 rounded-full bg-warm-sage px-2.5 py-0.5 text-[11px] font-bold tracking-wide text-primary uppercase"
+			class="sketch-pill inline-flex items-center gap-1 rounded-full bg-warm-sage px-2.5 py-0.5 text-[0.6875rem] font-bold tracking-wide text-primary uppercase"
 		>
 			<RoughIcon name="spa" size={12} stroke="currentColor" strokeWidth={2} />
 			{m.breathing_badge()}
@@ -38,7 +38,7 @@
 	<!-- The square breathes (grows on inhale, shrinks on exhale) while a dot traces its edges. -->
 	<div class="relative my-2 flex h-48 w-48 items-center justify-center">
 		<div
-			class="square border-sketch-border absolute inset-3 rounded-3xl border-2"
+			class="square absolute inset-3 rounded-3xl border-2 border-sketch-border"
 			data-testid="breathing-square"
 		>
 			<span class="dot" aria-hidden="true"></span>
@@ -55,7 +55,7 @@
 			<div class="phases mt-0.5 grid">
 				{#each PHASES as phase, i (phase.id)}
 					<span
-						class="phase text-[11px] font-bold tracking-wider text-primary uppercase"
+						class="phase text-[0.6875rem] font-bold tracking-wider text-primary uppercase"
 						style:--i={i}>{phase.label}</span
 					>
 				{/each}

@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { preloadData, pushState } from '$app/navigation';
 	import { RoughIcon } from '$lib/ui/wired';
@@ -17,7 +18,7 @@
 		if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 		e.preventDefault();
 
-		const href = /** @type {HTMLAnchorElement} */ (e.currentTarget).href;
+		const href = resolve('/tim-kiem');
 		const result = await preloadData(href).catch(() => null);
 		if (result?.type === 'loaded' && result.status === 200) {
 			const { query, results, suggestions } = result.data;
@@ -30,7 +31,7 @@
 </script>
 
 <a
-	href="/tim-kiem"
+	href={resolve('/tim-kiem')}
 	onclick={openOverlay}
 	class="sketch-button flex w-full items-center justify-between rounded-2xl bg-white text-left font-body transition-all {isCompact
 		? 'h-10 px-3 text-xs'
@@ -38,14 +39,14 @@
 	aria-label={m.search_open()}
 >
 	<span class="flex items-center gap-2.5 overflow-hidden">
-		<RoughIcon name="search" size={isCompact ? 18 : 20} stroke="#1F523D" strokeWidth={1.8} />
+		<RoughIcon name="search" size={isCompact ? 18 : 20} class="text-primary" strokeWidth={1.8} />
 		<span class="truncate font-medium text-text-subtle">
 			{placeholder || m.home_search_placeholder()}
 		</span>
 	</span>
 
 	<span
-		class="border-1.5 border-sketch-border hidden shrink-0 rounded-md bg-warm-cream px-2 py-0.5 text-[10px] font-bold text-text-main sm:inline-block"
+		class="hidden shrink-0 rounded-md border-[1.5px] border-sketch-border bg-warm-cream px-2 py-0.5 text-[0.625rem] font-bold text-text-main sm:inline-block"
 	>
 		{m.search_submit()}
 	</span>
