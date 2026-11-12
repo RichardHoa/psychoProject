@@ -31,7 +31,7 @@ export function markGateAnswered(cookies, url) {
 		path: '/',
 		httpOnly: true,
 		sameSite: 'lax',
-		// SvelteKit defaults `secure` to true; a plain-HTTP deploy (e.g. `make prod` on an IP)
+		// SvelteKit defaults `secure` to true; a plain-HTTP origin (e.g. a LAN IP; browsers only exempt localhost)
 		// would then never store the cookie and loop visitors through the gate forever.
 		secure: url.protocol === 'https:'
 	});

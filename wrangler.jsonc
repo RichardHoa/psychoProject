@@ -1,0 +1,20 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "meo",
+	// Built by `vite build` (adapter-cloudflare): the SvelteKit server plus its static assets.
+	"main": ".svelte-kit/cloudflare/_worker.js",
+	"compatibility_date": "2026-10-01",
+	// Paraglide's server middleware imports `async_hooks` (AsyncLocalStorage) for per-request locale.
+	"compatibility_flags": ["nodejs_compat"],
+	"assets": {
+		"binding": "ASSETS",
+		"directory": ".svelte-kit/cloudflare"
+	},
+	// `wrangler dev` rewrites request URLs to this host unless given `--local-upstream`, which
+	// `npm run preview` does so SvelteKit's form-origin check sees localhost.
+	"routes": [{ "pattern": "psychology.richardhoa.io.vn", "custom_domain": true }],
+	// Set PUBLIC_NO_JS to "1" to serve the site with client-side JavaScript turned off
+	// (locally: `npm run preview -- --var PUBLIC_NO_JS:1`):
+	// "vars": { "PUBLIC_NO_JS": "1" },
+	"observability": { "enabled": true }
+}

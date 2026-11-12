@@ -32,10 +32,10 @@ export default defineConfig({
 		}
 	],
 	webServer: {
-		// The production build, served by adapter-node: what `make prod` runs.
-		command: 'npm run build && node build/index.js',
+		// The production build, served by the local Workers runtime: what `npm run deploy` ships.
+		// `npm run preview` serves on port 4173, matching PORT above.
+		command: 'npm run preview',
 		url: `${BASE_URL}/kiem-tra-an-toan`,
-		env: { PORT: String(PORT), ORIGIN: BASE_URL },
 		reuseExistingServer: !process.env.CI,
 		timeout: 180_000
 	}

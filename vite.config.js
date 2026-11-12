@@ -1,7 +1,7 @@
 /// <reference types="vitest/config" />
 import { paraglideVitePlugin } from '@inlang/paraglide-js';
 import tailwindcss from '@tailwindcss/vite';
-import adapter from '@sveltejs/adapter-node';
+import adapter from '@sveltejs/adapter-cloudflare';
 import { sveltekit } from '@sveltejs/kit/vite';
 import { enhancedImages } from '@sveltejs/enhanced-img';
 import { defineConfig } from 'vite';
@@ -15,9 +15,7 @@ export default defineConfig({
 				runes: ({ filename }) =>
 					filename.split(/[/\\]/).includes('node_modules') ? undefined : true
 			},
-			// adapter-auto only supports some environments, see https://svelte.dev/docs/kit/adapter-auto for a list.
-			// If your environment is not supported, or you settled on a specific environment, switch out the adapter.
-			// See https://svelte.dev/docs/kit/adapters for more information about adapters.
+			// Deployed to Cloudflare Workers; the Worker itself is configured in wrangler.jsonc.
 			adapter: adapter(),
 			// Content Security Policy: SvelteKit adds a per-request nonce (hash when prerendered) to
 			// script-src for its own inline bootstrap script. Styles stay 'unsafe-inline' because
