@@ -40,14 +40,12 @@
 	{/if}
 
 	{#if !picker.persona}
-		<div class="flex items-center gap-2">
-			<CatMascot autoplay={false} restImg={happyWaving} sizeClass="h-12 w-12" sizes="36px" />
-			<div>
-				<h2 class="text-base font-black">{m.picker_title()}</h2>
-				<p class="text-xs text-text-subtle">{m.picker_desc()}</p>
-			</div>
+		<div class="flex flex-col items-center pb-2 text-center">
+			<CatMascot autoplay={false} restImg={happyWaving} sizeClass="h-24 w-24" sizes="72px" />
+			<h1 class="text-3xl leading-tight font-black tracking-tight">{m.picker_title()}</h1>
+			<p class="text-sm text-text-subtle">{m.picker_desc()}</p>
 		</div>
-		<ul class="space-y-2.5">
+		<ul class="space-y-3">
 			{#each picker.personas as persona, i (persona.id)}
 				<li>
 					<WiredButton
@@ -55,11 +53,12 @@
 						shape="bar"
 						fill="#FFFFFF"
 						seed={i + 5}
-						class="min-h-11 w-full px-4 py-2.5"
+						class="min-h-14 w-full px-5 py-3"
+						contentClass="w-full"
 					>
 						<span class="min-w-0 flex-1 text-left">
-							<span class="block text-sm font-bold">{persona.label}</span>
-							<span class="block text-xs text-text-subtle">{persona.hint}</span>
+							<span class="block text-base font-bold">{persona.label}</span>
+							<span class="block text-xs font-medium text-text-subtle">{persona.hint}</span>
 						</span>
 						<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
 					</WiredButton>
@@ -67,8 +66,8 @@
 			{/each}
 		</ul>
 	{:else if !picker.concern}
-		<h2 class="text-base font-black">{picker.persona.concernPrompt}</h2>
-		<ul class="space-y-2.5">
+		<h2 class="text-xl font-black">{picker.persona.concernPrompt}</h2>
+		<ul class="space-y-3">
 			{#each picker.persona.concerns as concern, i (concern.id)}
 				<li>
 					<WiredButton
@@ -76,9 +75,10 @@
 						shape="bar"
 						fill="#FFFFFF"
 						seed={i + 8}
-						class="min-h-11 w-full px-4 py-2.5"
+						class="min-h-14 w-full px-5 py-3"
+						contentClass="w-full"
 					>
-						<span class="min-w-0 flex-1 text-left text-sm">{concern.label}</span>
+						<span class="min-w-0 flex-1 text-left text-sm font-bold">{concern.label}</span>
 						<RoughIcon name="arrow_forward" size={16} stroke="#1F523D" strokeWidth={1.8} />
 					</WiredButton>
 				</li>

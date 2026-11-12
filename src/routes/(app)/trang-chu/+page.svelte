@@ -2,17 +2,13 @@
 	import { onMount } from 'svelte';
 	import { goto } from '$app/navigation';
 	import ConcernPicker from '$lib/components/ConcernPicker.svelte';
-	import SearchBar from '$lib/components/SearchBar.svelte';
-	import WiredDivider from '$lib/components/wired/WiredDivider.svelte';
 	import RoughIcon from '$lib/components/wired/RoughIcon.svelte';
 	import { swipe } from '$lib/gestures/swipe.js';
 	import { m } from '$lib/paraglide/messages.js';
 	import { JOURNEY_PATH, LEGACY_JOURNEY_HASH } from '$lib/routes.js';
-	import { getShell } from '$lib/state/shell.svelte.js';
 
 	let { data } = $props();
 
-	const shell = getShell();
 	// The hint is about swiping, which needs JavaScript, so it only appears once hydrated.
 	let showHint = $state(false);
 
@@ -22,24 +18,6 @@
 		if (location.hash === `#${LEGACY_JOURNEY_HASH}`) goto(JOURNEY_PATH, { replaceState: true });
 		showHint = true;
 	});
-
-	/**
-	 * The navbar shows its compact search only once the hero's big search box has scrolled under it.
-	 * @type {import('svelte/attachments').Attachment<HTMLElement>}
-	 */
-	function trackHeroSearch(el) {
-		const observer = new IntersectionObserver(
-			([entry]) => {
-				shell.heroInView = entry.isIntersecting;
-			},
-			{ rootMargin: '-64px 0px 0px 0px' }
-		);
-		observer.observe(el);
-		return () => {
-			observer.disconnect();
-			shell.heroInView = true;
-		};
-	}
 </script>
 
 <svelte:head>
@@ -70,7 +48,7 @@
      "start the journey" link works without it). Swipes starting at the screen edge are left to
      the phone's own back gesture. -->
 <section
-	class="flex w-full flex-col items-center space-y-6 px-5 py-10 pb-20 text-center"
+	class="flex w-full flex-col items-center px-5 text-center"
 	{@attach swipe({
 		threshold: 75,
 		axisRatio: 1.5,
@@ -80,26 +58,9 @@
 		}
 	})}
 >
-	<div class="flex w-full max-w-sm flex-col items-center space-y-4 pt-10 sm:pt-6">
-		<h1 class="text-2xl leading-tight font-black tracking-tight text-text-main sm:text-3xl">
-			{m.home_hero_title()}
-		</h1>
-
-		<div class="mx-auto max-w-[140px]">
-			<WiredDivider stroke="#1F523D" strokeWidth={1.6} roughness={1.4} />
-		</div>
-
-		<p class="px-2 text-xs leading-relaxed text-text-subtle sm:text-sm">
-			{m.home_hero_desc()}
-		</p>
-
-		<div class="w-full pt-2" {@attach trackHeroSearch}>
-			<SearchBar />
-		</div>
-
-		<div class="w-full pt-4">
-			<ConcernPicker picker={data.picker} />
-		</div>
+	<!-- The Landing is the picker alone: it fills the whole screen. -->
+	<div class="flex min-h-[100dvh] w-full max-w-sm flex-col pt-[8dvh] pb-8">
+		<ConcernPicker picker={data.picker} />
 	</div>
 </section>
 

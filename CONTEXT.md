@@ -5,7 +5,7 @@ MÈO is a Vietnamese-language self-help/mental-health resource site (SvelteKit, 
 ## Language
 
 **Landing page**:
-The site's front door, at `/trang-chu`: the hero (title, search, the **Landing picker**, "start the journey"), which the cat mascot in the navbar always returns to, at the top. Moving from it to the **Journey** page slides sideways; it is a separate page, not a second slide. Every section/item inside a journey step has an anchor (`/hanh-trinh/<step>#<section>`), which search results link to. Older URLs (`/trang-chu/<step>`, `/trang-chu#chu-de`, `?slide=`/`?folder=`/`?sub=`) redirect to the current ones.
+The site's front door, at `/trang-chu`: the **Landing picker** alone, filling the screen with no navbar (the cat mascot in the navbar on every other page returns to it). Moving from it to the **Journey** page slides sideways; it is a separate page, not a second slide. Every section/item inside a journey step has an anchor (`/hanh-trinh/<step>#<section>`), which search results link to. Older URLs (`/trang-chu/<step>`, `/trang-chu#chu-de`, `?slide=`/`?folder=`/`?sub=`) redirect to the current ones.
 _Avoid_: Home page, index
 
 **Journey**:

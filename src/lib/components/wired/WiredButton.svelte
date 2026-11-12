@@ -17,6 +17,7 @@
 	 *   shape?: import('$lib/wired/rough.js').Shape,
 	 *   seed?: number,
 	 *   class?: string,
+	 *   contentClass?: string,
 	 *   disabled?: boolean,
 	 *   title?: string,
 	 *   ariaLabel?: string,
@@ -38,6 +39,7 @@
 		shape = 'wide',
 		seed = 1,
 		class: className = '',
+		contentClass = '',
 		disabled = false,
 		title,
 		ariaLabel,
@@ -74,7 +76,7 @@
 	/>
 
 	<span
-		class="wired-content relative z-10 flex items-center justify-center gap-1.5 text-xs font-bold text-text-main"
+		class="wired-content relative z-10 flex items-center justify-center gap-1.5 text-xs font-bold text-text-main {contentClass}"
 	>
 		{@render children?.()}
 	</span>
