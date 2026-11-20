@@ -5,8 +5,6 @@
 	import '@fontsource/be-vietnam-pro/500.css';
 	import '@fontsource/be-vietnam-pro/600.css';
 	import '@fontsource/be-vietnam-pro/700.css';
-	import '@fontsource/be-vietnam-pro/800.css';
-	import '@fontsource/be-vietnam-pro/900.css';
 	import './layout.css';
 	import favicon from '$lib/assets/favicon.svg';
 	import { slideDirection } from '$lib/shared/transitions.js';
@@ -18,9 +16,9 @@
 	// loads (no JavaScript) get the cross-fade from `@view-transition` in layout.css.
 	onNavigate((navigation) => {
 		if (!document.startViewTransition) return;
-		const from = navigation.from?.url.pathname;
-		const to = navigation.to?.url.pathname;
-		if (from === to) return;
+		const from = navigation.from?.url;
+		const to = navigation.to?.url;
+		if (from?.pathname === to?.pathname) return;
 		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
 		const root = document.documentElement;

@@ -22,7 +22,7 @@ import { m } from '$lib/paraglide/messages.js';
  *   prev: NavLink | null,
  *   next: NavLink | null,
  *   end: NavLink,
- *   links: (NavLink & { prominent: boolean })[]
+ *   links: NavLink[]
  * }} StepNav
  */
 
@@ -126,7 +126,7 @@ export function stepNav(page, trail, detailed) {
 		detailOnlyHref: firstDetailOnly
 			? stepHref(folder.id, { detailed: true, trail: key, hash: firstDetailOnly.id })
 			: null,
-		...(trail ? trailNav(trail, nextFolder, detailed) : journeyNav(page, detailed))
+		...(trail ? trailNav(trail, detailed) : journeyNav(page, detailed))
 	};
 }
 
@@ -155,34 +155,21 @@ function journeyNav({ step, stepCount, prevFolder, nextFolder }, detailed) {
 			? { href: stepHref(nextFolder.id, { detailed }), label: m.reader_next() }
 			: null,
 		end: { href: JOURNEY_PATH, label: m.reader_back_to_journey() },
-		links: nextFolder
-			? [{ href: JOURNEY_PATH, label: m.reader_back_to_journey(), prominent: true }]
-			: []
+		links: nextFolder ? [{ href: JOURNEY_PATH, label: m.reader_back_to_journey() }] : []
 	};
 }
 
 /**
- * On a Trail the Journey's position is hidden and "next" follows the Trail; the Journey's own next
- * step stays one (subtle) tap away.
+ * On a Trail the Journey's position is hidden and "next" follows the Trail; its last stop leads to
+ * the whole Journey.
  * @param {import('$lib/trail/trail.js').TrailPosition} trail
- * @param {FolderSummary | null} nextFolder
  * @param {boolean} detailed
  * @returns {Omit<StepNav, 'versionHrefs' | 'detailOnlyHref'>}
  */
-function trailNav(trail, nextFolder, detailed) {
+function trailNav(trail, detailed) {
 	const { key, index, stops } = trail;
 	const prev = stops[index - 1];
 	const next = stops[index + 1];
-	/** @type {StepNav['links']} */
-	const links = [];
-	if (!next) links.push({ href: JOURNEY_PATH, label: m.reader_back_to_journey(), prominent: true });
-	if (nextFolder) {
-		links.push({
-			href: stepHref(nextFolder.id, { detailed }),
-			label: m.trail_in_order({ step: nextFolder.step, title: nextFolder.shortTitle }),
-			prominent: false
-		});
-	}
 	return {
 		position: null,
 		upNext: next
@@ -205,6 +192,6 @@ function trailNav(trail, nextFolder, detailed) {
 			? { href: stepHref(next.step, { detailed, trail: key }), label: m.trail_next() }
 			: null,
 		end: { href: pickerHref(), label: m.trail_ask_again() },
-		links
+		links: next ? [] : [{ href: JOURNEY_PATH, label: m.reader_back_to_journey() }]
 	};
 }

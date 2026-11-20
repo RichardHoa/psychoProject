@@ -14,13 +14,13 @@
 	class="flex h-[100dvh] w-full flex-col items-center justify-center gap-4 bg-background px-6 text-center font-body"
 >
 	<CatMascot autoplay={false} restImg={happyAlt} />
-	<h1 class="text-2xl font-black text-text-main">
+	<h1 class="text-2xl font-bold text-text-main">
 		{page.status === 404 ? m.error_not_found_title() : m.error_generic_title()}
 	</h1>
 	<p class="max-w-sm text-sm text-text-subtle">{m.error_desc()}</p>
 	<a
 		href={resolve('/trang-chu')}
-		class="sketch-button rounded-xl bg-warm-sage px-4 py-2 text-sm font-bold text-primary"
+		class="sketch-button rounded-xl bg-warm-sage px-4 py-2 text-sm font-semibold text-primary"
 	>
 		{m.error_back_home()}
 	</a>

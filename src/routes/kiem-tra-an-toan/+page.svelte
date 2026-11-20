@@ -85,8 +85,8 @@
 		>
 			<CatMascot autoplay={false} sizeClass="h-11 w-11" sizes="30px" class="shrink-0" />
 			<div>
-				<p class="text-sm font-black tracking-tight text-primary">{m.brand_name()}</p>
-				<p class="text-[0.6875rem] text-text-subtle">{m.safety_title()}</p>
+				<p class="text-sm font-bold tracking-tight text-primary">{m.brand_name()}</p>
+				<p class="text-sm text-text-subtle">{m.safety_title()}</p>
 			</div>
 		</header>
 
@@ -117,7 +117,7 @@
 				/>
 				<div class="flex max-w-[85%] flex-col gap-3">
 					<div
-						class="sketch-card rounded-2xl rounded-tl-sm bg-warm-cream px-3.5 py-2.5 text-sm font-semibold text-text-main"
+						class="sketch-card rounded-2xl rounded-tl-sm bg-warm-cream px-3.5 py-2.5 text-sm font-medium text-text-main"
 					>
 						{m.safety_question()}
 					</div>
@@ -164,7 +164,10 @@
 						class="sketch-card max-w-[80%] rounded-2xl rounded-tl-sm bg-warm-cream px-3.5 py-2.5 text-sm text-text-main"
 					>
 						<p>{m.safety_ack_no()}</p>
-						<a href={data.destination} class="mt-2 inline-block font-bold text-primary underline">
+						<a
+							href={data.destination}
+							class="mt-2 inline-block font-semibold text-primary underline"
+						>
 							{m.safety_continue()}
 						</a>
 					</div>
@@ -189,13 +192,13 @@
 						<div
 							class="sketch-card rounded-2xl rounded-tl-sm bg-warm-terracotta px-3.5 py-2.5 text-sm text-text-main"
 						>
-							<p class="font-semibold">{m.safety_alert_title()}</p>
+							<p class="font-medium">{m.safety_alert_title()}</p>
 							<p class="mt-1 text-text-subtle">{m.safety_alert_desc()}</p>
 						</div>
 
 						{#if data.inHours}
 							<div
-								class="sketch-card rounded-2xl bg-white px-3.5 py-2.5 text-sm font-semibold text-emergency-red"
+								class="sketch-card rounded-2xl bg-white px-3.5 py-2.5 text-sm font-medium text-emergency-red"
 							>
 								{#if enhanced}
 									{m.safety_countdown({ count: countdown })}
@@ -217,7 +220,7 @@
 							</div>
 						{:else}
 							<div class="sketch-card rounded-2xl bg-white px-3.5 py-2.5 text-sm text-text-main">
-								<p class="font-semibold">{m.safety_offhours_title()}</p>
+								<p class="font-medium">{m.safety_offhours_title()}</p>
 								<p class="mt-1 text-text-subtle">{m.safety_offhours_desc()}</p>
 							</div>
 							<div class="flex flex-wrap gap-2">
@@ -234,7 +237,7 @@
 							</div>
 						{/if}
 
-						<p class="text-[0.6875rem] text-text-subtle">{m.safety_disclaimer()}</p>
+						<p class="text-sm text-text-subtle">{m.safety_disclaimer()}</p>
 					</div>
 				</div>
 			{/if}

@@ -29,13 +29,12 @@
 	 *   folder: StepPage['folder'],
 	 *   step: number,
 	 *   stepCount: number,
-	 *   minutes: StepPage['minutes'],
 	 *   detailed: boolean,
 	 *   trail: import('$lib/trail/trail.js').TrailPosition | null,
 	 *   nav: import('$lib/server/content.js').StepNav
 	 * }}
 	 */
-	let { folder, step, stepCount, minutes, detailed, trail, nav } = $props();
+	let { folder, step, stepCount, detailed, trail, nav } = $props();
 
 	const sections = $derived(
 		detailed ? folder.subfolders : folder.subfolders.filter((s) => !s.detailOnly)
@@ -60,14 +59,14 @@
 	<!-- 1. WHERE YOU ARE + THE SHORT / DETAILED SWITCH -->
 	<header class="space-y-3">
 		{#if trail}
-			<TrailHeader {trail} stepId={folder.id} {detailed} />
+			<TrailHeader {trail} {detailed} />
 		{/if}
 		<!-- On step 1 the bar would mostly show how far there is to go, so it appears from step 2.
-		     On a Trail the Journey's position would only confuse, so just the reading time shows. -->
-		<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
-			{#if nav.position}
-				{@const { step: at, total } = nav.position}
-				<p class="text-xs font-black text-primary">
+		     On a Trail the Journey's position would only confuse, so only the Trail header shows. -->
+		{#if nav.position}
+			{@const { step: at, total } = nav.position}
+			<div class="flex flex-wrap items-center gap-x-3 gap-y-1">
+				<p class="text-sm font-semibold text-primary">
 					{at > 1 ? m.journey_step_of({ step: at, total }) : m.journey_step({ step: at })}
 				</p>
 				{#if at > 1}
@@ -81,26 +80,17 @@
 						{/each}
 					</span>
 				{/if}
-			{/if}
-			<p class="text-xs text-text-subtle">
-				{m.reader_minutes({ minutes: detailed ? minutes.detailed : minutes.short })}
-			</p>
-		</div>
-
-		{#if folder.chapter}
-			<p class="text-[0.6875rem] font-bold tracking-wider text-tertiary uppercase">
-				{folder.chapter}
-			</p>
+			</div>
 		{/if}
 
-		<h1 class="text-2xl leading-tight font-black tracking-tight text-balance">
+		<h1 class="text-2xl font-bold tracking-tight text-balance">
 			{folder.title}
 		</h1>
-		<p class="text-sm leading-relaxed text-text-subtle sm:text-base">{folder.summary}</p>
+		<p class="text-base text-text-subtle">{folder.summary}</p>
 
 		<!-- Plain links, so the switch works without JavaScript. With it, the page updates in place
 		     and keeps its scroll position. -->
-		<div class="flex flex-wrap items-center gap-x-3 gap-y-2 pt-1">
+		<div class="pt-1">
 			<nav
 				aria-label={m.reader_mode_label()}
 				class="sketch-pill inline-flex rounded-2xl bg-white p-1"
@@ -112,7 +102,7 @@
 						aria-current={active ? 'true' : undefined}
 						data-sveltekit-noscroll
 						data-sveltekit-replacestate
-						class="inline-flex min-h-10 items-center rounded-xl px-4 text-sm font-bold transition-colors {active
+						class="inline-flex min-h-12 items-center rounded-xl px-4 text-base font-semibold transition-colors {active
 							? 'bg-warm-sage text-primary'
 							: 'text-text-subtle hover:text-primary'}"
 					>
@@ -120,19 +110,16 @@
 					</a>
 				{/each}
 			</nav>
-			<p class="text-xs text-text-subtle">
-				{detailed ? m.reader_mode_hint_detailed() : m.reader_mode_hint_short()}
-			</p>
 		</div>
 	</header>
 
 	<!-- 2. SECTIONS: TYPOGRAPHY ONLY, NO BOXES -->
 	{#each sections as subfolder (subfolder.id)}
 		{@const alert = subfolder.tone === 'alert'}
-		<section id={subfolder.id} class="anchor-target mt-10 space-y-3">
+		<section id={subfolder.id} class="anchor-target mt-14 space-y-4">
 			<div>
 				<h2
-					class="flex items-center gap-2 text-lg leading-snug font-black tracking-tight {alert
+					class="flex items-center gap-2 text-xl font-bold tracking-tight {alert
 						? 'text-emergency-red'
 						: 'text-text-main'}"
 				>
@@ -142,7 +129,7 @@
 					<span>{subfolder.title}</span>
 				</h2>
 				{#if subfolder.desc}
-					<p class="mt-1 text-sm leading-relaxed text-text-subtle">{subfolder.desc}</p>
+					<p class="mt-1 text-base text-text-subtle">{subfolder.desc}</p>
 				{/if}
 			</div>
 
@@ -156,7 +143,7 @@
 			</div>
 
 			{#if subfolder.layout === 'pillars'}
-				<ul class="grid gap-x-5 gap-y-6 pt-2 {detailed ? 'grid-cols-1' : 'grid-cols-2'}">
+				<ul class="space-y-6 pt-2">
 					{#each subfolder.items as item, i (item.anchor)}
 						{@const text = itemText(item)}
 						<li id={item.anchor} class="anchor-target space-y-1.5">
@@ -169,9 +156,9 @@
 									seed={i + 3}
 								/>
 							</div>
-							<p class="text-base leading-snug">{item.title}</p>
+							<p class="text-base font-medium">{item.title}</p>
 							{#if text}
-								<p class="text-sm leading-relaxed text-text-main/80">{text}</p>
+								<p class="text-base">{text}</p>
 							{/if}
 						</li>
 					{/each}
@@ -181,19 +168,19 @@
 				{@const roomy = subfolder.items.some((item) => itemText(item) || item.link)}
 				<svelte:element
 					this={numbered ? 'ol' : 'ul'}
-					class="pt-1 {roomy ? 'space-y-5' : 'space-y-3'}"
+					class="pt-1 {roomy ? 'space-y-6' : 'space-y-3'}"
 				>
 					{#each subfolder.items as item, i (item.anchor)}
 						{@const text = itemText(item)}
 						<li id={item.anchor} class="anchor-target flex gap-3">
 							{#if numbered}
 								<span
-									class="w-5 shrink-0 text-base leading-snug text-primary tabular-nums"
+									class="w-5 shrink-0 text-base font-semibold text-primary tabular-nums"
 									aria-hidden="true">{i + 1}</span
 								>
 							{:else}
 								<span
-									class="mt-[0.55em] size-2 shrink-0 rounded-full {alert || item.isAlert
+									class="mt-[0.65em] size-2 shrink-0 rounded-full {alert || item.isAlert
 										? 'bg-emergency-red'
 										: 'bg-primary/70'}"
 									aria-hidden="true"
@@ -202,14 +189,14 @@
 
 							<div class="min-w-0 flex-1 space-y-1">
 								<p
-									class="text-[0.9375rem] leading-snug sm:text-base {item.isAlert
+									class="text-base {text || item.link ? 'font-medium' : ''} {item.isAlert
 										? 'text-emergency-red'
 										: 'text-text-main'}"
 								>
 									{item.title}
 								</p>
 								{#if text}
-									<p class="text-sm leading-relaxed text-text-main/80">{text}</p>
+									<p class="text-base">{text}</p>
 								{/if}
 								{#if item.link}
 									<div class="pt-1.5">
@@ -217,12 +204,12 @@
 											href={item.link}
 											target="_blank"
 											rel="noopener noreferrer"
-											class="sketch-button inline-flex min-h-9 items-center gap-1.5 rounded-xl bg-warm-sage px-3 py-1.5 text-xs font-black text-primary transition-colors hover:bg-primary hover:text-white"
+											class="sketch-button inline-flex min-h-12 items-center gap-1.5 rounded-xl bg-warm-sage px-4 py-2 text-sm font-semibold text-primary transition-colors hover:bg-primary hover:text-white"
 										>
 											<span>{m.folder_open_link()}</span>
 											<RoughIcon
 												name="open_in_new"
-												size={13}
+												size={16}
 												stroke="currentColor"
 												strokeWidth={2}
 											/>
@@ -239,8 +226,8 @@
 
 	<!-- In the short version, say what the detailed one adds instead of hiding it silently. -->
 	{#if nav.detailOnlyHref}
-		<aside class="mt-10 rounded-2xl bg-warm-cream px-4 py-3.5">
-			<p class="text-sm leading-relaxed text-text-main">
+		<aside class="mt-14 rounded-2xl bg-warm-cream px-4 py-3.5">
+			<p class="text-base leading-relaxed text-text-main">
 				{m.reader_more_in_detailed({
 					sections: detailOnlySections.map((s) => s.title).join(', ')
 				})}
@@ -248,16 +235,16 @@
 			<a
 				href={resolve(nav.detailOnlyHref)}
 				data-sveltekit-replacestate
-				class="mt-1.5 inline-flex min-h-9 items-center gap-1 text-sm font-black text-primary underline underline-offset-4"
+				class="mt-1.5 inline-flex min-h-12 items-center gap-1 text-base font-semibold text-primary underline underline-offset-4"
 			>
 				{m.reader_open_detailed()}
-				<RoughIcon name="arrow_forward" size={15} class="text-primary" strokeWidth={1.8} />
+				<RoughIcon name="arrow_forward" size={16} class="text-primary" strokeWidth={1.8} />
 			</a>
 		</aside>
 	{/if}
 
 	<!-- 3. WHAT'S NEXT ON THE JOURNEY -->
-	<footer class="mt-12 space-y-5">
+	<footer class="mt-16 space-y-5">
 		<div class="mx-auto max-w-35">
 			<WiredDivider stroke="currentColor" class="text-primary" strokeWidth={1.4} roughness={1.4} />
 		</div>
@@ -272,14 +259,12 @@
 
 		<div class="space-y-1 text-center">
 			{#if nav.upNext}
-				<p class="text-[0.6875rem] font-bold tracking-wider text-text-subtle uppercase">
-					{nav.upNext.caption}
-				</p>
-				<p class="text-base font-black text-text-main">{nav.upNext.title}</p>
-				<p class="text-sm text-text-subtle">{nav.upNext.reason}</p>
+				<p class="text-sm font-semibold text-text-subtle">{nav.upNext.caption}</p>
+				<p class="text-base font-semibold text-text-main">{nav.upNext.title}</p>
+				<p class="text-base leading-relaxed text-text-subtle">{nav.upNext.reason}</p>
 			{:else if nav.finished}
-				<p class="text-base font-black text-text-main">{nav.finished.title}</p>
-				<p class="text-sm text-text-subtle">{nav.finished.description}</p>
+				<p class="text-base font-semibold text-text-main">{nav.finished.title}</p>
+				<p class="text-base leading-relaxed text-text-subtle">{nav.finished.description}</p>
 			{/if}
 		</div>
 
@@ -292,10 +277,10 @@
 						href={resolve(nav.prev.href)}
 						shape="bar"
 						fill="#FFFFFF"
-						class="min-h-11 flex-1 py-2.5"
+						class="min-h-12 flex-1 py-2.5"
 					>
 						<RoughIcon name="arrow_back" size={16} stroke="#242B28" strokeWidth={1.8} />
-						<span class="text-sm">{nav.prev.label}</span>
+						<span class="text-base">{nav.prev.label}</span>
 					</WiredButton>
 				</div>
 			{/if}
@@ -306,9 +291,9 @@
 						shape="bar"
 						seed={2}
 						fill="#EAF2EC"
-						class="min-h-11 flex-1 py-2.5"
+						class="min-h-12 flex-1 py-2.5"
 					>
-						<span class="text-sm font-black text-primary">{nav.next.label}</span>
+						<span class="text-base font-semibold text-primary">{nav.next.label}</span>
 						<RoughIcon name="arrow_forward" size={16} class="text-primary" strokeWidth={1.8} />
 					</WiredButton>
 				</div>
@@ -318,9 +303,9 @@
 					shape="bar"
 					seed={2}
 					fill="#EAF2EC"
-					class="min-h-11 flex-1 py-2.5"
+					class="min-h-12 flex-1 py-2.5"
 				>
-					<span class="text-sm font-black text-primary">{nav.end.label}</span>
+					<span class="text-base font-semibold text-primary">{nav.end.label}</span>
 				</WiredButton>
 			{/if}
 		</div>
@@ -330,9 +315,7 @@
 				{#each nav.links as link (link.href)}
 					<a
 						href={resolve(link.href)}
-						class="mx-auto flex min-h-10 w-fit items-center underline underline-offset-4 {link.prominent
-							? 'text-sm font-bold text-primary'
-							: 'text-xs text-text-subtle hover:text-primary'}"
+						class="mx-auto flex min-h-12 w-fit items-center text-base font-semibold text-primary underline underline-offset-4"
 					>
 						{link.label}
 					</a>

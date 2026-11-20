@@ -29,7 +29,6 @@
 			folder={data.folder}
 			step={data.step}
 			stepCount={data.stepCount}
-			minutes={data.minutes}
 			detailed={data.detailed}
 			trail={data.trail}
 			nav={data.nav}

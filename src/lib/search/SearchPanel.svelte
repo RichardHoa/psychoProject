@@ -163,7 +163,7 @@
 				enterkeyhint="search"
 				aria-label={m.search_open()}
 				placeholder={m.home_search_placeholder()}
-				class="h-13 w-full rounded-2xl border-[1.5px] border-sketch-border bg-white pr-24 pl-12 text-sm font-bold text-text-main shadow-xs transition-shadow placeholder:text-text-subtle/70 sm:text-base [&::-webkit-search-cancel-button]:hidden"
+				class="h-13 w-full rounded-2xl border-[1.5px] border-sketch-border bg-white pr-24 pl-12 text-sm font-semibold text-text-main shadow-xs transition-shadow placeholder:text-text-subtle/70 [&::-webkit-search-cancel-button]:hidden"
 				{@attach focusOnMount}
 			/>
 
@@ -196,7 +196,7 @@
 				{:else}
 					<button
 						type="submit"
-						class="sketch-button rounded-xl bg-warm-sage px-2.5 py-1.5 text-xs font-black text-primary"
+						class="sketch-button rounded-xl bg-warm-sage px-2.5 py-1.5 text-sm font-bold text-primary"
 					>
 						{m.search_submit()}
 					</button>
@@ -205,13 +205,13 @@
 		</form>
 
 		{#if isListening}
-			<p class="fade-in mt-2.5 px-2 text-xs font-bold text-primary" role="status">
+			<p class="fade-in mt-2.5 px-2 text-sm font-semibold text-primary" role="status">
 				{m.search_listening()}
 			</p>
 		{/if}
 
 		{#if voiceError}
-			<p class="fade-in mt-2 px-2 text-xs font-bold text-emergency-red" role="alert">
+			<p class="fade-in mt-2 px-2 text-sm font-semibold text-emergency-red" role="alert">
 				{voiceError}
 			</p>
 		{/if}
@@ -222,10 +222,10 @@
 		{#if !hasQuery}
 			<div class="fade-in space-y-3.5 py-1">
 				<div class="flex items-center justify-between px-1">
-					<span class="text-xs font-bold tracking-wider text-text-subtle uppercase">
+					<span class="text-sm font-semibold tracking-wider text-text-subtle uppercase">
 						{m.search_suggestions()}
 					</span>
-					<span class="text-[0.6875rem] text-text-subtle">{m.search_suggestions_hint()}</span>
+					<span class="text-sm text-text-subtle">{m.search_suggestions_hint()}</span>
 				</div>
 
 				<ul class="space-y-2.5">
@@ -234,7 +234,7 @@
 							<a
 								href={resolve(`/tim-kiem?q=${encodeURIComponent(chip.label)}`)}
 								onclick={(e) => handleLink(e, chip.label)}
-								class="sketch-card group flex items-center justify-between gap-3 rounded-2xl bg-white p-3.5 text-left text-sm font-bold text-text-main transition-all active:scale-[0.98]"
+								class="sketch-card group flex items-center justify-between gap-3 rounded-2xl bg-white p-3.5 text-left text-sm font-semibold text-text-main transition-all active:scale-[0.98]"
 							>
 								<span class="transition-colors group-hover:text-primary">{chip.label}</span>
 								<RoughIcon name="arrow_forward" size={14} stroke="#5A6561" strokeWidth={1.8} />
@@ -245,12 +245,12 @@
 			</div>
 		{:else if results.length === 0}
 			<div class="fade-in space-y-2 py-10 text-center text-text-subtle">
-				<h2 class="text-sm font-bold text-text-main">{m.search_no_results({ query })}</h2>
-				<p class="mx-auto max-w-xs text-xs text-text-subtle">{m.search_no_results_hint()}</p>
+				<h2 class="text-sm font-semibold text-text-main">{m.search_no_results({ query })}</h2>
+				<p class="mx-auto max-w-xs text-sm text-text-subtle">{m.search_no_results_hint()}</p>
 			</div>
 		{:else}
 			<div class="fade-in space-y-2.5">
-				<p class="px-1 text-xs font-bold text-text-subtle">
+				<p class="px-1 text-sm font-semibold text-text-subtle">
 					{m.search_result_count({ count: results.length })}
 				</p>
 
@@ -263,18 +263,18 @@
 							>
 								<span class="mb-1 flex items-center justify-between gap-2">
 									<span
-										class="sketch-pill truncate rounded-md bg-warm-sage px-2 py-0.5 text-[0.625rem] font-bold text-primary"
+										class="sketch-pill truncate rounded-md bg-warm-sage px-2 py-0.5 text-sm font-semibold text-primary"
 									>
 										{item.category}
 									</span>
 									<RoughIcon name="arrow_forward" size={14} stroke="#5A6561" strokeWidth={1.8} />
 								</span>
 								<span
-									class="block text-sm font-black text-text-main transition-colors group-hover:text-primary"
+									class="block text-sm font-bold text-text-main transition-colors group-hover:text-primary"
 								>
 									{item.title}
 								</span>
-								<span class="mt-0.5 line-clamp-2 block text-xs leading-relaxed text-text-subtle">
+								<span class="mt-0.5 line-clamp-2 block text-sm leading-relaxed text-text-subtle">
 									{item.desc}
 								</span>
 							</a>

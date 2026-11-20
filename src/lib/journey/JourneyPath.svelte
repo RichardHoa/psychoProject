@@ -25,14 +25,14 @@
 
 <div class="fade-in w-full bg-background px-5 pt-6 pb-20 font-body text-text-main select-none">
 	<header class="space-y-2 text-center">
-		<h1 class="text-xl font-black tracking-tight text-balance sm:text-2xl">
+		<h1 class="text-xl font-bold tracking-tight text-balance">
 			{m.journey_title()}
 		</h1>
 		<div class="mx-auto max-w-30">
 			<WiredDivider stroke="currentColor" class="text-primary" strokeWidth={1.5} roughness={1.5} />
 		</div>
 		<p class="text-sm leading-relaxed text-text-subtle">{m.journey_desc()}</p>
-		<p class="text-xs font-bold text-primary">
+		<p class="text-sm font-semibold text-primary">
 			{m.journey_total_time({ count: folders.length, minutes: totalMinutes })}
 		</p>
 	</header>
@@ -41,7 +41,7 @@
 	<section class="mt-7 space-y-3" aria-labelledby="journey-entry">
 		<div class="flex items-center gap-2">
 			<CatMascot autoplay={false} restImg={happyWaving} sizeClass="h-12 w-12" sizes="36px" />
-			<h3 id="journey-entry" class="text-base font-black">{m.journey_entry_title()}</h3>
+			<h3 id="journey-entry" class="text-base font-bold">{m.journey_entry_title()}</h3>
 		</div>
 		<ul class="space-y-2.5">
 			{#each ENTRIES as entry, i (entry.stepId)}
@@ -63,7 +63,7 @@
 
 	<!-- 2. THE PATH, STEP BY STEP -->
 	<section class="mt-9" aria-labelledby="journey-steps">
-		<h3 id="journey-steps" class="text-base font-black">{m.journey_steps_title()}</h3>
+		<h3 id="journey-steps" class="text-base font-bold">{m.journey_steps_title()}</h3>
 
 		<ol class="relative mt-4 space-y-3.5">
 			<!-- Hand-drawn feel for the path that joins the step numbers. -->
@@ -76,15 +76,13 @@
 				{@const chapterStart = folder.chapter && folder.chapter !== folders[idx - 1]?.chapter}
 				<li class="relative">
 					{#if chapterStart}
-						<p
-							class="mb-2 ml-14 text-[0.6875rem] font-black tracking-wider text-tertiary uppercase"
-						>
+						<p class="mb-2 ml-14 text-sm font-bold tracking-wider text-tertiary uppercase">
 							{folder.chapter}
 						</p>
 					{/if}
 					<div class="flex items-start gap-3">
 						<span
-							class="relative z-10 mt-3 flex size-[2.6rem] shrink-0 items-center justify-center rounded-full bg-background text-lg font-black text-primary ring-2 ring-primary/60"
+							class="relative z-10 mt-3 flex size-[2.6rem] shrink-0 items-center justify-center rounded-full bg-background text-xl font-bold text-primary ring-2 ring-primary/60"
 							aria-hidden="true">{folder.step}</span
 						>
 						<WiredCard
@@ -98,13 +96,13 @@
 							<span class="sr-only">{m.journey_step({ step: folder.step })}:</span>
 							<span class="flex items-center gap-2">
 								<span class="min-w-0 flex-1">
-									<span class="block text-base leading-snug font-black text-text-main">
+									<span class="block text-base leading-snug font-bold text-text-main">
 										{folder.shortTitle}
 									</span>
 									<span class="mt-0.5 line-clamp-2 block text-sm leading-snug text-text-subtle">
 										{folder.summary}
 									</span>
-									<span class="mt-1 block text-xs font-bold text-primary/80">
+									<span class="mt-1 block text-sm font-semibold text-primary/80">
 										{m.journey_step_minutes({ minutes: folder.minutes })}
 									</span>
 								</span>
@@ -118,7 +116,7 @@
 	</section>
 
 	<!-- Said once here rather than at the end of every step. -->
-	<p class="mt-10 text-center text-xs leading-relaxed text-text-subtle">
+	<p class="mt-10 text-center text-sm leading-relaxed text-text-subtle">
 		{m.reader_disclaimer()}
 	</p>
 </div>

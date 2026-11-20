@@ -34,8 +34,8 @@
 	href={resolve('/tim-kiem')}
 	onclick={openOverlay}
 	class="sketch-button flex w-full items-center justify-between rounded-2xl bg-white text-left font-body transition-all {isCompact
-		? 'h-10 px-3 text-xs'
-		: 'h-13 px-4 text-xs sm:text-sm'}"
+		? 'h-10 px-3 text-sm'
+		: 'h-13 px-4 text-sm'}"
 	aria-label={m.search_open()}
 >
 	<span class="flex items-center gap-2.5 overflow-hidden">
@@ -46,7 +46,7 @@
 	</span>
 
 	<span
-		class="hidden shrink-0 rounded-md border-[1.5px] border-sketch-border bg-warm-cream px-2 py-0.5 text-[0.625rem] font-bold text-text-main sm:inline-block"
+		class="hidden shrink-0 rounded-md border-[1.5px] border-sketch-border bg-warm-cream px-2 py-0.5 text-sm font-semibold text-text-main sm:inline-block"
 	>
 		{m.search_submit()}
 	</span>

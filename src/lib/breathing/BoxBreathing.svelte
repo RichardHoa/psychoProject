@@ -25,12 +25,12 @@
 <div class="box-breathing flex flex-col items-center space-y-5 text-center">
 	<div class="space-y-1 pt-1">
 		<span
-			class="sketch-pill inline-flex items-center gap-1 rounded-full bg-warm-sage px-2.5 py-0.5 text-[0.6875rem] font-bold tracking-wide text-primary uppercase"
+			class="sketch-pill inline-flex items-center gap-1 rounded-full bg-warm-sage px-2.5 py-0.5 text-sm font-semibold tracking-wide text-primary uppercase"
 		>
 			<RoughIcon name="spa" size={12} stroke="currentColor" strokeWidth={2} />
 			{m.breathing_badge()}
 		</span>
-		<svelte:element this={headingTag} class="text-lg font-black text-text-main">
+		<svelte:element this={headingTag} class="text-xl font-bold text-text-main">
 			{m.breathing_heading()}
 		</svelte:element>
 	</div>
@@ -48,14 +48,14 @@
 			class="sketch-card relative flex h-32 w-32 flex-col items-center justify-center rounded-2xl bg-white"
 		>
 			<span
-				class="seconds text-3xl font-black text-text-main tabular-nums"
+				class="seconds text-[1.875rem]/[2.25rem] font-bold text-text-main tabular-nums"
 				data-testid="breathing-seconds"
 				aria-hidden="true"
 			></span>
 			<div class="phases mt-0.5 grid">
 				{#each PHASES as phase, i (phase.id)}
 					<span
-						class="phase text-[0.6875rem] font-bold tracking-wider text-primary uppercase"
+						class="phase text-sm font-semibold tracking-wider text-primary uppercase"
 						style:--i={i}>{phase.label}</span
 					>
 				{/each}
@@ -66,10 +66,10 @@
 	<div class="space-y-1 px-2">
 		<div class="phases grid">
 			{#each PHASES as phase, i (phase.id)}
-				<p class="phase text-sm font-black text-text-main" style:--i={i}>{phase.tip}</p>
+				<p class="phase text-sm font-bold text-text-main" style:--i={i}>{phase.tip}</p>
 			{/each}
 		</div>
-		<p class="text-xs text-text-subtle">
+		<p class="text-sm text-text-subtle">
 			{m.breathing_cycle()} <span class="cycles" aria-hidden="true"></span> • {m.breathing_pace()}
 		</p>
 	</div>
@@ -89,7 +89,7 @@
 			/>
 			<input type="checkbox" class="pause-input sr-only" />
 			<span
-				class="wired-content relative z-10 flex items-center gap-1.5 text-xs font-bold text-text-main"
+				class="wired-content relative z-10 flex items-center gap-1.5 text-sm font-semibold text-text-main"
 			>
 				<span class="when-running flex items-center gap-1.5">
 					<RoughIcon name="pause" size={16} strokeWidth={2} />

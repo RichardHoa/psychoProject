@@ -55,7 +55,7 @@
 					class="shrink-0"
 					ariaLabel={m.home_logo_label()}
 				>
-					<span class="text-xl font-black tracking-tight text-primary">{m.brand_name()}</span>
+					<span class="text-xl font-bold tracking-tight text-primary">{m.brand_name()}</span>
 				</CatMascot>
 
 				<div class="max-w-37.5 flex-1 xs:max-w-45 sm:max-w-55">
@@ -72,7 +72,7 @@
 					class="shrink-0"
 				>
 					<RoughIcon name="spa" size={18} class="text-primary" strokeWidth={1.8} />
-					<span class="font-black tracking-tight text-primary">{m.breathing_btn()}</span>
+					<span class="font-bold tracking-tight text-primary">{m.breathing_btn()}</span>
 				</WiredButton>
 			</header>
 		{/if}

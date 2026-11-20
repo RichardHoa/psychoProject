@@ -76,7 +76,7 @@
 	/>
 
 	<span
-		class="wired-content relative z-10 flex items-center justify-center gap-1.5 text-xs font-bold text-text-main {contentClass}"
+		class="wired-content relative z-10 flex items-center justify-center gap-1.5 text-sm font-semibold text-text-main {contentClass}"
 	>
 		{@render children?.()}
 	</span>

@@ -49,9 +49,7 @@ describe('step navigation on the Journey', () => {
 		expect(n.finished).toBeNull();
 		expect(n.prev).toEqual({ href: '/hanh-trinh/than-chu', label: 'Bước trước' });
 		expect(n.next).toEqual({ href: '/hanh-trinh/nha-tham-van', label: 'Bước tiếp theo' });
-		expect(n.links).toEqual([
-			{ href: '/hanh-trinh', label: 'Xem toàn bộ hành trình', prominent: true }
-		]);
+		expect(n.links).toEqual([{ href: '/hanh-trinh', label: 'Xem toàn bộ hành trình' }]);
 	});
 
 	it('has no previous step on the first step', () => {
@@ -124,14 +122,8 @@ describe('step navigation on a Trail', () => {
 		expect(n.next?.href).toBe('/hanh-trinh/ho-tro-chuyen-nghiep?lo-trinh=phu-huynh.con-khac-la');
 	});
 
-	it('offers to read the Journey in order while the Journey has a next step', () => {
-		expect(nav('chon-chuyen-gia').links).toEqual([
-			{
-				href: '/hanh-trinh/ho-tro-chuyen-nghiep',
-				label: 'Hoặc đọc theo thứ tự: Bước 7, Nơi bắt đầu tìm',
-				prominent: false
-			}
-		]);
+	it('offers no extra links before the last stop', () => {
+		expect(nav('chon-chuyen-gia').links).toEqual([]);
 	});
 
 	it('ends the Trail with "ask again" and a link to the whole Journey', () => {
@@ -144,10 +136,7 @@ describe('step navigation on a Trail', () => {
 		});
 		expect(n.next).toBeNull();
 		expect(n.end).toEqual({ href: '/trang-chu#ban-la-ai', label: 'Hỏi Mèo điều khác' });
-		// The last step of the Journey has no next step to read in order.
-		expect(n.links).toEqual([
-			{ href: '/hanh-trinh', label: 'Xem toàn bộ hành trình', prominent: true }
-		]);
+		expect(n.links).toEqual([{ href: '/hanh-trinh', label: 'Xem toàn bộ hành trình' }]);
 	});
 
 	it('keeps both the detailed version and the Trail on every step link', () => {
@@ -159,7 +148,5 @@ describe('step navigation on a Trail', () => {
 		});
 		expect(n.prev?.href).toBe(`/hanh-trinh/ai-giup-ban${onTrail}`);
 		expect(n.next?.href).toBe(`/hanh-trinh/ho-tro-chuyen-nghiep${onTrail}`);
-		// Reading in order leaves the Trail but keeps the version.
-		expect(n.links[0].href).toBe('/hanh-trinh/ho-tro-chuyen-nghiep?che-do=chi-tiet');
 	});
 });

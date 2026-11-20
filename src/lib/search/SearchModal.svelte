@@ -70,11 +70,11 @@
 		/>
 
 		<div
-			class="flex items-center justify-between border-t-[1.5px] border-sketch-border bg-surface-container-low p-3 px-4 text-xs text-text-subtle"
+			class="flex items-center justify-between border-t-[1.5px] border-sketch-border bg-surface-container-low p-3 px-4 text-sm text-text-subtle"
 		>
 			<span>
 				<kbd
-					class="rounded-md border border-sketch-border bg-white px-1.5 py-0.5 font-mono text-[0.625rem] font-bold"
+					class="rounded-md border border-sketch-border bg-white px-1.5 py-0.5 font-mono text-sm font-semibold"
 					>ESC</kbd
 				>
 				{m.search_esc_hint()}

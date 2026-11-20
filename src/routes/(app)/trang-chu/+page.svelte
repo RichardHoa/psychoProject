@@ -31,7 +31,7 @@
 	<div
 		class="usage-hint sketch-card fixed right-4 bottom-4 left-4 z-40 mx-auto flex max-w-md items-center justify-between gap-2 rounded-2xl bg-warm-cream px-4 py-2.5 text-text-main"
 	>
-		<div class="flex items-center gap-2 text-xs">
+		<div class="flex items-center gap-2 text-sm">
 			<RoughIcon name="swipe" size={16} class="text-primary" strokeWidth={1.8} />
 			<span><strong>{m.usage_hint_label()}</strong> {m.usage_hint()}</span>
 		</div>
@@ -61,7 +61,7 @@
 	})}
 >
 	<!-- The Landing is the picker alone: it fills the whole screen. -->
-	<div class="flex min-h-[100dvh] w-full max-w-sm flex-col pt-[8dvh] pb-8">
+	<div class="flex min-h-dvh w-full max-w-sm flex-col pt-[10dvh] pb-12">
 		<ConcernPicker picker={data.picker} />
 	</div>
 </section>

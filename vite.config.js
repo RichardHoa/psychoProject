@@ -19,16 +19,17 @@ export default defineConfig({
 			adapter: adapter(),
 			// Content Security Policy: SvelteKit adds a per-request nonce (hash when prerendered) to
 			// script-src for its own inline bootstrap script. Styles stay 'unsafe-inline' because
-			// components use style attributes (and SvelteKit then skips style nonces).
+			// components use style attributes (and SvelteKit then skips style nonces). The clarity.ms
+			// and c.bing.com sources are for Microsoft Clarity analytics (src/hooks.client.js).
 			csp: {
 				mode: 'auto',
 				directives: {
 					'default-src': ['self'],
-					'script-src': ['self'],
+					'script-src': ['self', 'https://www.clarity.ms', 'https://*.clarity.ms'],
 					'style-src': ['self', 'unsafe-inline'],
-					'img-src': ['self', 'data:'],
+					'img-src': ['self', 'data:', 'https://*.clarity.ms', 'https://c.bing.com'],
 					'font-src': ['self'],
-					'connect-src': ['self'],
+					'connect-src': ['self', 'https://*.clarity.ms', 'https://c.bing.com'],
 					'object-src': ['none'],
 					'base-uri': ['self'],
 					'form-action': ['self'],
